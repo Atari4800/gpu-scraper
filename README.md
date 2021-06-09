@@ -5,11 +5,11 @@ GPU Hunter is a web scraper app built for our class project. Its purpose is to h
 -----
 
 ## How to use
-*Linux*
+*Linux*:  
 Clone this repo with `git clone https://github.com/Atari4800/gpu-scraper.git` 
 
-*Windows*
+*Windows*:  
 Download the .zip, unzip into preferred folder.
 
-*Mac*
+*Mac*:  
 Not supported.
