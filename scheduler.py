@@ -1,11 +1,18 @@
 from crontab import CronTab
-import os.path
+
 class Scheduler:
-	def _init_(minutes):
-		myCron=CronTab(user = True)
-		for job in myCron:
-			print(job)
-	def removeAllJobs:
-		myCron.remove_all()
-	def searchItems:
-		myCron(
+    def __init__(self,minutes):
+        self.minute=minutes
+        self.cron = CronTab(user=True)
+        self.job = self.cron.new(command = 'export DISPLAY=:0 && cd ~/Desktop/GPUHUNTER/ && ls -l && python3 ~/Desktop/GPU>
+ #       self.job = self.cron.new(command = 'echo "Eat" >> diditgo.txt') #This is a test-line for the jobs.
+        self.job.minute.every(self.minute)
+        print(self.cron.write())
+    def ChangeMinutes(min):
+        self.minutes=min
+    def check():
+        for jobs in self.cron:
+            print(jobs)
+sc = Scheduler(1)
+sc.check
+
