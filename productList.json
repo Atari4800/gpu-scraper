@@ -1,0 +1,26 @@
+{
+    "Product":
+    [
+        {
+            "productType": "3080",
+            "productLink": "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0>
+            "productPrice":849.99
+        },
+        {
+            "productType": "3090",
+            "productLink": "https://www.bestbuy.com/site/nvidia-geforce-rtx-3090-24gb-gddr6x-pci-express-4-0-graphics-card>
+            "productPrice":1499.99
+         },
+         {
+            "productType":"3080TI",
+            "productLink":"https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-ti-12gb-gddr6x-pci-express-4-0-graphics-ca>
+            "productPrice":1199.99
+        },
+        {
+            "productType":"watch",
+            "productLink":"https://www.bestbuy.com/site/apple-watch-series-6-gps-40mm-productred-aluminum-case-with-produc>
+            "productPrice":120
+        }
+    ]
+}
+
