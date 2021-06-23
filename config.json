@@ -1,0 +1,9 @@
+{
+    "Config":
+    [
+        {
+            "State": 1,
+            "Default_Browser": "Something"
+        }
+    ]
+}

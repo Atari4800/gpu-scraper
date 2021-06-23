@@ -1,6 +1,6 @@
 import requests
-import sys
 import webbrowser
+import sys
 import re
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -14,13 +14,19 @@ option.headless = True
 browser = webdriver.Firefox(options = option, executable_path = './drivers/geckodriver')
 browser.get(URL)
 
-with open('bboutput.html','wt', encoding = 'utf-8') as f:
+with open('neoutput.html','wt',encoding = 'utf-8') as f:
     f.write(browser.page_source)
 
-soup = BeautifulSoup(browser.page_source, 'html.parser')
-results = soup.find(class_ = fulfillment-add-to-cart-button')
+results = soup.find(id = 'ProductBuy')
+themessage = results.find_all('button', class_ = 'btn btn-primary btn-wide')
 
-if re.search("Add to Cart", str(results)):
+if re.search("Add", themessage):
     webbrowser.open_new(URL)
+#for themessage in themessage:
+#    text_elem = themessage.text
+#    title = themessage.title
+#    print(text_elem)
+#    if 'Add' in text_elem:
+#        print('STOCK FOUND!: ' + URL)
+#        webbrowser.open_new(URL)
 
-browser.close()

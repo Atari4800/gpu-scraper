@@ -6,7 +6,9 @@ GPU Hunter is a web scraper app built for our class project. Its purpose is to h
 
 ## How to install
 *Linux*:  
-Clone this repo with `git clone https://github.com/Atari4800/gpu-scraper.git` 
+1. Clone this repo with `git clone https://github.com/Atari4800/gpu-scraper.git`  
+2. make sure `build.sh` is executable: if not, run `chmod +x build.sh`   
+2. run `./build.sh`  
 
 *Windows*:  
 Download the .zip, unzip into preferred folder.
