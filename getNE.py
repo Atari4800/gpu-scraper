@@ -4,14 +4,20 @@ import sys
 import re
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.options import Options as FFOpt
+#from selenium.webdriver.chrome.options import Options as COpt
 from bs4 import BeautifulSoup
 
 URL = sys.argv[1]
+theDriver = './drivers/geckodriver'
+option = FFOpt()
+#if sys.argv[2] != 'firefox.desktop':
+#    option=COpt()
+#    theDriver = './drivers/chromedriver'
 
-option = Options()
+
 option.headless = True
-browser = webdriver.Firefox(options = option, executable_path = './drivers/geckodriver')
+browser = webdriver.Firefox(options = option, executable_path = theDriver)
 browser.get(URL)
 
 with open('neoutput.html','wt',encoding = 'utf-8') as f:
@@ -22,11 +28,3 @@ themessage = results.find_all('button', class_ = 'btn btn-primary btn-wide')
 
 if re.search("Add", themessage):
     webbrowser.open_new(URL)
-#for themessage in themessage:
-#    text_elem = themessage.text
-#    title = themessage.title
-#    print(text_elem)
-#    if 'Add' in text_elem:
-#        print('STOCK FOUND!: ' + URL)
-#        webbrowser.open_new(URL)
-
