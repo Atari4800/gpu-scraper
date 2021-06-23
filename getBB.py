@@ -19,9 +19,6 @@ option.headless = True
 browser = webdriver.Firefox(options = option, executable_path = theDriver)
 browser.get(URL)
 
-with open('bboutput.html','wt', encoding = 'utf-8') as f:
-    f.write(browser.page_source)
-
 soup = BeautifulSoup(browser.page_source, 'html.parser')
 results = soup.find(class_ = 'fulfillment-add-to-cart-button')
 
