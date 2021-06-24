@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 
 # This method is called when the user clicks the add new query button on the interface's main page
 def handle_new_query_button(event):        
@@ -58,35 +59,46 @@ button_add_query = tk.Button(text="Add new query", master=window, padx=3, pady=3
 button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
 button_add_query.bind("<Button-1>", handle_new_query_button)
 
-def event_button_notification():
+def notification(product, source, price, belowMSRP):
     # Makes the beep for a notification, but also prints a newline...
     print("\a")
     
     # Makes the window for the notification
     window_notification = tk.Tk()
     window_notification.title("Alert")
+
+    lbl_info = tk.Label(text=f"Available: {product}\nFrom: {source}\nPrice: {price}\nBelow MSRP: {belowMSRP}", master=window_notification, justify=tk.LEFT, padx=30, pady=20)
+    lbl_info.pack()    
+
+    screen_width = window_notification.winfo_screenwidth()
+    screen_height = window_notification.winfo_screenheight()
     
-    screenwidth = window_notification.winfo_screenwidth()
-    screenheight = window_notification.winfo_screenheight()
-    
-    lbl_info = tk.Label(text="Available: RTX 3080\nFrom: Best Buy\nPrice: $699.99 USD\nBelow MSRP: Yes", master=window_notification, justify=tk.LEFT, padx=10, pady=1)
-    lbl_info.pack()
-    
-    print(window_notification.winfo_width(), window_notification.winfo_height())
-    
-    window_notification.geometry('%dx%d+%d+%d' % (80, 60, screenwidth-200, screenheight-175))
-    
+    x = screen_width - 250
+    y = screen_height - 200 
+
+    window_notification.geometry(f"+{x}+{y}")
+
     def close():
         window_notification.quit()
         window_notification.destroy()
     
     window_notification.protocol("WM_DELETE_WINDOW", close)
-    window_notification.after(2000, close)
+    #window_notification.after(2000, close)
     
     window_notification.mainloop()
     
-    
-button_notification = tk.Button(text="Simulate notification", master=window, command=event_button_notification)
-button_notification.pack(side=tk.RIGHT)
+button_notification = tk.Button(text="Simulate notification", master=window, 
+        command=lambda: notification("RTX 3080", "Best Buy", "$699.99 USD", "Yes"))
+button_notification.pack(side=tk.TOP, pady=10, padx=10)
+
+# The purpose of the test_command is to demonstrate that it is possible to
+# execute shell commands from inside the interface in python.
+def test_command():
+    # The command you want to execute is passed as a string parameter as shown below.
+    os.system('echo "blahblah"')
+
+button_command = tk.Button(text="Test command line", master=window, command=test_command)
+button_command.pack(side=tk.TOP, pady=10, padx=10)
+
 
 window.mainloop()
