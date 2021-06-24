@@ -11,9 +11,7 @@ from bs4 import BeautifulSoup
 URL = sys.argv[1]
 theDriver = './drivers/geckodriver'
 option = FFOpt()
-#if sys.argv[2] != 'firefox.desktop':
-#    option=COpt()
-#    theDriver = './drivers/chromedriver'
+
 
 option.headless = True
 browser = webdriver.Firefox(options = option, executable_path = theDriver)
@@ -24,6 +22,6 @@ results = soup.find(class_ = 'cartRow_2dS2mdogHYAqhmKoANr6Ol')
 
 if re.search("Add to Cart",str(results)):
     webbrowser.open_new(URL)
-
+    
 browser.close()
 
