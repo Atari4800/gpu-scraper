@@ -16,7 +16,7 @@ option = FFOpt()
   #  theDriver = './drivers/chromedriver'
 
 option.headless = True
-browser = webdriver.Firefox(firefox_options = option, executable_path = theDriver)
+browser = webdriver.Firefox(options = option, executable_path = theDriver)
 browser.get(URL)
 
 soup = BeautifulSoup(browser.page_source, 'html.parser')
@@ -26,4 +26,3 @@ if re.search("Add to Cart", str(results)):
     webbrowser.open_new(URL)
 
 browser.close()
-
