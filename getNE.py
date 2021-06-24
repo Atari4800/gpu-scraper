@@ -13,16 +13,19 @@ option = FFOpt()
 
 
 
+
 option.headless = True
 browser = webdriver.Firefox(options = option, executable_path = theDriver)
+
 browser.get(URL)
 
-with open('neoutput.html','wt',encoding = 'utf-8') as f:
-    f.write(browser.page_source)
+soup = BeautifulSoup(browser.page_source,'html.parser')
 
 results = soup.find(id = 'ProductBuy')
 themessage = results.find_all('button', class_ = 'btn btn-primary btn-wide')
+for themessage in themessage:
+    if 'Add' in themessage.text:
+        webbrowser.open_new(URL)
 
-if re.search("Add", themessage):
-    webbrowser.open_new(URL)
 
+exit()

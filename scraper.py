@@ -11,6 +11,8 @@ with open('defaultBrowser.txt') as fp:
 
 for URL in data['Product']:
     URLstr=str(URL['productLink'])
+    print('running for ' + URLstr)
+
     if re.search("www.bestbuy.com/", URLstr) :
         subprocess.Popen(["python3", "getBB.py", URL['productLink'], browser])
     if re.search("www.newegg.com/", URLstr) :
@@ -18,3 +20,4 @@ for URL in data['Product']:
     if re.search("www.bhphotovideo.com/", URLstr) :
         subprocess.Popen(["python3", "getBH.py", URL['productLink'], browser])
 
+exit()
