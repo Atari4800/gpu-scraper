@@ -1,7 +1,7 @@
-apt-get install python3-pip
-apt-get install tkinter
+sudo apt-get install python3-pip
+sudo apt-get install tkinter
 pip3 install selenium
-apt-get install python3-bs4
+sudo apt-get install python3-bs4
 pip3 install python-crontab
 xdg-settings get default-web-browser > defaultBrowser.txt 
 echo "build complete"

@@ -28,3 +28,4 @@ themessage = results.find_all('button', class_ = 'btn btn-primary btn-wide')
 
 if re.search("Add", themessage):
     webbrowser.open_new(URL)
+
