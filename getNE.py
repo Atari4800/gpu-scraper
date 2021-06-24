@@ -11,9 +11,6 @@ from bs4 import BeautifulSoup
 URL = sys.argv[1]
 theDriver = './drivers/geckodriver'
 option = FFOpt()
-#if sys.argv[2] != 'firefox.desktop':
-#    option=COpt()
-#    theDriver = './drivers/chromedriver'
 
 
 option.headless = True
