@@ -20,9 +20,11 @@ browser = webdriver.Firefox(options = option, executable_path = theDriver)
 browser.get(URL)
 
 soup = BeautifulSoup(browser.page_source, 'html.parser')
+
 results = soup.find(class_ = 'fulfillment-add-to-cart-button')
 
 if re.search("Add to Cart", str(results)):
     webbrowser.open_new(URL)
 
-browser.close()
+
+exit()
