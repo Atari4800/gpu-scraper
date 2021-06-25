@@ -1,6 +1,6 @@
 # GPU Hunter
 ## Overview
-GPU Hunter is a web scraper app built for our class project. Its purpose is to help a user keep track of a store's stock and will notify the user when the wanted item is in stock and available to purchase.
+GPU Hunter is a linux program designed to help a user keep track of a store's stock of GPU products and will notify the user when the wanted item is in stock and available to purchase.
 
 -----
 
@@ -8,16 +8,49 @@ GPU Hunter is a web scraper app built for our class project. Its purpose is to h
 *Linux*:  
 1. Clone this repo with `git clone https://github.com/Atari4800/gpu-scraper.git`  
 2. make sure `build.sh` is executable: if not, run `chmod +x build.sh`   
-2. run `./build.sh`  
+2. run `sudo ./build.sh` (sudo is needed to install dependancies properly) 
 
-*Windows*:  
-Download the .zip, unzip into preferred folder.
-
-*Mac*:  
-Not supported.
+-----------
 
 ## How to use
 *Linux*:
+After building:
+1. Run `python3 scheduler.py`to start an instance of GPU Hunter
+2. Use the command `crontab -l` to check if the cronjob is currently running.
+4. Use the command `crontab -r` to stop the cron job. 
 
-*Windows*:
+---------
+
+## Release Notes
+
+Currently working:
+- Webscraping from Best Buy, B&H, and Newegg
+- Firefox is able to open URL
+- Build script installs dependancies
+- Headless Selenium allows some bot evasion
+- Beautiful Soup is able to parse HTML to find needed elements
+- URL is able to be opened
+
+Currently in Progress:
+- GUI is started
+- GUI can interact with command line
+- GUI can create popup notification
+- Addig more websites to track
+- Adding more evasions
+
+To do: 
+- Make the scheduler use resources more effeciently as it currently is running slow if more than one thing is searched for at a time
+- Increase bot evasion measures
+
+
+**Code Milestone 1:**  
+We feel we have achieved all our goals for this milestone and we have started on future milestone goals along with continuously improving what we have done.
+
+Our goals for Milestone 1 were:
+- Implement Web Scraper Core
+- Identify which Python modules are best suited to aid in task
+- Create basic web scraper
+- Research methods of bot-detection evasion
+- Implement bot-detection evasion features
+- Test web-scraper functionality on known websites.
 
