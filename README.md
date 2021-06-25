@@ -37,7 +37,7 @@ After building:
 - GUI can create popup notification
 - GUI has text field entry
 
-*To Do: *
+*To Do:*
 - Make the program use resources more effeciently as it currently is running slow if more than one thing is searched for at a time
 - Increase bot evasion measures
 - Integrate GUI with backend
