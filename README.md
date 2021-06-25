@@ -1,14 +1,14 @@
 # GPU Hunter
 ## Overview
-GPU Hunter is a linux program designed to help a user keep track of a store's stock of GPU products and will notify the user when the wanted item is in stock and available to purchase.
+GPU Hunter is a Linux app designed to help a user keep track of a store's stock of GPU products and will notify the user when the wanted item is in stock and available to purchase.
 
 -----
 
 ## How to install
 *Linux*:  
 1. Clone this repo with `git clone https://github.com/Atari4800/gpu-scraper.git`  
-2. make sure `build.sh` is executable: if not, run `chmod +x build.sh`   
-2. run `sudo ./build.sh` (sudo is needed to install dependancies properly) 
+2. Make sure `build.sh` is executable: if not, run `chmod +x build.sh`   
+2. Run `sudo ./build.sh` (sudo is needed to install dependancies properly) 
 
 -----------
 
@@ -23,24 +23,25 @@ After building:
 
 ## Release Notes
 
-Currently working:
-- Webscraping from Best Buy, B&H, and Newegg
-- Firefox is able to open URL
+*Currently working:*
+- Best Buy, B&H, and Newegg have been tested and succeed
+- Firefox is able to open URL when product is in stock
 - Build script installs dependancies
 - Headless Selenium allows some bot evasion
 - Beautiful Soup is able to parse HTML to find needed elements
-- URL is able to be opened
+- Crontab allows program to be called every minute to not be constantly running in the background
 
-Currently in Progress:
+*Currently in Progress:*
 - GUI is started
 - GUI can interact with command line
 - GUI can create popup notification
-- Addig more websites to track
-- Adding more evasions
+- GUI has text field entry
 
-To do: 
-- Make the scheduler use resources more effeciently as it currently is running slow if more than one thing is searched for at a time
+*To Do: *
+- Make the program use resources more effeciently as it currently is running slow if more than one thing is searched for at a time
 - Increase bot evasion measures
+- Integrate GUI with backend
+- Research if Windows is a viable platform
 
 
 **Code Milestone 1:**  
@@ -53,4 +54,3 @@ Our goals for Milestone 1 were:
 - Research methods of bot-detection evasion
 - Implement bot-detection evasion features
 - Test web-scraper functionality on known websites.
-
