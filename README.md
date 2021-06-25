@@ -25,10 +25,10 @@ After building:
 
 *Currently working:*
 - Best Buy, B&H, and Newegg have been tested and succeed
-- Firefox is able to open URL when product is in stock
-- Build script installs dependancies
+- Firefox can open URL when product is in stock
+- Build script installs dependencies
 - Headless Selenium allows some bot evasion
-- Beautiful Soup is able to parse HTML to find needed elements
+- Beautiful Soup can parse HTML to find needed elements
 - Crontab allows program to be called every minute to not be constantly running in the background
 
 *Currently in Progress:*
@@ -45,7 +45,7 @@ After building:
 
 
 **Code Milestone 1:**  
-We feel we have achieved all our goals for this milestone and we have started on future milestone goals along with continuously improving what we have done.
+We feel we have achieved all our goals for this milestone, and we have started on future milestone goals along with continuously improving what we have done.
 
 Our goals for Milestone 1 were:
 - Implement Web Scraper Core
