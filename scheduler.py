@@ -6,12 +6,13 @@ class Scheduler:
         self.minute=minutes
         self.cron = CronTab(user=True)
         currdir=str(os.getcwd())
-        com = 'export DISPLAY=:0 && cd ' + currdir + '&& python3 scraper.py'
+        com = 'export DISPLAY=:0 && cd ' + currdir + ' && python3 scraper.py'
         self.job = self.cron.new(command = com)
 #'export DISPLAY=:0 && cd ~/Desktop/gpu-scraper-Harrison-Frame-codeSample/ && ls -l && python3 scraper.py')
  #       self.job = self.cron.new(command = 'echo "Eat" >> diditgo.txt') #This is a test-line for the jobs.
         self.job.minute.every(self.minute)
-        print(self.cron.write())
+        self.cron.write()
+#       os.system('crontab -l')
     def ChangeMinutes(min):
         self.minutes=min
     def check():
