@@ -8,16 +8,22 @@ with open("productList.json", "r") as data_file:
 
 with open('defaultBrowser.txt') as fp:
     browser = fp.readline()
-
+theProcesses=[]
 for URL in data['Product']:
+
     URLstr=str(URL['productLink'])
     print('running for ' + URLstr)
-
     if re.search("www.bestbuy.com/", URLstr) :
-        subprocess.Popen(["python3", "getBB.py", URL['productLink'], browser])
+        theProcesses.append(subprocess.Popen(["python3", "getBB.py", URL['productLink'], browser]))
     if re.search("www.newegg.com/", URLstr) :
-        subprocess.Popen(["python3", "getNE.py", URL['productLink'], browser])
+        theProcesses.append(subprocess.Popen(["python3", "getNE.py", URL['productLink'], browser]))
     if re.search("www.bhphotovideo.com/", URLstr) :
-        subprocess.Popen(["python3", "getBH.py", URL['productLink'], browser])
+        theProcesses.append(subprocess.Popen(["python3", "getBH.py", URL['productLink'], browser]))
+
+    while len(theProcesses) > 3:
+        for p in theProcesses :
+            if p.poll() != None:
+                theProcesses.remove(p)
+
 
 exit()
