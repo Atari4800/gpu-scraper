@@ -40,24 +40,31 @@ def handle_new_query_button(event):
     button_add.pack(side=tk.RIGHT)
     window_new_query.bind("<Return>", handle_return)
     
-    window.mainloop()
+    window_new_query.mainloop()
 
 # Creates a window
-window = tk.Tk()
-window.title("GPU-Scraper")
+def launchGUI():
+    window = tk.Tk()
+    window.title("GPU-Scraper")
 
-frame_queries = tk.Frame(master=window)
-lbl_queries_title = tk.Label(text="Current Queries", master=frame_queries)
-lbl_queries_title.pack()
+    frame_queries = tk.Frame(master=window)
+    lbl_queries_title = tk.Label(text="Current Queries", master=frame_queries)
+    lbl_queries_title.pack()
 
-lbl_no_queries = tk.Label(text="You have no queries.", master=frame_queries)
-lbl_no_queries.pack()
+    lbl_no_queries = tk.Label(text="You have no queries.", master=frame_queries)
+    lbl_no_queries.pack()
 
-frame_queries.pack()
+    frame_queries.pack()
 
-button_add_query = tk.Button(text="Add new query", master=window, padx=3, pady=3, borderwidth=3)
-button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
-button_add_query.bind("<Button-1>", handle_new_query_button)
+    button_add_query = tk.Button(text="Add new query", master=window, padx=3, pady=3, borderwidth=3)
+    button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
+    button_add_query.bind("<Button-1>", handle_new_query_button)
+
+    button_notification = tk.Button(text="Simulate notification", master=window, 
+            command=lambda: notification("RTX 3080", "Best Buy", "$699.99 USD", "Yes"))
+    button_notification.pack(side=tk.TOP, pady=10, padx=10)
+
+    window.mainloop()
 
 def notification(product, source, price, belowMSRP):
     # Makes the beep for a notification, but also prints a newline...
@@ -86,19 +93,6 @@ def notification(product, source, price, belowMSRP):
     #window_notification.after(2000, close)
     
     window_notification.mainloop()
-    
-button_notification = tk.Button(text="Simulate notification", master=window, 
-        command=lambda: notification("RTX 3080", "Best Buy", "$699.99 USD", "Yes"))
-button_notification.pack(side=tk.TOP, pady=10, padx=10)
 
-# The purpose of the test_command is to demonstrate that it is possible to
-# execute shell commands from inside the interface in python.
-def test_command():
-    # The command you want to execute is passed as a string parameter as shown below.
-    os.system('echo "blahblah"')
-
-button_command = tk.Button(text="Test command line", master=window, command=test_command)
-button_command.pack(side=tk.TOP, pady=10, padx=10)
-
-
-window.mainloop()
+if __name__ == "__main__":
+    launchGUI()
