@@ -1,5 +1,6 @@
 import tkinter as tk
 import webbrowser
+import re
 
 # Creates a window
 def launchGUI():
@@ -117,6 +118,23 @@ def notification(product, source, price, belowMSRP):
     #window_notification.after(2000, close)
     
     window_notification.mainloop()
+
+# This function will attempt to shorten a url to produce a shorter string
+def shortenURL(url):
+    result = ""
+    if re.search("www.bestbuy.com/", url):
+        result = "Best Buy"
+    elif re.search("wwww.newegg.com/", url):
+        result = "Newegg"
+    elif re.search("www.bhphotovideo.com/", url):
+        result = "B&H"
+    else:
+        findings = re.search("http(?:s)?\:\/\/(.*\.(?:com|org|gov|net))", url)
+        if findings:
+            result = findings.group(0)
+        else:
+            result = url
+    return result
 
 if __name__ == "__main__":
     launchGUI()
