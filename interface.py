@@ -84,7 +84,7 @@ def notification(product, source, price, belowMSRP):
     lbl_name.grid(row=0, column=1, sticky=tk.W)
     
     lbl_from = tk.Label(text="From:", master=frame)
-    lbl_source = tk.Label(text=source, master=frame)
+    lbl_source = tk.Label(text=shortenURL(source) + " (click here)", master=frame)
     lbl_from.grid(row=1, column=0, sticky=tk.W)
     lbl_source.grid(row=1, column=1, sticky=tk.W)
     lbl_source.bind("<Button-1>", lambda event: webbrowser.open(source))
@@ -99,16 +99,16 @@ def notification(product, source, price, belowMSRP):
     lbl_msrp.grid(row=3, column=0, sticky=tk.W)
     lbl_below.grid(row=3, column=1, sticky=tk.W)
 
-    frame.pack(padx=10, pady=10)
     frame.grid_columnconfigure(0, minsize=100)
+    frame.pack(padx=10, pady=10)
 
     screen_width = window_notification.winfo_screenwidth()
     screen_height = window_notification.winfo_screenheight()
     
-    x = screen_width - 250
+    x = screen_width - 300
     y = screen_height - 200 
 
-    # window_notification.geometry(f"+{x}+{y}")
+    window_notification.geometry(f"+{x}+{y}")
 
     def close():
         window_notification.quit()
