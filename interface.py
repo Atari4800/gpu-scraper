@@ -74,8 +74,33 @@ def notification(product, source, price, belowMSRP):
     window_notification = tk.Tk()
     window_notification.title("Alert")
     
-    lbl_info = tk.Label(text=f"Available: {product}\nFrom: {source}\nPrice: {price}\nBelow MSRP: {belowMSRP}", master=window_notification, justify=tk.LEFT, padx=30, pady=20)
-    lbl_info.pack()    
+    #lbl_info = tk.Label(text=f"Available: {product}\nFrom: {source}\nPrice: {price}\nBelow MSRP: {belowMSRP}", master=window_notification, justify=tk.LEFT, padx=30, pady=20)
+    #lbl_info.pack()    
+    
+    frame = tk.Frame(master=window_notification)
+
+    lbl_available = tk.Label(text="Available:", master=frame)
+    lbl_name = tk.Label(text=product, master=frame)
+    lbl_available.grid(row=0, column=0, sticky=tk.W)
+    lbl_name.grid(row=0, column=1, sticky=tk.W)
+    
+    lbl_from = tk.Label(text="From:", master=frame)
+    lbl_source = tk.Label(text=source, master=frame)
+    lbl_from.grid(row=1, column=0, sticky=tk.W)
+    lbl_source.grid(row=1, column=1, sticky=tk.W)
+
+    lbl_price = tk.Label(text="Price:", master=frame)
+    lbl_price_listed = tk.Label(text=price, master=frame)
+    lbl_price.grid(row=2, column=0, sticky=tk.W)
+    lbl_price_listed.grid(row=2, column=1, sticky=tk.W)
+
+    lbl_msrp = tk.Label(text="Below MSRP:", master=frame)
+    lbl_below = tk.Label(text=belowMSRP, master=frame)
+    lbl_msrp.grid(row=3, column=0, sticky=tk.W)
+    lbl_below.grid(row=3, column=1, sticky=tk.W)
+
+    frame.pack(padx=10, pady=10)
+    frame.grid_columnconfigure(0, minsize=100)  # Here
 
     screen_width = window_notification.winfo_screenwidth()
     screen_height = window_notification.winfo_screenheight()
@@ -83,7 +108,7 @@ def notification(product, source, price, belowMSRP):
     x = screen_width - 250
     y = screen_height - 200 
 
-    window_notification.geometry(f"+{x}+{y}")
+    # window_notification.geometry(f"+{x}+{y}")
 
     def close():
         window_notification.quit()
