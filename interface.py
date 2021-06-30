@@ -51,7 +51,7 @@ def launchGUI():
             handle_new_query_add()
 
         button_add = tk.Button(text="Add", master=window_new_query, command=handle_new_query_add, padx=3, pady=3)
-        utton_add.pack(side=tk.RIGHT)
+        button_add.pack(side=tk.RIGHT)
         window_new_query.bind("<Return>", handle_return)
         
         window_new_query.mainloop()
