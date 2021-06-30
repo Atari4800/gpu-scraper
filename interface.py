@@ -1,4 +1,5 @@
 import tkinter as tk
+import webbrowser
 
 # Creates a window
 def launchGUI():
@@ -50,7 +51,7 @@ def launchGUI():
             handle_new_query_add()
 
         button_add = tk.Button(text="Add", master=window_new_query, command=handle_new_query_add, padx=3, pady=3)
-        button_add.pack(side=tk.RIGHT)
+        utton_add.pack(side=tk.RIGHT)
         window_new_query.bind("<Return>", handle_return)
         
         window_new_query.mainloop()
@@ -61,7 +62,7 @@ def launchGUI():
     button_add_query.bind("<Button-1>", handle_new_query_button)
 
     button_notification = tk.Button(text="Simulate notification", master=window, 
-            command=lambda: notification("RTX 3080", "Best Buy", "$699.99 USD", "Yes"))
+            command=lambda: notification("RTX 3080", "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400", "$849.99 USD", "No"))
     button_notification.pack(side=tk.TOP, pady=10, padx=10)
 
     window.mainloop()
@@ -74,9 +75,6 @@ def notification(product, source, price, belowMSRP):
     window_notification = tk.Tk()
     window_notification.title("Alert")
     
-    #lbl_info = tk.Label(text=f"Available: {product}\nFrom: {source}\nPrice: {price}\nBelow MSRP: {belowMSRP}", master=window_notification, justify=tk.LEFT, padx=30, pady=20)
-    #lbl_info.pack()    
-    
     frame = tk.Frame(master=window_notification)
 
     lbl_available = tk.Label(text="Available:", master=frame)
@@ -88,6 +86,7 @@ def notification(product, source, price, belowMSRP):
     lbl_source = tk.Label(text=source, master=frame)
     lbl_from.grid(row=1, column=0, sticky=tk.W)
     lbl_source.grid(row=1, column=1, sticky=tk.W)
+    lbl_source.bind("<Button-1>", lambda event: webbrowser.open(source))
 
     lbl_price = tk.Label(text="Price:", master=frame)
     lbl_price_listed = tk.Label(text=price, master=frame)
@@ -100,7 +99,7 @@ def notification(product, source, price, belowMSRP):
     lbl_below.grid(row=3, column=1, sticky=tk.W)
 
     frame.pack(padx=10, pady=10)
-    frame.grid_columnconfigure(0, minsize=100)  # Here
+    frame.grid_columnconfigure(0, minsize=100)
 
     screen_width = window_notification.winfo_screenwidth()
     screen_height = window_notification.winfo_screenheight()
