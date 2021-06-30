@@ -23,4 +23,5 @@ if re.search("Add to Cart", str(results)):
     webbrowser.open_new(URL)
 
 
-exit()
+exit(1337)
+
