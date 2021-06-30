@@ -16,7 +16,7 @@ browser = webdriver.Firefox(options = option, executable_path = theDriver)
 browser.get(URL)
 
 soup = BeautifulSoup(browser.page_source,'html.parser')
-
+browser.close()
 results = soup.find(class_ = 'cartRow_2dS2mdogHYAqhmKoANr6Ol')
 
 if re.search("Add to Cart",str(results)):
