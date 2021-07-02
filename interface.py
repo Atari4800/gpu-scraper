@@ -2,6 +2,7 @@ import tkinter as tk
 import webbrowser
 import re
 import json
+import os
 
 # Creates a window
 def launchGUI():
@@ -22,14 +23,23 @@ def launchGUI():
         lbl_no_queries = tk.Label(text="You have no queries.", master=frame_products)
         lbl_no_queries.pack()
     else:
+        lbl_col1 = tk.Label(text="Product", master=frame_products)
+        lbl_col2 = tk.Label(text="Price", master=frame_products)
+        lbl_col1.grid(row=0, column=0)
+        lbl_col2.grid(row=0, column=1)
+
         for i in range(len(data["Product"])):
             product = data["Product"][i]
             lbl_product_name = tk.Label(text=product["productType"], master=frame_products)
-            lbl_product_price = tk.Label(text="${:.2f}".format(product["productPrice"]), master=frame_products)
+            lbl_product_price = tk.Label(text="   ${:.2f}".format(product["productPrice"]), master=frame_products)
             
-            lbl_product_name.grid(row=i, column=0, sticky="w")
-            lbl_product_price.grid(row=i, column=1, sticky="e")
-   
+            #lbl_link = tk.Label(text=shortenURL(product["productLink"]), master=frame_products)
+            #lbl_link.bind("<Button-1>", lambda event: webbrowser.open(data["Product"][i]["productLink"]))
+
+            lbl_product_name.grid(row=i + 1, column=0, sticky="w")
+            lbl_product_price.grid(row=i + 1, column=1, sticky="e")
+            #button_link.grid(row=i + 1, column = 2, sticky="w")
+
     frame_products.pack()
     frame_queries.pack()
 
@@ -59,8 +69,8 @@ def launchGUI():
         # This method is called when the adding query window add button is clicked.
         def handle_new_query_add():
             if entry_url.get() != "" and entry_query_label.get() != "":
-                # Add code here to create a new Query and add it to the Query collection
-                
+                # Add this product to the json file
+                #os.system(f"python3 productAdder.py {entry_query_label.get()} {entry_url.get()}")
                 window_new_query.destroy()
             else:
                 lbl_invalid_input["text"] = "One or more fields blank"
