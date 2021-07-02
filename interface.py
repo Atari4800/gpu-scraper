@@ -1,7 +1,18 @@
+"""
+This file handles the gui component of our application. It is responsible for 
+creating the main gui and related components like popup windows or notifications.
+"""
+
 import tkinter as tk
 
-# Creates a window
 def launchGUI():
+    """
+    Launches the main gui window for our application. It displays information
+    about current queries, shows what the notifications will be like, and
+    creates a dialog window for getting user input which will be linked to adding
+    products.
+    """
+
     window = tk.Tk()
     window.title("GPU-Scraper")
 
@@ -14,8 +25,14 @@ def launchGUI():
 
     frame_queries.pack()
 
-    # This method is called when the user clicks the add new query button on the interface's main page
     def handle_new_query_button(event):        
+        """
+        Creates a separate window to get user input for a new query. It will
+        ask for a url and a product name. If the user presses add and the 
+        input is clearly invalid (i.e. one or both of the fields is blank), 
+        it will display an error message and will not close the window. If
+        the user input is valid, it closes the window.
+        """
         window_new_query = tk.Tk()
         window_new_query.title("Create new Query")
         
@@ -39,6 +56,13 @@ def launchGUI():
         
         # This method is called when the adding query window add button is clicked.
         def handle_new_query_add():
+            """
+            When the add button is pressed in the window to get input for a new
+            query, it will call this method which validates the user input
+            (makes sure that both fields are nonempty). If input is valid, it will
+            close the dialog. If input is invalid, it will display an error message
+            and not close the window.
+            """
             if entry_url.get() != "" and entry_query_label.get() != "":
                 # Add code here to create a new Query and add it to the Query collection
                 
@@ -47,6 +71,11 @@ def launchGUI():
                 lbl_invalid_input["text"] = "One or more fields blank"
         
         def handle_return(event):
+            """
+            This method is called when the user has the window open for a new query
+            and presses the enter or return key. It will attempt to submit the input
+            to the handle_new_query_add function.
+            """
             handle_new_query_add()
 
         button_add = tk.Button(text="Add", master=window_new_query, command=handle_new_query_add, padx=3, pady=3)
@@ -67,6 +96,11 @@ def launchGUI():
     window.mainloop()
 
 def notification(product, source, price, belowMSRP):
+    """
+    Creates a notification window in the bottom right hand side of the user's
+    screen. It will display the given information and does not close
+    automatically.
+    """
     # Makes the beep for a notification, but also prints a newline...
     print("\a")
     
@@ -86,6 +120,13 @@ def notification(product, source, price, belowMSRP):
     window_notification.geometry(f"+{x}+{y}")
 
     def close():
+        """
+        This method is called when the user closes the notification window.
+        It makes sure that everything in the window is properly shut off.
+        The motivation was to address an error that was occuring when the
+        notification automatically closed after a given amount of time, but
+        it no longer closes automatically.
+        """
         window_notification.quit()
         window_notification.destroy()
     
