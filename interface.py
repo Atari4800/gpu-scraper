@@ -11,6 +11,8 @@ def launchGUI():
     about current queries, shows what the notifications will be like, and
     creates a dialog window for getting user input which will be linked to adding
     products.
+
+    :return: returns nothing
     """
 
     window = tk.Tk()
@@ -100,6 +102,20 @@ def notification(product, source, price, belowMSRP):
     Creates a notification window in the bottom right hand side of the user's
     screen. It will display the given information and does not close
     automatically.
+
+    :type product: string
+    :param product: The product available
+    
+    :type source: string
+    :param source: The url of the product
+    
+    :type price: string
+    :param price: The price of the product
+
+    :type belowMSRP: string
+    :param belowMSRP: Whether or not the product is below its MSRP
+    
+    :return: returns nothing
     """
     # Makes the beep for a notification, but also prints a newline...
     print("\a")
