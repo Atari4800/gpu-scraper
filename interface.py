@@ -1,6 +1,7 @@
 import tkinter as tk
 import webbrowser
 import re
+import json
 
 # Creates a window
 def launchGUI():
@@ -8,12 +9,28 @@ def launchGUI():
     window.title("GPU-Scraper")
 
     frame_queries = tk.Frame(master=window)
+    
+    with open("productList.json", "r") as dataFile:
+        data = json.load(dataFile)
+
     lbl_queries_title = tk.Label(text="Current Queries", master=frame_queries)
     lbl_queries_title.pack()
 
-    lbl_no_queries = tk.Label(text="You have no queries.", master=frame_queries)
-    lbl_no_queries.pack()
-
+    frame_products = tk.Frame(master=frame_queries)
+    
+    if len(data["Product"]) == 0:
+        lbl_no_queries = tk.Label(text="You have no queries.", master=frame_products)
+        lbl_no_queries.pack()
+    else:
+        for i in range(len(data["Product"])):
+            product = data["Product"][i]
+            lbl_product_name = tk.Label(text=product["productType"], master=frame_products)
+            lbl_product_price = tk.Label(text="${:.2f}".format(product["productPrice"]), master=frame_products)
+            
+            lbl_product_name.grid(row=i, column=0, sticky="w")
+            lbl_product_price.grid(row=i, column=1, sticky="e")
+   
+    frame_products.pack()
     frame_queries.pack()
 
     # This method is called when the user clicks the add new query button on the interface's main page
