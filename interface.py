@@ -25,20 +25,39 @@ def launchGUI():
     else:
         lbl_col1 = tk.Label(text="Product", master=frame_products)
         lbl_col2 = tk.Label(text="Price", master=frame_products)
+        lbl_col3 = tk.Label(text="Source", master=frame_products) 
         lbl_col1.grid(row=0, column=0)
         lbl_col2.grid(row=0, column=1)
+        lbl_col3.grid(row=0, column=2)
+        
+        class ProductRow:
+            def __init__(self, index, myMaster):
+                self.index = index
+                product = data["Product"][index]
 
+                self.name = tk.Label(text=product["productType"], master=myMaster)
+                self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
+                self.link = tk.Label(text=shortenURL(product["productLink"]), master=myMaster)
+                self.link.bind("<Button-1>", lambda event: print(self.index))
+    
+            def display(self):
+                self.name.grid(row=self.index + 1, column=0, sticky="w")
+                self.price.grid(row=self.index + 1, column=1, sticky="e")
+                self.link.grid(row=self.index + 1, column=2, sticky="w")
+        
         for i in range(len(data["Product"])):
-            product = data["Product"][i]
-            lbl_product_name = tk.Label(text=product["productType"], master=frame_products)
-            lbl_product_price = tk.Label(text="   ${:.2f}".format(product["productPrice"]), master=frame_products)
-            
-            #lbl_link = tk.Label(text=shortenURL(product["productLink"]), master=frame_products)
-            #lbl_link.bind("<Button-1>", lambda event: webbrowser.open(data["Product"][i]["productLink"]))
+            row = ProductRow(i, frame_products)
+            row.display()
 
-            lbl_product_name.grid(row=i + 1, column=0, sticky="w")
-            lbl_product_price.grid(row=i + 1, column=1, sticky="e")
-            #button_link.grid(row=i + 1, column = 2, sticky="w")
+            # lbl_product_name = tk.Label(text=product["productType"], master=frame_products)
+            # lbl_product_price =  tk.Label(text="   ${:.2f}".format(product["productPrice"]), master=frame_products)
+           
+            # lbl_link = tk.Label(text=shortenURL(product["productLink"]), master=frame_products)
+            # lbl_link.bind("<Button-1>", lambda event: webbrowser.open(data["Product"][i]["productLink"]))
+
+            # lbl_product_name.grid(row=i + 1, column=0, sticky="w")
+            # lbl_product_price.grid(row=i + 1, column=1, sticky="e")
+            # lbl_link.grid(row=i + 1, column = 2, sticky="w")
 
     frame_products.pack()
     frame_queries.pack()
