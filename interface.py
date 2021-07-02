@@ -3,6 +3,7 @@ import webbrowser
 import re
 import json
 import os
+import tkinter.font as tkFont
 
 # Creates a window
 def launchGUI():
@@ -38,7 +39,12 @@ def launchGUI():
                 self.name = tk.Label(text=product["productType"], master=myMaster)
                 self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
                 self.link = tk.Label(text=shortenURL(product["productLink"]), master=myMaster)
-                self.link.bind("<Button-1>", lambda event: print(self.index))
+                f = tkFont.Font(self.link, self.link.cget("font"))
+                f.configure(underline = True)
+                self.link.configure(font=f)
+
+
+                self.link.bind("<Button-1>", lambda event: webbrowser.open(product["productLink"]))
     
             def display(self):
                 self.name.grid(row=self.index + 1, column=0, sticky="w")
@@ -48,16 +54,6 @@ def launchGUI():
         for i in range(len(data["Product"])):
             row = ProductRow(i, frame_products)
             row.display()
-
-            # lbl_product_name = tk.Label(text=product["productType"], master=frame_products)
-            # lbl_product_price =  tk.Label(text="   ${:.2f}".format(product["productPrice"]), master=frame_products)
-           
-            # lbl_link = tk.Label(text=shortenURL(product["productLink"]), master=frame_products)
-            # lbl_link.bind("<Button-1>", lambda event: webbrowser.open(data["Product"][i]["productLink"]))
-
-            # lbl_product_name.grid(row=i + 1, column=0, sticky="w")
-            # lbl_product_price.grid(row=i + 1, column=1, sticky="e")
-            # lbl_link.grid(row=i + 1, column = 2, sticky="w")
 
     frame_products.pack()
     frame_queries.pack()
@@ -170,7 +166,7 @@ def shortenURL(url):
     result = ""
     if re.search("www.bestbuy.com/", url):
         result = "Best Buy"
-    elif re.search("wwww.newegg.com/", url):
+    elif re.search("www.newegg.com/", url):
         result = "Newegg"
     elif re.search("www.bhphotovideo.com/", url):
         result = "B&H"
