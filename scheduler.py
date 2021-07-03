@@ -13,7 +13,7 @@ class Scheduler:
             num=num+1
             self.cron.remove(item)
         currdir=str(os.getcwd())
-        com = 'export DISPLAY=:0 && cd ' + currdir + ' && python3 scraper.py'
+        com = 'export DISPLAY=:0 && cd ' + currdir + ' && python3 initiator.py'
         self.job = self.cron.new(command = com)
         self.job.set_comment('Search for GPU task')
         print('CRON-JOB INITIATED FOR '+minutes+ ' MINUTES')
