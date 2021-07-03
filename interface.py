@@ -152,14 +152,45 @@ def notification(product, source, price, belowMSRP):
 
     window_notification.geometry(f"+{x}+{y}")
 
+    #window_notification.after(2000, close)
     def close():
         window_notification.quit()
         window_notification.destroy()
     
     window_notification.protocol("WM_DELETE_WINDOW", close)
-    #window_notification.after(2000, close)
     
     window_notification.mainloop()
+
+def confirmationDialog(message, command, title="Please confirm"):
+    confirmation = tk.Tk()
+    confirmation.title(title)
+    confirmation.resizable(width=False, height=False)
+
+    components = tk.Frame(master=confirmation) 
+    lbl_message = tk.Label(text=message, master=components)
+    lbl_message.pack(pady=5)
+
+    def close():
+        confirmation.quit()
+        confirmation.destroy()
+
+    def success():
+        command()
+        close()
+    
+    frame_buttons = tk.Frame(master=components)
+    button_yes = tk.Button(text="Yes", master=frame_buttons, command=success)
+    button_no = tk.Button(text="No", master=frame_buttons, command=close)
+    button_yes.grid(row=0, column=0)
+    button_no.grid(row=0, column=1)
+    for i in range(2):
+        frame_buttons.columnconfigure(i, minsize=75)
+    frame_buttons.pack(pady=5)
+
+    components.pack(padx=10, pady=5)
+
+    confirmation.mainloop()
+
 
 # This function will attempt to shorten a url to produce a shorter string
 def shortenURL(url):
@@ -177,6 +208,7 @@ def shortenURL(url):
         else:
             result = url
     return result
+
 
 if __name__ == "__main__":
     launchGUI()
