@@ -16,14 +16,6 @@ def launchGUI():
     lbl_queries_title = tk.Label(text="Current Queries", master=window)
     lbl_queries_title.pack()
 
-    #frame_query_titles = tk.Frame(master=window) 
-    #lbl_col1 = tk.Label(text="Product", master=frame_query_titles)
-    #lbl_col2 = tk.Label(text="Price", master=frame_query_titles)
-    #lbl_col3 = tk.Label(text="Source", master=frame_query_titles) 
-    #lbl_col1.grid(row=0, column=0)
-    #lbl_col2.grid(row=0, column=1)
-    #lbl_col3.grid(row=0, column=2)
-    
     class ProductRow:
         def __init__(self, myMaster, index):
             self.index = index
@@ -45,7 +37,7 @@ def launchGUI():
     frame_wrapper = tk.Frame(master=window)
     frame_wrapper.pack()
 
-    canvas_queries = tk.Canvas(master=frame_wrapper, height=200)
+    canvas_queries = tk.Canvas(master=frame_wrapper, height=100)
     frame_product_rows = tk.Frame(master=canvas_queries)
     scrollbar = tk.Scrollbar(master=frame_wrapper)
 
@@ -59,6 +51,13 @@ def launchGUI():
         canvas_queries.update_idletasks()
         canvas_queries.config(scrollregion=frame_product_rows.bbox())
 
+    lbl_col1 = tk.Label(text="Product", master=frame_product_rows)
+    lbl_col2 = tk.Label(text="Price", master=frame_product_rows)
+    lbl_col3 = tk.Label(text="Source", master=frame_product_rows) 
+    lbl_col1.grid(row=0, column=0)
+    lbl_col2.grid(row=0, column=1)
+    lbl_col3.grid(row=0, column=2)
+    
     for i in range(len(data["Product"])):
         row = ProductRow(frame_product_rows, i)
 
@@ -110,9 +109,9 @@ def launchGUI():
     button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
     button_add_query.bind("<Button-1>", handle_new_query_button)
 
-    button_notification = tk.Button(text="Simulate notification", master=window, 
-            command=lambda: notification("RTX 3080", "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400", "$849.99 USD", "No"))
-    button_notification.pack(side=tk.TOP, pady=10, padx=10)
+    #button_notification = tk.Button(text="Simulate notification", master=window, 
+    #        command=lambda: notification("RTX 3080", "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400", "$849.99 USD", "No"))
+    #button_notification.pack(side=tk.TOP, pady=10, padx=10)
 
     window.mainloop()
 
