@@ -9,54 +9,60 @@ import tkinter.font as tkFont
 def launchGUI():
     window = tk.Tk()
     window.title("GPU-Scraper")
-
-    frame_queries = tk.Frame(master=window)
     
     with open("productList.json", "r") as dataFile:
         data = json.load(dataFile)
 
-    lbl_queries_title = tk.Label(text="Current Queries", master=frame_queries)
+    lbl_queries_title = tk.Label(text="Current Queries", master=window)
     lbl_queries_title.pack()
 
-    frame_products = tk.Frame(master=frame_queries)
+    #frame_query_titles = tk.Frame(master=window) 
+    #lbl_col1 = tk.Label(text="Product", master=frame_query_titles)
+    #lbl_col2 = tk.Label(text="Price", master=frame_query_titles)
+    #lbl_col3 = tk.Label(text="Source", master=frame_query_titles) 
+    #lbl_col1.grid(row=0, column=0)
+    #lbl_col2.grid(row=0, column=1)
+    #lbl_col3.grid(row=0, column=2)
     
-    if len(data["Product"]) == 0:
-        lbl_no_queries = tk.Label(text="You have no queries.", master=frame_products)
-        lbl_no_queries.pack()
-    else:
-        lbl_col1 = tk.Label(text="Product", master=frame_products)
-        lbl_col2 = tk.Label(text="Price", master=frame_products)
-        lbl_col3 = tk.Label(text="Source", master=frame_products) 
-        lbl_col1.grid(row=0, column=0)
-        lbl_col2.grid(row=0, column=1)
-        lbl_col3.grid(row=0, column=2)
-        
-        class ProductRow:
-            def __init__(self, index, myMaster):
-                self.index = index
-                product = data["Product"][index]
+    class ProductRow:
+        def __init__(self, myMaster, index):
+            self.index = index
+            product = data["Product"][index]
 
-                self.name = tk.Label(text=product["productType"], master=myMaster)
-                self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
-                self.link = tk.Label(text=shortenURL(product["productLink"]), master=myMaster)
-                f = tkFont.Font(self.link, self.link.cget("font"))
-                f.configure(underline = True)
-                self.link.configure(font=f)
+            self.name = tk.Label(text=product["productType"], master=myMaster)
+            self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
+            self.link = tk.Label(text=shortenURL(product["productLink"]), master=myMaster)
+            f = tkFont.Font(self.link, self.link.cget("font"))
+            f.configure(underline = True)
+            self.link.configure(font=f)
 
+            self.link.bind("<Button-1>", lambda event: webbrowser.open(product["productLink"]))
 
-                self.link.bind("<Button-1>", lambda event: webbrowser.open(product["productLink"]))
-    
-            def display(self):
-                self.name.grid(row=self.index + 1, column=0, sticky="w")
-                self.price.grid(row=self.index + 1, column=1, sticky="e")
-                self.link.grid(row=self.index + 1, column=2, sticky="w")
-        
-        for i in range(len(data["Product"])):
-            row = ProductRow(i, frame_products)
-            row.display()
+            self.name.grid(row=self.index + 1, column=0, sticky="w")
+            self.price.grid(row=self.index + 1, column=1, sticky="e")
+            self.link.grid(row=self.index + 1, column=2, sticky="w")
 
-    frame_products.pack()
-    frame_queries.pack()
+    frame_wrapper = tk.Frame(master=window)
+    frame_wrapper.pack()
+
+    canvas_queries = tk.Canvas(master=frame_wrapper, height=200)
+    frame_product_rows = tk.Frame(master=canvas_queries)
+    scrollbar = tk.Scrollbar(master=frame_wrapper)
+
+    canvas_queries.config(yscrollcommand=scrollbar.set, highlightthickness=0)
+    scrollbar.config(orient=tk.VERTICAL, command=canvas_queries.yview)
+    scrollbar.pack(fill=tk.Y, side=tk.RIGHT, expand=tk.FALSE)
+    canvas_queries.pack(fill=tk.BOTH, side=tk.LEFT, expand=tk.TRUE)
+    canvas_queries.create_window(0, 0, window=frame_product_rows, anchor=tk.NW)
+
+    def updateScrollRegion():
+        canvas_queries.update_idletasks()
+        canvas_queries.config(scrollregion=frame_product_rows.bbox())
+
+    for i in range(len(data["Product"])):
+        row = ProductRow(frame_product_rows, i)
+
+    updateScrollRegion() 
 
     # This method is called when the user clicks the add new query button on the interface's main page
     def handle_new_query_button(event):        
