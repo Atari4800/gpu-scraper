@@ -264,9 +264,9 @@ def shortenURL(url):
     elif re.search("www.bhphotovideo.com/", url):
         result = "B&H"
     else:
-        findings = re.search("http(?:s)?\:\/\/(.*\.(?:com|org|gov|net))", url)
+        findings = re.search("http(?:s)?\:\/\/(.*\.(?:com|org|gov|net|edu))", url)
         if findings:
-            result = findings.group(0)
+            result = findings.group(1)
         else:
             result = url
     return result
