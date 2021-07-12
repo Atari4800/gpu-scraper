@@ -22,7 +22,7 @@ class itemBase:
         it adds corresponding price, and URL information to the productList.
         :param URL: The URL of the item that needs to be monitored (B&H, Newegg, and Bestbuy links only)
         :param json_file: The productList that the URL's JSON entry will be placed in.
-        :return: -5 if there is a duplicate link found within the JSON file. 
+        :return: -5 if there is a duplicate link found within the JSON file.
         :return: -4 if the URL entered is not supported.
         :return: -3 if the URL's domain cannot be reached.
         :return: -2 if there is a problem opening the JSON file or Reading from it.
@@ -42,7 +42,7 @@ class itemBase:
             for URLStr in data['Product']:
                 if str(URLStr['productLink']) == URL :
                     print("Duplicate URL, cannot add.")
-                    return -5 
+                    return -5
         print("Adding URL...")
 
         theDriver = './drivers/geckodriver'
@@ -72,7 +72,7 @@ class itemBase:
             priceStr=str(results)
             price=float(priceStr[priceStr.index('aria-hidden="true">') + len('aria-hidden="true">') +1:priceStr.index('</span><span class')].replace(',',''))
             print('The price is ' + str(price))
-            
+
         elif re.search("www.newegg.com/",URL) :
             results = soup.find(class_ = 'product-title')
             if results == None:
@@ -94,7 +94,7 @@ class itemBase:
                 print(str(price))
             else:
                 price=float(priceStr.split('$')[1].replace(',',''))
-                
+
         elif re.search("www.bhphotovideo.com",URL) :
             results = soup.find(class_ = 'title_1S1JLm7P93Ohi6H_hq7wWh')
             if results == None:
@@ -130,7 +130,7 @@ class itemBase:
         :return: 0 if an error occurred when writing the JSON
         :return: 1 if the JSON was added successfully.
         """
-        try: 
+        try:
             with open(json_file, "r") as dataFile:
                 data = json.load(dataFile)
             jsonObj = {'productType':title,'productLink':URL,'productPrice':price}
@@ -157,7 +157,7 @@ class itemBase:
         try:
             with open(json_file, 'r') as json_file:
                 data = json.load(json_file)
-    
+
             index = 0
             found = 0
             for url_str in data['Product']:
@@ -165,29 +165,33 @@ class itemBase:
                     found = 1
                     break
                 index += 1
-    
+
             if found == 0:
                 return print('No item found at this URL')
-    
+
             item = data['Product'].pop(index)
-    
+
             dataFile = open(json_file, 'w+')
             dataFile.seek(0)
-    
+
             json.dump(data, dataFile, indent=4)
             dataFile.truncate()
             dataFile.close()
-    
+
             return 1
         except:
             print("An error has occured when attempting to delete from the JSON file.")
             return 0
 
-type = sys.argv[1]
-URL = sys.argv[2]
-json_file = sys.argv[3]
-json_file = 'productList.json'
-if type == 1:
-    itemBase().addItem(URL, json_file)
-elif type == 2:
-    itemBase.delItem(URL, json_file)
+if __name__ == '__main__':
+    if len(sys.argv) == 3 :
+        type = sys.argv[1]
+        URL = sys.argv[2]
+        json_file = sys.argv[3]
+        json_file = 'productList.json'
+        if type == 1:
+            itemBase().addItem(URL, json_file)
+        elif type == 2:
+            itemBase.delItem(URL, json_file)
+    else :
+        print("Syntax is incorrect, please run again with this format:\npython3 itemBase.py <1/2> <URL> <JSON FILE NAME>\n 1 - for additions\n 2 - for deletions")
