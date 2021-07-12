@@ -1,0 +1,45 @@
+{
+    "Product":
+    [
+        {
+            "productType": "3080",
+            "productLink": "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400",
+            "productPrice":849.99
+        },
+        {
+            "productType": "3090",
+            "productLink": "https://www.bestbuy.com/site/nvidia-geforce-rtx-3090-24gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429434.p?skuId=6429434",
+            "productPrice":1499.99
+         },
+         {
+            "productType":"3080TI",
+            "productLink":"https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-ti-12gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6462956.p?skuId=6462956",
+            "productPrice":1199.99
+        },
+        {
+            "productType":"watch",
+            "productLink":"https://www.bestbuy.com/site/apple-watch-series-6-gps-44mm-space-gray-aluminum-case-with-black-sport-band-space-gray/6215931.p?skuId=6215931",
+            "productPrice":120
+        },
+        {
+            "productType":"3080",
+            "productLink":"https://www.newegg.com/zotac-zt-a30810d-10p/p/N82E16814500514?quicklink=true",
+            "productPrice":1499.99
+        },
+        {
+            "productType":"gloves",
+            "productLink":"https://www.newegg.com/p/0F7-00U2-00008",
+            "productPrice":30.14
+        },
+        {
+            "productType":"3080",
+            "productLink":"https://www.bhphotovideo.com/c/product/1614301-REG/asus_rog_strix_rtx3080_o10g_white_rog_strix_geforce_rtx.html",
+            "productPrice":1159.99
+        },
+        {
+            "productType":"yoke",
+            "productLink":"https://www.bhphotovideo.com/c/product/1566879-REG/arri_l2_0034025_orbiter_manual_yoke_with.html",
+            "productPrice":266.00
+        }
+    ]
+}

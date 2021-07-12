@@ -8,8 +8,8 @@ from bs4 import BeautifulSoup
 
 
 class itemBase:
-    def addItem(self, URL):
-        with open("productList.json", "r") as dataFile:
+    def addItem(self, URL, json_file):
+        with open(json_file, "r") as dataFile:
             data = json.load(dataFile)
 
         for URLStr in data['Product'] :
@@ -71,8 +71,8 @@ class itemBase:
 
 
 
-    def addJSON(self, title, URL, price):
-        with open("productList.json", "r") as dataFile:
+    def addJSON(self, title, URL, price, json_file):
+        with open(json_file, "r") as dataFile:
             data = json.load(dataFile)
         jsonObj = {'productType':title,'productLink':URL,'productPrice':price}
         data['Product'].append(jsonObj)
@@ -83,6 +83,34 @@ class itemBase:
         dataFile.truncate()
         dataFile.close()
 
-type = sys.argv[1]
-URL = sys.argv[2]
-itemBase().addItem(URL)
+    def delItem(self, url, json_file):
+        with open(json_file, 'r') as json_file:
+            data = json.load(json_file)
+
+        index = 0
+        found = 0
+        for url_str in data['Product']:
+            if str(url_str['productLink']) == url:
+                found = 1
+                break
+            index += 1
+
+        if found == 0:
+            return print('No item found at this URL')
+
+        item = data['Product'].pop(index)
+
+        dataFile = open(json_file, 'w+')
+        dataFile.seek(0)
+
+        json.dump(data, dataFile, indent=4)
+        dataFile.truncate()
+        dataFile.close()
+
+        return item
+
+#type = sys.argv[1]
+URL = sys.argv[1]
+json_file = sys.argv[2]
+#json_file = 'productList.json'
+itemBase().addItem(URL, json_file)

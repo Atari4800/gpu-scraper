@@ -11,6 +11,7 @@ class initiator:
         self.defaultBrowser=''
         self.data = None
         print(self.prodLink)
+
     def setDefaultBrowser(self):
         with open('defaultBrowser.txt') as fp:
             self.defaultBrowser = fp.readline()
