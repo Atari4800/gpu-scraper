@@ -117,6 +117,7 @@ class initiator:
         return numCrawled
 
 
-gotime = initiator(theProducts="productList.json")
-print(gotime.initiate())
-exit()
+if __name__ == '__main__':
+    gotime = initiator(theProducts="productList.json")
+    print(gotime.initiate())
+    exit()
