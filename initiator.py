@@ -7,23 +7,25 @@ import subprocess
 import re
 import json
 import platform
-import interface
+#import interface
 
 
-class initiator:
+class Initiator:
     """
     This class handles the instantiation of a productList and has the ability to test sites and products
     """
     def __init__(self, theProducts):
         """""
         Instantiates a class of type 'initiator'
-        :param theProducts: is the filename of where the properly formatted JSON file containing URL information is located
+        :param theProducts: is the filename of where the properly formatted JSON file containing URL information is 
+        located
         """""
         self.prodLink = theProducts
         defaultBrowser = ''
         self.setDefaultBrowser()
         self.data = None
         print(self.prodLink)
+        self.maxProcesses = 2
 
     def setDefaultBrowser(self):
         """
@@ -32,7 +34,7 @@ class initiator:
         """
         try:
             with open('defaultBrowser.txt') as fp:
-                self.defaultBrowser = fp.readline()
+                self.defaultBrowser = fp.readline().strip('\n')
         except:
             print("The 'defaultBrowser.txt' file could not be found")
 
@@ -80,8 +82,10 @@ class initiator:
         theProcesses=[]
         theData = []
         numCrawled = 0
+        prodcnt = 0
+        sizeofdata = int(len(self.data['Product']))
+        print(len(self.data['Product']))
         for URL in self.data['Product']:
-
             URLstr=str(URL['productLink'])
             print('running for ' + URLstr)
             if re.search("www.bestbuy.com/", URLstr) and self.pollSite("www.bestbuy.com"):
@@ -94,30 +98,27 @@ class initiator:
             if re.search("www.bhphotovideo.com/", URLstr) and self.pollSite("www.newegg.com"):
                 theProcesses.append(subprocess.Popen(["python3", "scraper.py", URL['productLink'], 'BH', self.defaultBrowser]))
                 theData.append([URL['productType'], URLstr, URL['productPrice'], False])
-
-            while len(theProcesses) > 2:
-                count = 0 
-                for p in theProcesses :
-                    if p.poll() == 0:
-                        theData.pop(count)
-                        theProcesses.pop(count)
-                        numCrawled = numCrawled + 1
-                    elif p.poll() == 1:
-                        theProcesses.pop(count)
-                        interface.notification(theData[count][0],theData[count][1],theData[count][2],theData[count][3])
-                        theData.pop(count)
-                        print('Interface call!!!!!')
-                        numCrawled = numCrawled + 1
-                    elif p.poll() == 2:
-                        theProcesses.pop(count)
-                        theData.pop(count)
-                        print('Network Error')
-                        numCrawled = numCrawled + 1
-                    count = count + 1
+            prodcnt = prodcnt + 1
+            if len(theProcesses) > self.maxProcesses or prodcnt >= sizeofdata-self.maxProcesses:
+                while len(theProcesses) != 0:
+                    count = 0
+                    for p in theProcesses :
+                        if p.poll() == 0:
+                            theData.pop(count)
+                            theProcesses.pop(count)
+                            numCrawled = numCrawled + 1
+                        elif p.poll() == 1:
+                            theProcesses.pop(count)
+                            #interface.notification(theData[count][0],theData[count][1],theData[count][2],theData[count][3])
+                            theData.pop(count)
+                            print('Interface call!!!!!')
+                            numCrawled = numCrawled + 1
+                        count = count + 1
         return numCrawled
 
 
 if __name__ == '__main__':
-    gotime = initiator(theProducts="productList.json")
-    print(gotime.initiate())
+    gotime = Initiator(theProducts="productList.json")
+    print(gotime.pollSite("8.8.8.8"))
+    #print(gotime.initiate())
     exit()
