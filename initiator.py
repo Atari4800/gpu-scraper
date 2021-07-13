@@ -10,7 +10,7 @@ import platform
 #import interface
 
 
-class Initiator:
+class initiator:
     """
     This class handles the instantiation of a productList and has the ability to test sites and products
     """
