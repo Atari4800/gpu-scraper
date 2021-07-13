@@ -23,7 +23,8 @@ class Scheduler:
         self.minutes=min
 
 
-cron = CronTab(user = True)
+if __name__ == "__main__":
+    cron = CronTab(user = True)
 
-sc = Scheduler(sys.argv[1])
-exit()
+    sc = Scheduler(sys.argv[1])
+    exit()

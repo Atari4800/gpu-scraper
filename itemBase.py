@@ -20,6 +20,7 @@ class itemBase:
         """
         Adds an item to the designated product list as a JSON entry. First it checks a URL for product information, then
         it adds corresponding price, and URL information to the productList.
+        
         :param URL: The URL of the item that needs to be monitored (B&H, Newegg, and Bestbuy links only)
         :param json_file: The productList that the URL's JSON entry will be placed in.
         :return: -5 if there is a duplicate link found within the JSON file.

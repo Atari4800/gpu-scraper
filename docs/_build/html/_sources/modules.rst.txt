@@ -4,10 +4,13 @@ gpu-scraper
 .. toctree::
    :maxdepth: 4
 
-   getBB
-   getBH
-   getNE
+   initiator
    interface
-   productAdder
+   itemBase
    scheduler
    scraper
+   test_initiator
+   test_interface
+   test_itemBase
+   test_scheduler
+   test_scraper

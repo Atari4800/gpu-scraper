@@ -87,16 +87,17 @@ class scraper :
                     return 1
         return 0
 
-URL = sys.argv[1]
-uType = sys.argv[2]
-sc = scraper(URL, uType)
-if __name__ == '__main__':
-    if uType == 'BB':
-        exit( sc.getBB())
-    elif uType == 'NE':
-        exit(sc.getNE())
-    elif uType == 'BH':
-        exit(sc.getBH())
-    else:
-        print("Invalid type")
-        exit(0)
+if __name__ == "__main__":
+    URL = sys.argv[1]
+    uType = sys.argv[2]
+    sc = scraper(URL, uType)
+    if __name__ == '__main__':
+        if uType == 'BB':
+            exit( sc.getBB())
+        elif uType == 'NE':
+            exit(sc.getNE())
+        elif uType == 'BH':
+            exit(sc.getBH())
+        else:
+            print("Invalid type")
+            exit(0)
