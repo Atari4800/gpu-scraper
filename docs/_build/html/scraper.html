@@ -39,28 +39,68 @@
 <em class="property">class </em><code class="descclassname">scraper.</code><code class="descname">scraper</code><span class="sig-paren">(</span><em>URL</em>, <em>uType</em><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class handles web scraping operations.</p>
+<p>Instantiates a web scraper and pulls initial page source information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>URL</strong> (<em>string</em>) – The URL of a link that will be scraped to find product information</li>
+<li><strong>uType</strong> (<em>string</em>) – The type of link that a URL is
+BB - Bestbuy
+NE - Newegg
+BH - B&amp;H</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="scraper.scraper.getBB">
 <code class="descname">getBB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getBB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with BestBuy
-:return: 0 if the product is not found available for purchase.
-:return: 1 if the product is found and available for purchase.</p>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with BestBuy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0 if the product is not found available for purchase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if the product is found and available for purchase.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="scraper.scraper.getBH">
 <code class="descname">getBH</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getBH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with B&amp;H
-:return: 0 if the product is not found available for purchase.
-:return: 1 if the product is found and available for purchase.</p>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with B&amp;H</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0 if the product is not found available for purchase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if the product is found and available for purchase.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="scraper.scraper.getNE">
 <code class="descname">getNE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getNE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with Newegg
-:return: 0 if the product is not found available for purchase.
-:return: 1 if the product is found and available for purchase.</p>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with Newegg</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0 if the product is not found available for purchase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if the product is found and available for purchase.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

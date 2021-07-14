@@ -69,6 +69,17 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
 
+autoclass_content = 'both'
+
+# Alternate method to display __init__ documentation:
+
+# def skip(app, what, name, obj, would_skip, options):
+#     if name == "__init__":
+#         return False
+#     return would_skip
+# 
+# def setup(app):
+#     app.connect("autodoc-skip-member", skip)
 
 # -- Options for HTML output -------------------------------------------------
 
