@@ -1,5 +1,5 @@
 """
-This module priarily contains the Scheduler class, responsible for creating cronjobs. If it is run as a script, then it will create a cronjob to run scraper.py regularly. The script would need an integer command line argument to indicate how frequently scraper.py should be run.
+This module priarily contains the Scheduler class, responsible for creating cronjobs. If it is run as a script, then it will create a cronjob to run initiator.py regularly. The script would need an integer command line argument to indicate how frequently initiator.py should be run.
 """
 
 import os, sys
@@ -7,7 +7,7 @@ from crontab import CronTab
 
 class Scheduler:
     """
-    Creates a cronjob to run scheduler.py regularly, which would check all query sites for availability.
+    Creates a cronjob to run initiator.py regularly, which would check all query sites for availability.
     """
     def __init__(self,minutes):
         """
@@ -31,7 +31,7 @@ class Scheduler:
         self.cron.write()
     def ChangeMinutes(min):
         """
-        Changes the value of minutes. The thought is that it could change the frequency that scraper.py is run, but calling this method does not currently change the frequency of the existing cron job.
+        Changes the value of minutes. The thought is that it could change the frequency that initiator.py is run, but calling this method does not currently change the frequency of the existing cron job.
 
         :type min: integer
         :param min: The number of minutes the cron job will wait before calling scraper.py again.
