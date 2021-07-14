@@ -33,7 +33,8 @@
             
   <div class="section" id="module-scraper">
 <span id="scraper-module"></span><h1>scraper module<a class="headerlink" href="#module-scraper" title="Permalink to this headline">¶</a></h1>
-<p>This script runs a web scraper and searches for specific parameters within a webpage.</p>
+<p>This script runs a web scraper and searches for specific parameters within a 
+webpage.</p>
 <dl class="class">
 <dt id="scraper.scraper">
 <em class="property">class </em><code class="descclassname">scraper.</code><code class="descname">scraper</code><span class="sig-paren">(</span><em>URL</em>, <em>uType</em><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper" title="Permalink to this definition">¶</a></dt>
@@ -44,21 +45,27 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>URL</strong> (<em>string</em>) – The URL of a link that will be scraped to find product information</li>
-<li><strong>uType</strong> (<em>string</em>) – The type of link that a URL is
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>URL</strong> (<em>string</em>) – The URL of a link that will be scraped to find product</td>
+</tr>
+</tbody>
+</table>
+<p>information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uType</strong> (<em>string</em>) – The type of link that a URL is
 BB - Bestbuy
 NE - Newegg
-BH - B&amp;H</li>
-</ul>
-</td>
+BH - B&amp;H</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="scraper.scraper.getBB">
 <code class="descname">getBB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getBB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with BestBuy</p>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper 
+contains a product available for purchase with BestBuy</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -74,7 +81,8 @@ BH - B&amp;H</li>
 <dl class="method">
 <dt id="scraper.scraper.getBH">
 <code class="descname">getBH</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getBH" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with B&amp;H</p>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper 
+contains a product available for purchase with B&amp;H</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -90,7 +98,8 @@ BH - B&amp;H</li>
 <dl class="method">
 <dt id="scraper.scraper.getNE">
 <code class="descname">getNE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getNE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with Newegg</p>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper
+contains a product available for purchase with Newegg</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

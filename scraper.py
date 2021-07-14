@@ -1,5 +1,6 @@
 """
-This script runs a web scraper and searches for specific parameters within a webpage.
+This script runs a web scraper and searches for specific parameters within a 
+webpage.
 """
 import os
 
@@ -22,7 +23,8 @@ class scraper:
         Instantiates a web scraper and pulls initial page source information.
         
         :type URL: string
-        :param URL: The URL of a link that will be scraped to find product information
+        :param URL: The URL of a link that will be scraped to find product 
+        information
         
         :type uType: string
         :param uType: The type of link that a URL is
@@ -51,7 +53,8 @@ class scraper:
 
     def getBB(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with BestBuy
+        Searches for whether or not the HTML source grabbed by the scraper 
+        contains a product available for purchase with BestBuy
 
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.
@@ -65,7 +68,8 @@ class scraper:
 
     def getBH(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with B&H
+        Searches for whether or not the HTML source grabbed by the scraper 
+        contains a product available for purchase with B&H
         
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.
@@ -79,7 +83,8 @@ class scraper:
 
     def getNE(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with Newegg
+        Searches for whether or not the HTML source grabbed by the scraper
+        contains a product available for purchase with Newegg
         
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.

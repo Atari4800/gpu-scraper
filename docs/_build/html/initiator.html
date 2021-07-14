@@ -33,39 +33,63 @@
             
   <div class="section" id="module-initiator">
 <span id="initiator-module"></span><h1>initiator module<a class="headerlink" href="#module-initiator" title="Permalink to this headline">¶</a></h1>
-<p>This file handles the ‘main’ for the backend of the gpu-scraper application.
-It is able to ping hosts, and controls how a productList is searched through for content.</p>
+<p>This file handles the ‘main’ for the backend of the gpu-scraper application. It is able to ping hosts, and controls how a productList is searched through for content.</p>
 <dl class="class">
 <dt id="initiator.initiator">
 <em class="property">class </em><code class="descclassname">initiator.</code><code class="descname">initiator</code><span class="sig-paren">(</span><em>theProducts</em><span class="sig-paren">)</span><a class="headerlink" href="#initiator.initiator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class handles the instantiation of a productList and has the ability to test sites and products</p>
-<p>“”
-Instantiates a class of type ‘initiator’
-:param theProducts: is the filename of where the properly formatted JSON file containing URL information is 
-located</p>
+<p>Instantiates a class of type ‘initiator’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>theProducts</strong> (<em>string</em>) – is the filename of where the properly formatted JSON file containing URL information is located</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="initiator.initiator.initiate">
 <code class="descname">initiate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#initiator.initiator.initiate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Begins the backend portion of the program, loads the JSON file and reads for the URLs therein.
-If the URL contains one of the supported link websites, then it calls the appropriate subprocess to attempt to
-find product in the URL
-:return: The number of websites that were crawled.</p>
+<dd><p>Begins the backend portion of the program, loads the JSON file and reads for the URLs therein. If the URL contains one of the supported link websites, then it calls the appropriate subprocess to attempt to find product in the URL</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of websites that were crawled.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="initiator.initiator.pollSite">
 <code class="descname">pollSite</code><span class="sig-paren">(</span><em>baseURL</em><span class="sig-paren">)</span><a class="headerlink" href="#initiator.initiator.pollSite" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pings a website to see if the website is ‘up’
-:param baseURL: The website to be pinged
-:return: The number of successful pings to the target website</p>
+<dd><p>Pings a website to see if the website is ‘up’</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>baseURL</strong> (<em>string</em>) – The website to be pinged</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The number of successful pings to the target website</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="initiator.initiator.setDefaultBrowser">
 <code class="descname">setDefaultBrowser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#initiator.initiator.setDefaultBrowser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ensures that the default browser is set.
-:return: The first line in the file that is opened (which is the default browser)</p>
+<dd><p>Ensures that the default browser is set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The first line in the file that is opened (which is the default browser)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

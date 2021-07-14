@@ -49,8 +49,8 @@ it adds corresponding price, and URL information to the productList.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>URL</strong> – The URL of the item that needs to be monitored (B&amp;H, Newegg, and Bestbuy links only)</li>
-<li><strong>json_file</strong> – The productList that the URL’s JSON entry will be placed in.</li>
+<li><strong>URL</strong> (<em>string</em>) – The URL of the item that needs to be monitored (B&amp;H, Newegg, and Bestbuy links only)</li>
+<li><strong>json_file</strong> (<em>string</em>) – The productList that the URL’s JSON entry will be placed in.</li>
 </ul>
 </td>
 </tr>
@@ -82,23 +82,51 @@ it adds corresponding price, and URL information to the productList.</p>
 <dl class="method">
 <dt id="itemBase.itemBase.addJSON">
 <code class="descname">addJSON</code><span class="sig-paren">(</span><em>title</em>, <em>URL</em>, <em>price</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#itemBase.itemBase.addJSON" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds JSON to a designated JSON file
-:param title: The title of the item to be added to the JSON
-:param URL: The URL of the item to be added to the JSON
-:param price: The price of the item to be added to the JSON
-:param json_file: The JSON file to add the product to
-:return: 0 if an error occurred when writing the JSON
-:return: 1 if the JSON was added successfully.</p>
+<dd><p>Adds JSON to a designated JSON file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>title</strong> (<em>string</em>) – The title of the item to be added to the JSON</li>
+<li><strong>URL</strong> (<em>string</em>) – The URL of the item to be added to the JSON</li>
+<li><strong>price</strong> (<em>string</em>) – The price of the item to be added to the JSON</li>
+<li><strong>json_file</strong> (<em>string</em>) – The JSON file to add the product to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if an error occurred when writing the JSON</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the JSON was added successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="itemBase.itemBase.delItem">
 <code class="descname">delItem</code><span class="sig-paren">(</span><em>url</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#itemBase.itemBase.delItem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes a specified JSON entry from a specified json_file by URL
-:param url: The URL of the item to be deleted.
-:param json_file: The file to delete the JSON entry from.
-:return: 0 if an error occurred when trying to delete the entry.
-:return: 1 if the item was deleted successfully.</p>
+<dd><p>Deletes a specified JSON entry from a specified json_file by URL</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> (<em>string</em>) – The URL of the item to be deleted.</li>
+<li><strong>json_file</strong> (<em>string</em>) – The file to delete the JSON entry from.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if an error occurred when trying to delete the entry.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the item was deleted successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

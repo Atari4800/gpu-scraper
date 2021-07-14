@@ -1,6 +1,5 @@
 """
-This file handles the 'main' for the backend of the gpu-scraper application.
-It is able to ping hosts, and controls how a productList is searched through for content.
+This file handles the 'main' for the backend of the gpu-scraper application. It is able to ping hosts, and controls how a productList is searched through for content.
 """
 
 import subprocess
@@ -15,11 +14,12 @@ class initiator:
     This class handles the instantiation of a productList and has the ability to test sites and products
     """
     def __init__(self, theProducts):
-        """""
+        """
         Instantiates a class of type 'initiator'
-        :param theProducts: is the filename of where the properly formatted JSON file containing URL information is 
-        located
-        """""
+        
+        :type theProducts: string
+        :param theProducts: is the filename of where the properly formatted JSON file containing URL information is located
+        """
         self.prodLink = theProducts
         defaultBrowser = ''
         self.setDefaultBrowser()
@@ -30,6 +30,7 @@ class initiator:
     def setDefaultBrowser(self):
         """
         Ensures that the default browser is set.
+        
         :return: The first line in the file that is opened (which is the default browser)
         """
         try:
@@ -43,7 +44,10 @@ class initiator:
     def pollSite(self,baseURL):
         """
         Pings a website to see if the website is 'up'
+        
+        :type baseURL: string
         :param baseURL: The website to be pinged
+        
         :return: The number of successful pings to the target website
         """
         host = re.search(r'//(.*?)/',baseURL)
@@ -62,9 +66,8 @@ class initiator:
 
     def initiate(self):
         """
-        Begins the backend portion of the program, loads the JSON file and reads for the URLs therein.
-        If the URL contains one of the supported link websites, then it calls the appropriate subprocess to attempt to
-        find product in the URL
+        Begins the backend portion of the program, loads the JSON file and reads for the URLs therein. If the URL contains one of the supported link websites, then it calls the appropriate subprocess to attempt to find product in the URL
+        
         :return: The number of websites that were crawled.
         """
         print('initiated')
