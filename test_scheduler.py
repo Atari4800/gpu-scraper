@@ -3,15 +3,18 @@ import pytest
 import subprocess
 
 def test_init():
-    new_sched = sc.Scheduler(10)
-    assert new_sched.minute == 10
-    subprocess.run(["crontab", "-l",">>","sched_time.txt"]).stdout == " */5 * * * * DISPLAY:=0 && Python3 scraper.py"
+    new_sched = sc.Scheduler(5)
+    assert new_sched.minute == 5
+    
+    result = subprocess.run(["crontab", "-l"], capture_output=True)
+    stdout_as_str = result.stdout.decode("utf-8")
+    assert stdout_as_str == "\n*/5 * * * * export DISPLAY=:0 && cd /home/joel/repos/test_demo && python3 initiator.py # Search for GPU task\n"
 
     subprocess.run(['crontab','-r'])
+
 def test_changeMin():
     new_sched_2 = sc.Scheduler(10)
     new_sched_2.ChangeMinutes(5)
-    assert new_sched_2.minute == 5
+    assert subprocess.run(["crontab", "-l"], capture_output=True).stdout.decode("utf-8") == "\n*/5 * * * * export DISPLAY=:0 && cd /home/joel/repos/test_demo && python3 initiator.py # Search for GPU task\n"
     subprocess.run(['crontab', '-r'])
-
 
