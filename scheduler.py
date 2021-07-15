@@ -30,14 +30,14 @@ class Scheduler:
         self.job.minute.every(self.minute)
         self.cron.write()
 
-    def ChangeMinutes(min):
+    def ChangeMinutes(self, minutes):
         """
         Changes the value of minutes. The thought is that it could change the frequency that initiator.py is run, but calling this method does not currently change the frequency of the existing cron job.
 
         :type min: integer
         :param min: The number of minutes the cron job will wait before calling scraper.py again.
         """
-        self.minutes=min
+        self.minutes=minutes
 
 
 if __name__ == "__main__":
