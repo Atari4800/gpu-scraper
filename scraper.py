@@ -1,6 +1,5 @@
 """
-This script runs a web scraper and searches for specific parameters within a 
-webpage.
+This script runs a web scraper and searches for specific parameters within a webpage.
 """
 import os
 
@@ -13,20 +12,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options as FFOpt
 from bs4 import BeautifulSoup
 
-class scraper:
+class scraper :
     """
     This class handles web scraping operations.
     """
-    
     def __init__(self, URL, uType):
         """
         Instantiates a web scraper and pulls initial page source information.
-        
-        :type URL: string
-        :param URL: The URL of a link that will be scraped to find product 
-        information
-        
-        :type uType: string
+        :param URL: The URL of a link that will be scraped to find product information
         :param uType: The type of link that a URL is
                         BB - Bestbuy
                         NE - Newegg
@@ -35,6 +28,7 @@ class scraper:
         self.URL = None
         self.soup = None
         self.uType = None
+        self.soup = None
         if uType is not None and URL is not None:
             self.theDriver = './drivers/geckodriver'
             self.option = FFOpt()
@@ -49,57 +43,66 @@ class scraper:
             except:
                 print("Could not obtain browser information. Are you sure that is a Newegg, Bestbuy, or B&H link?")
                 exit(-1)
-            self.soup = BeautifulSoup(self.browser.page_source,'html.parser')
+            self.soup = self.stripMetaCharacters(str(self.browser.page_source))
             self.browser.close()
             self.URL=URL
             self.uType=uType
+    def stripMetaCharacters(self,results):
+
+        results = results.replace("\."," ")
+        results = results.replace("\^"," ")
+        results = results.replace("\$", " ")
+        results = results.replace("\+", " ")
+        results = results.replace("\?", " ")
+        results = results.replace("\{", " ")
+        results = results.replace("\}", " ")
+        results = results.replace("\[", " ")
+        results = results.replace("\]", " ")
+        results = results.replace("\\", " ")
+        results = results.replace("\|", " ")
+        results = results.replace("\(", " ")
+        results = results.replace("\)", " ")
+        results = results.replace("\t"," ")
+        results = results.replace("\n", " ")
+        self.soup = results
+        return results
 
 
 
     def getBB(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper 
-        contains a product available for purchase with BestBuy
-
+        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with BestBuy
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.
         """
-        results = self.soup.find(class_ = 'fulfillment-add-to-cart-button')
-        if results != None:
-            if re.search("Add to Cart", str(results)):
-                webbrowser.open_new(self.URL)
-                return 1
+
+
+        if re.search("Add to Cart", str(self.soup)):
+            print("It worked bitch.")
+            webbrowser.open_new(self.URL)
+            return 1
         return 0
 
     def getBH(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper 
-        contains a product available for purchase with B&H
-        
+        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with B&H
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.
         """
-        results = self.soup.find(class_='cartRow_2dS2mdogHYAqhmKoANr6Ol')
-        if results != None:
-            if re.search("Add to Cart", str(results)):
-                webbrowser.open_new(self.URL)
-                return 1
-        print(self.soup.prettify())
+        if re.search("Add to Cart", self.soup):
+            webbrowser.open_new(self.URL)
+            return 1
+
         print("Did B&H Bot detection find you? Open your browser and collect some cookies!!!")
         return 0
 
     def getNE(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper
-        contains a product available for purchase with Newegg
-        
+        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with Newegg
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.
         """
-        results = self.soup.find(class_='product-buy-box')
-        if results == None:
-            return 0
-        if re.search("'>Add to cart <",str(results.find(id="ProductBuy"))):
+        if re.search("Add to cart",self.soup):
             webbrowser.open_new(self.URL)
             return 1
 
