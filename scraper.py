@@ -25,7 +25,10 @@ class scraper :
                         NE - Newegg
                         BH - B&H
         """
-        if uType != None:
+        self.URL = None
+        self.soup = None
+        self.uType = None
+        if uType is not None and URL is not None:
             self.theDriver = './drivers/geckodriver'
             self.option = FFOpt()
             self.option.headless = True
@@ -41,6 +44,8 @@ class scraper :
                 exit(-1)
             self.soup = BeautifulSoup(self.browser.page_source,'html.parser')
             self.browser.close()
+            self.URL=URL
+            self.uType=uType
 
 
 
@@ -53,7 +58,7 @@ class scraper :
         results = self.soup.find(class_ = 'fulfillment-add-to-cart-button')
         if results != None:
             if re.search("Add to Cart", str(results)):
-                webbrowser.open_new(URL)
+                webbrowser.open_new(self.URL)
                 return 1
         return 0
 
@@ -66,8 +71,10 @@ class scraper :
         results = self.soup.find(class_='cartRow_2dS2mdogHYAqhmKoANr6Ol')
         if results != None:
             if re.search("Add to Cart", str(results)):
-                webbrowser.open_new(URL)
+                webbrowser.open_new(self.URL)
                 return 1
+        print(self.soup.prettify())
+        print("Did B&H Bot detection find you? Open your browser and collect some cookies!!!")
         return 0
 
     def getNE(self):
@@ -76,21 +83,21 @@ class scraper :
         :return: 0 if the product is not found available for purchase.
         :return: 1 if the product is found and available for purchase.
         """
-        results = self.soup.find(id='ProductBuy')
+        results = self.soup.find(class_='product-buy-box')
         if results == None:
+            print("FML FUCKFACE")
             return 0
-        themessage = results.find_all('button', class_='btn btn-primary btn-wide')
-        if themessage == None:
-            for themessage in themessage:
-                if 'Add' in themessage.text:
-                    webbrowser.open_new(URL)
-                    return 1
+        if re.search("'>Add to cart <",str(results.find(id="ProductBuy"))):
+            webbrowser.open_new(self.URL)
+            return 1
+
         return 0
 
-URL = sys.argv[1]
-uType = sys.argv[2]
-sc = scraper(URL, uType)
+
 if __name__ == '__main__':
+    URL = sys.argv[1]
+    uType = sys.argv[2]
+    sc = scraper(URL, uType)
     if uType == 'BB':
         exit( sc.getBB())
     elif uType == 'NE':
