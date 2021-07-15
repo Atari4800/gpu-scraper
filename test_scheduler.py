@@ -1,17 +1,17 @@
-import scheduler
+import scheduler as sc
 import pytest
-import os
-
-cron = CronTab(user = True)
+import subprocess
 
 def test_init():
-    new_sched = Scheduler(10)
-    assert new_sched.minutes == 10
-    assert os.subprocess.run(crontab -l) == " */5 * * * * DISPLAY:=0 && Python3 scraper.py"
+    new_sched = sc.Scheduler(10)
+    assert new_sched.minute == 10
+    subprocess.run(["crontab", "-l",">>","sched_time.txt"]).stdout == " */5 * * * * DISPLAY:=0 && Python3 scraper.py"
 
+    subprocess.run(['crontab','-r'])
 def test_changeMin():
-    new_sched_2 = Scheduler(10)
+    new_sched_2 = sc.Scheduler(10)
     new_sched_2.ChangeMinutes(5)
-    assert new_sched_2.minutes == 5
+    assert new_sched_2.minute == 5
+    subprocess.run(['crontab', '-r'])
 
 
