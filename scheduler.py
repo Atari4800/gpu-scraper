@@ -17,7 +17,7 @@ class Scheduler:
 
         self.minute=minutes
         self.cron = CronTab(user=True)
-        basicIter = cron.find_comment('Search for GPU task')
+        basicIter = self.cron.find_comment('Search for GPU task')
         num=0
         for item in basicIter:
             num=num+1
@@ -26,9 +26,10 @@ class Scheduler:
         com = 'export DISPLAY=:0 && cd ' + currdir + ' && python3 initiator.py'
         self.job = self.cron.new(command = com)
         self.job.set_comment('Search for GPU task')
-        print('CRON-JOB INITIATED FOR '+minutes+ ' MINUTES')
+        print('CRON-JOB INITIATED FOR '+str(minutes)+ ' MINUTES')
         self.job.minute.every(self.minute)
         self.cron.write()
+
     def ChangeMinutes(min):
         """
         Changes the value of minutes. The thought is that it could change the frequency that initiator.py is run, but calling this method does not currently change the frequency of the existing cron job.
@@ -40,7 +41,5 @@ class Scheduler:
 
 
 if __name__ == "__main__":
-    cron = CronTab(user = True)
-
     sc = Scheduler(sys.argv[1])
     exit()
