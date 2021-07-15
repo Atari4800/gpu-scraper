@@ -1,6 +1,7 @@
 """
-This file handles the gui component of our application. It is responsible for 
-creating the main gui and related components like popup windows or notifications.
+This file handles the GUI component of our application. It is responsible for 
+creating the main GUI and related components like popup windows or 
+notifications.
 """
 
 import tkinter as tk
@@ -12,10 +13,9 @@ import tkinter.font as tkFont
 
 def launchGUI():
     """
-    Launches the main gui window for our application. It displays information
-    about current queries, shows what the notifications will be like, and
-    creates a dialog window for getting user input which will be linked to adding
-    products.
+    Launches the main GUI window for our application. It displays information
+    about current queries and allows the user to create a new query (but does
+    not yet actually add the query, it just shows the GUI component is ready)
 
     :return: returns nothing
     """
@@ -30,7 +30,24 @@ def launchGUI():
     lbl_queries_title.pack()
 
     class ProductRow:
+        """
+        This class handles everything related to a single row in the current
+        queries table on the main page of the GUI. An instance of this object
+        displays the specified information about a single product and makes
+        and handles any related buttons.
+        """
         def __init__(self, myMaster, index):
+            """
+            Creates a new ProductRow, handling a whole row in the current
+            queries table.
+
+            :type myMaster: string
+            :param myMaster: The name of this component's master component
+
+            :type index: int
+            :param index: The index of this row in the table. The first row has
+            index 0, the second is index 1, and so on.
+            """
             self.index = index
             product = data["Product"][index]
 
@@ -61,6 +78,12 @@ def launchGUI():
     canvas_queries.create_window(0, 0, window=frame_product_rows, anchor=tk.NW)
 
     def updateScrollRegion():
+        """
+        Updates the scrolling region so it includes the current components. If
+        any components were added to the scrolling region (from an add new query
+        action for example), calling this method would make the region display
+        the new components.
+        """
         canvas_queries.update_idletasks()
         canvas_queries.config(scrollregion=frame_product_rows.bbox())
 
@@ -110,9 +133,9 @@ def launchGUI():
             """
             When the add button is pressed in the window to get input for a new
             query, it will call this method which validates the user input
-            (makes sure that both fields are nonempty). If input is valid, it will
-            close the dialog. If input is invalid, it will display an error message
-            and not close the window.
+            (makes sure that both fields are nonempty). If input is valid, it
+            will close the dialog. If input is invalid, it will display an 
+            error message and not close the window.
             """
             if entry_url.get() != "" and entry_query_label.get() != "":
                 # Add this product to the json file
@@ -123,9 +146,9 @@ def launchGUI():
         
         def handle_return(event):
             """
-            This method is called when the user has the window open for a new query
-            and presses the enter or return key. It will attempt to submit the input
-            to the handle_new_query_add function.
+            This method is called when the user has the window open for a new
+            query and presses the enter or return key. It will attempt to submit
+            the input to the handle_new_query_add function.
             """
             handle_new_query_add()
 
@@ -224,6 +247,26 @@ def notification(product, source, price, belowMSRP):
     window_notification.mainloop()
 
 def confirmationDialog(message, command, title="Please confirm"):
+    """
+    Creates a confirmation dialog. This is a simple dialog which displays a 
+    single line of text, a cancel button, and an okay button. It is used when
+    it is useful to make sure the user wants to perform some critical action
+    before actually executing that action. For example, if there was a button
+    on the GUI to delete a query, it would be appropriate to use a confirmation
+    dialog to make sure they really want to delete the query before deleting it.
+
+    :type message: string
+    :param message: The text message displayed to the user
+    
+    :type command: function
+    :param command: This function is called if the user presses the okay button
+    
+    :type title: string
+    :param title: The title of the window
+
+    :return: returns nothing
+    """
+
     confirmation = tk.Tk()
     confirmation.title(title)
     confirmation.resizable(width=False, height=False)
@@ -233,10 +276,12 @@ def confirmationDialog(message, command, title="Please confirm"):
     lbl_message.pack(pady=5)
 
     def close():
+        """The code to be run when the window is closed"""
         confirmation.quit()
         confirmation.destroy()
 
     def success():
+        """The code to be run when the user presses okay"""
         command()
         close()
     
@@ -254,8 +299,35 @@ def confirmationDialog(message, command, title="Please confirm"):
     confirmation.mainloop()
 
 
-# This function will attempt to shorten a url to produce a shorter string
 def shortenURL(url):
+    """
+    This standalone function will attempt to return a shorter version of the 
+    given url. This is useful for displaying the source of a query to the user
+    for a situation like a GUI or notification where the full url might require
+    too much space.
+
+    :type url: string
+    :param url: The url to attempt to shorten
+
+    :return: 
+    If the url is for one of the websites we are focusing on, it returns the 
+    name of that business.
+
+    A best buy url would return 'Best Buy'
+    A Newegg url would return 'Newegg'
+    A B&H url would return 'B&H'
+
+    If the url is not one of the three main sites, it attempts to identify the 
+    main components (subdomain, domain, and domain extension) of the url and 
+    return it. For example, if the input url were
+    'https://www.tutorialspoint.com/pytest/index.htm', the output would be
+    'www.tutorialspoint.com'.
+
+    If it fails to identify the main part of the url for any reason, it will
+    just return the full url it was input. This would happen if the input url
+    was invalid (e.g. missing the https).
+    """
+    
     result = ""
     if re.search("www.bestbuy.com/", url):
         result = "Best Buy"

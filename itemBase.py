@@ -20,7 +20,11 @@ class itemBase:
         """
         Adds an item to the designated product list as a JSON entry. First it checks a URL for product information, then
         it adds corresponding price, and URL information to the productList.
+        
+        :type URL: string
         :param URL: The URL of the item that needs to be monitored (B&H, Newegg, and Bestbuy links only)
+        
+        :type json_file: string
         :param json_file: The productList that the URL's JSON entry will be placed in.
         :return: -5 if there is a duplicate link found within the JSON file.
         :return: -4 if the URL entered is not supported.
@@ -126,10 +130,19 @@ class itemBase:
     def addJSON( title, URL, price, json_file):
         """
         Adds JSON to a designated JSON file
+        
+        :type title: string
         :param title: The title of the item to be added to the JSON
+        
+        :type URL: string
         :param URL: The URL of the item to be added to the JSON
+        
+        :type price: string
         :param price: The price of the item to be added to the JSON
+        
+        :type json_file: string
         :param json_file: The JSON file to add the product to
+        
         :return: 0 if an error occurred when writing the JSON
         :return: 1 if the JSON was added successfully.
         """
@@ -161,8 +174,15 @@ class itemBase:
     def delItem(self, URL, json_file):
         """
         Deletes a specified JSON entry from a specified json_file by URL
-        :param URL: The URL of the item to be deleted.
+
+        
+        :type url: string
+        :param url: The URL of the item to be deleted.
+        
+        :type json_file: string
+
         :param json_file: The file to delete the JSON entry from.
+        
         :return: 0 if an error occurred when trying to delete the entry.
         :return: 1 if the item was deleted successfully.
         """
