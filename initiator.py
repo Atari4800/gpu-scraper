@@ -40,8 +40,8 @@ class initiator:
             print("The 'defaultBrowser.txt' file could not be found")
 
 
-
-    def pollSite(self,baseURL):
+    @staticmethod
+    def pollSite(baseURL):
         """
         Pings a website to see if the website is 'up'
         
@@ -121,7 +121,6 @@ class initiator:
 
 
 if __name__ == '__main__':
-    gotime = Initiator(theProducts="productList.json")
-    print(gotime.pollSite("8.8.8.8"))
-    #print(gotime.initiate())
-    exit()
+    gotime = initiator(theProducts="productList.json")
+    print(gotime.initiate())
+    exit(33)
