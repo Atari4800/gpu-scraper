@@ -16,8 +16,8 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="productAdder module" href="productAdder.html" />
-    <link rel="prev" title="getNE module" href="getNE.html" />
+    <link rel="next" title="itemBase module" href="itemBase.html" />
+    <link rel="prev" title="initiator module" href="initiator.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,15 +33,42 @@
             
   <div class="section" id="module-interface">
 <span id="interface-module"></span><h1>interface module<a class="headerlink" href="#module-interface" title="Permalink to this headline">¶</a></h1>
-<p>This file handles the gui component of our application. It is responsible for 
-creating the main gui and related components like popup windows or notifications.</p>
+<p>This file handles the GUI component of our application. It is responsible for 
+creating the main GUI and related components like popup windows or 
+notifications.</p>
+<dl class="function">
+<dt id="interface.confirmationDialog">
+<code class="descclassname">interface.</code><code class="descname">confirmationDialog</code><span class="sig-paren">(</span><em>message</em>, <em>command</em>, <em>title='Please confirm'</em><span class="sig-paren">)</span><a class="headerlink" href="#interface.confirmationDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a confirmation dialog. This is a simple dialog which displays a 
+single line of text, a cancel button, and an okay button. It is used when
+it is useful to make sure the user wants to perform some critical action
+before actually executing that action. For example, if there was a button
+on the GUI to delete a query, it would be appropriate to use a confirmation
+dialog to make sure they really want to delete the query before deleting it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message</strong> (<em>string</em>) – The text message displayed to the user</li>
+<li><strong>command</strong> (<em>function</em>) – This function is called if the user presses the okay button</li>
+<li><strong>title</strong> (<em>string</em>) – The title of the window</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">returns nothing</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="function">
 <dt id="interface.launchGUI">
 <code class="descclassname">interface.</code><code class="descname">launchGUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#interface.launchGUI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Launches the main gui window for our application. It displays information
-about current queries, shows what the notifications will be like, and
-creates a dialog window for getting user input which will be linked to adding
-products.</p>
+<dd><p>Launches the main GUI window for our application. It displays information
+about current queries and allows the user to create a new query (but does
+not yet actually add the query, it just shows the GUI component is ready)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -77,6 +104,38 @@ automatically.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="interface.shortenURL">
+<code class="descclassname">interface.</code><code class="descname">shortenURL</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#interface.shortenURL" title="Permalink to this definition">¶</a></dt>
+<dd><p>This standalone function will attempt to return a shorter version of the 
+given url. This is useful for displaying the source of a query to the user
+for a situation like a GUI or notification where the full url might require
+too much space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>string</em>) – The url to attempt to shorten</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>If the url is for one of the websites we are focusing on, it returns the 
+name of that business.</p>
+<p>A best buy url would return ‘Best Buy’
+A Newegg url would return ‘Newegg’
+A B&amp;H url would return ‘B&amp;H’</p>
+<p>If the url is not one of the three main sites, it attempts to identify the 
+main components (subdomain, domain, and domain extension) of the url and 
+return it. For example, if the input url were
+‘<a class="reference external" href="https://www.tutorialspoint.com/pytest/index.htm">https://www.tutorialspoint.com/pytest/index.htm</a>’, the output would be
+‘www.tutorialspoint.com’.</p>
+<p>If it fails to identify the main part of the url for any reason, it will
+just return the full url it was input. This would happen if the input url
+was invalid (e.g. missing the https).</p>
+</dd></dl>
+
 </div>
 
 
@@ -98,13 +157,16 @@ automatically.</p>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">gpu-scraper</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="getBB.html">getBB module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getBH.html">getBH module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getNE.html">getNE module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initiator.html">initiator module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">interface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="productAdder.html">productAdder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="itemBase.html">itemBase module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scheduler.html">scheduler module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scraper.html">scraper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_initiator.html">test_initiator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_interface.html">test_interface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_itemBase.html">test_itemBase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_scheduler.html">test_scheduler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_scraper.html">test_scraper module</a></li>
 </ul>
 </li>
 </ul>
@@ -114,8 +176,8 @@ automatically.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">gpu-scraper</a><ul>
-      <li>Previous: <a href="getNE.html" title="previous chapter">getNE module</a></li>
-      <li>Next: <a href="productAdder.html" title="next chapter">productAdder module</a></li>
+      <li>Previous: <a href="initiator.html" title="previous chapter">initiator module</a></li>
+      <li>Next: <a href="itemBase.html" title="next chapter">itemBase module</a></li>
   </ul></li>
   </ul></li>
 </ul>

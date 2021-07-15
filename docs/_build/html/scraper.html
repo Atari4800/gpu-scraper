@@ -16,6 +16,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="test_initiator module" href="test_initiator.html" />
     <link rel="prev" title="scheduler module" href="scheduler.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -30,8 +31,89 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="scraper-module">
-<h1>scraper module<a class="headerlink" href="#scraper-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-scraper">
+<span id="scraper-module"></span><h1>scraper module<a class="headerlink" href="#module-scraper" title="Permalink to this headline">¶</a></h1>
+<p>This script runs a web scraper and searches for specific parameters within a 
+webpage.</p>
+<dl class="class">
+<dt id="scraper.scraper">
+<em class="property">class </em><code class="descclassname">scraper.</code><code class="descname">scraper</code><span class="sig-paren">(</span><em>URL</em>, <em>uType</em><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class handles web scraping operations.</p>
+<p>Instantiates a web scraper and pulls initial page source information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>URL</strong> (<em>string</em>) – The URL of a link that will be scraped to find product</td>
+</tr>
+</tbody>
+</table>
+<p>information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uType</strong> (<em>string</em>) – The type of link that a URL is
+BB - Bestbuy
+NE - Newegg
+BH - B&amp;H</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="scraper.scraper.getBB">
+<code class="descname">getBB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getBB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper 
+contains a product available for purchase with BestBuy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0 if the product is not found available for purchase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if the product is found and available for purchase.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scraper.scraper.getBH">
+<code class="descname">getBH</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getBH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper 
+contains a product available for purchase with B&amp;H</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0 if the product is not found available for purchase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if the product is found and available for purchase.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="scraper.scraper.getNE">
+<code class="descname">getNE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scraper.scraper.getNE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches for whether or not the HTML source grabbed by the scraper
+contains a product available for purchase with Newegg</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0 if the product is not found available for purchase.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">1 if the product is found and available for purchase.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -53,13 +135,16 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">gpu-scraper</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="getBB.html">getBB module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getBH.html">getBH module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getNE.html">getNE module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="initiator.html">initiator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interface.html">interface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="productAdder.html">productAdder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="itemBase.html">itemBase module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scheduler.html">scheduler module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">scraper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_initiator.html">test_initiator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_interface.html">test_interface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_itemBase.html">test_itemBase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_scheduler.html">test_scheduler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_scraper.html">test_scraper module</a></li>
 </ul>
 </li>
 </ul>
@@ -70,6 +155,7 @@
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">gpu-scraper</a><ul>
       <li>Previous: <a href="scheduler.html" title="previous chapter">scheduler module</a></li>
+      <li>Next: <a href="test_initiator.html" title="next chapter">test_initiator module</a></li>
   </ul></li>
   </ul></li>
 </ul>

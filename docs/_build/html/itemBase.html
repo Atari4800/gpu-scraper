@@ -1,0 +1,212 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>itemBase module &#8212; GPU Hunter  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scheduler module" href="scheduler.html" />
+    <link rel="prev" title="interface module" href="interface.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-itemBase">
+<span id="itembase-module"></span><h1>itemBase module<a class="headerlink" href="#module-itemBase" title="Permalink to this headline">¶</a></h1>
+<p>This file handles the adding, and deleting of items from the productList.JSON file.</p>
+<dl class="class">
+<dt id="itemBase.itemBase">
+<em class="property">class </em><code class="descclassname">itemBase.</code><code class="descname">itemBase</code><a class="headerlink" href="#itemBase.itemBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class handles the modification of items inside of a designated productList.</p>
+<dl class="method">
+<dt id="itemBase.itemBase.addItem">
+<code class="descname">addItem</code><span class="sig-paren">(</span><em>URL</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#itemBase.itemBase.addItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an item to the designated product list as a JSON entry. First it checks a URL for product information, then
+it adds corresponding price, and URL information to the productList.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>URL</strong> (<em>string</em>) – The URL of the item that needs to be monitored (B&amp;H, Newegg, and Bestbuy links only)</li>
+<li><strong>json_file</strong> (<em>string</em>) – The productList that the URL’s JSON entry will be placed in.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-5 if there is a duplicate link found within the JSON file.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-4 if the URL entered is not supported.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-3 if the URL’s domain cannot be reached.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-2 if there is a problem opening the JSON file or Reading from it.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-1 if the item cannot be found.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if the item could not be added to the json_file.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the item was added successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="itemBase.itemBase.addJSON">
+<code class="descname">addJSON</code><span class="sig-paren">(</span><em>title</em>, <em>URL</em>, <em>price</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#itemBase.itemBase.addJSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds JSON to a designated JSON file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>title</strong> (<em>string</em>) – The title of the item to be added to the JSON</li>
+<li><strong>URL</strong> (<em>string</em>) – The URL of the item to be added to the JSON</li>
+<li><strong>price</strong> (<em>string</em>) – The price of the item to be added to the JSON</li>
+<li><strong>json_file</strong> (<em>string</em>) – The JSON file to add the product to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if an error occurred when writing the JSON</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the JSON was added successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="itemBase.itemBase.delItem">
+<code class="descname">delItem</code><span class="sig-paren">(</span><em>url</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#itemBase.itemBase.delItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a specified JSON entry from a specified json_file by URL</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> (<em>string</em>) – The URL of the item to be deleted.</li>
+<li><strong>json_file</strong> (<em>string</em>) – The file to delete the JSON entry from.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if an error occurred when trying to delete the entry.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the item was deleted successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">GPU Hunter</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">gpu-scraper</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="initiator.html">initiator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html">interface module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">itemBase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html">scheduler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scraper.html">scraper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_initiator.html">test_initiator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_interface.html">test_interface module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_itemBase.html">test_itemBase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_scheduler.html">test_scheduler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_scraper.html">test_scraper module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">gpu-scraper</a><ul>
+      <li>Previous: <a href="interface.html" title="previous chapter">interface module</a></li>
+      <li>Next: <a href="scheduler.html" title="next chapter">scheduler module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Harrison Koll, Joel McMaken, Edward Niemann.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/itemBase.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
