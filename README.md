@@ -43,9 +43,7 @@ After building:
 - Integrate GUI with backend
 - Research if Windows is a viable platform
 
--------------------------------------
-
-**Code Milestone 1:**  
+**Code Milestone 1 Completion:**  
 We feel we have achieved all our goals for this milestone, and we have started on future milestone goals along with continuously improving what we have done.
 
 Our goals for Milestone 1 were:
@@ -56,12 +54,14 @@ Our goals for Milestone 1 were:
 - Implement bot-detection evasion features
 - Test web-scraper functionality on known websites.
 
+----------------------------------
 
 ## Release Notes 2
 
 *Currently Completed:*
 - All functionality from Code Milestone 1 is still working
 - Automatic testing suite for all modules and major functions
+- 31 test cases to cover major functionality
 - GUI is connected and operating with the backend
 - GUI is populating displayed list from JSON data
 - Reliability of connecting to sites is improved
@@ -80,7 +80,7 @@ Our goals for Milestone 1 were:
 - Refactor into proper PEP8 style formatting
 
 
-**Code Milestone 2:**  
+**Code Milestone 2 Completion:**  
 We have achieved all our goals for this milestone and have made great headway into Milestone 3.
 
 Our goals for Milestone 2 were:
