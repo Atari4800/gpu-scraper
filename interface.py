@@ -11,6 +11,8 @@ import json
 import os
 import tkinter.font as tkFont
 
+import itemBase
+
 def launchGUI():
     """
     Launches the main GUI window for our application. It displays information
@@ -23,20 +25,20 @@ def launchGUI():
     window = tk.Tk()
     window.title("GPU-Scraper")
     
-    with open("productList.json", "r") as dataFile:
-        data = json.load(dataFile)
 
     lbl_queries_title = tk.Label(text="Current Queries", master=window)
     lbl_queries_title.pack()
 
     class ProductRow:
+        rows = 0
+
         """
         This class handles everything related to a single row in the current
         queries table on the main page of the GUI. An instance of this object
         displays the specified information about a single product and makes
         and handles any related buttons.
         """
-        def __init__(self, myMaster, index):
+        def __init__(self, myMaster):
             """
             Creates a new ProductRow, handling a whole row in the current
             queries table.
@@ -48,10 +50,14 @@ def launchGUI():
             :param index: The index of this row in the table. The first row has
             index 0, the second is index 1, and so on.
             """
-            self.index = index
-            product = data["Product"][index]
+            self.rows = ProductRow.rows
 
-            self.name = tk.Label(text=product["productType"], master=myMaster)
+            with open("productList.json", "r") as dataFile:
+                data = json.load(dataFile)
+            
+            product = data["Product"][self.rows]
+
+            self.name = tk.Label(text=product["productType"], master=myMaster, width=15, anchor="w")
             self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
             self.link = tk.Label(text=shortenURL(product["productLink"]), master=myMaster)
             f = tkFont.Font(self.link, self.link.cget("font"))
@@ -60,9 +66,11 @@ def launchGUI():
 
             self.link.bind("<Button-1>", lambda event: webbrowser.open(product["productLink"]))
 
-            self.name.grid(row=self.index + 1, column=0, sticky="w")
-            self.price.grid(row=self.index + 1, column=1, sticky="e")
-            self.link.grid(row=self.index + 1, column=2, sticky="w")
+            self.name.grid(row=self.rows + 1, column=0, sticky="w")
+            self.price.grid(row=self.rows + 1, column=1, sticky="e")
+            self.link.grid(row=self.rows + 1, column=2, sticky="w")
+            
+            ProductRow.rows += 1
 
     frame_wrapper = tk.Frame(master=window)
     frame_wrapper.pack()
@@ -94,8 +102,10 @@ def launchGUI():
     lbl_col2.grid(row=0, column=1)
     lbl_col3.grid(row=0, column=2)
     
+    with open("productList.json", "r") as dataFile:
+        data = json.load(dataFile)
     for i in range(len(data["Product"])):
-        row = ProductRow(frame_product_rows, i)
+        row = ProductRow(frame_product_rows)
 
     updateScrollRegion() 
 
@@ -111,24 +121,17 @@ def launchGUI():
         window_new_query.title("Create new Query")
         
         frame_fields = tk.Frame(master=window_new_query)
-        frame_fields.pack()
+        frame_fields.pack(padx=10, pady=10)
         
         lbl_enter_url = tk.Label(text="Product link:", master=frame_fields)
-        lbl_enter_url.grid(row=0, column=0)
+        lbl_enter_url.pack(anchor="w")
         
         entry_url = tk.Entry(width=40, master=frame_fields)
-        entry_url.grid(row=0, column=1)
+        entry_url.pack()
         
-        lbl_query_label = tk.Label(text="Query label:", master=frame_fields)
-        lbl_query_label.grid(row=1, column=0)
-        
-        entry_query_label = tk.Entry(width=40, master=frame_fields)
-        entry_query_label.grid(row=1, column=1)
-        
-        lbl_invalid_input = tk.Label(text="", foreground="red", master=window_new_query)
+        lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_fields)
         lbl_invalid_input.pack()
         
-        # This method is called when the adding query window add button is clicked.
         def handle_new_query_add():
             """
             When the add button is pressed in the window to get input for a new
@@ -137,12 +140,24 @@ def launchGUI():
             will close the dialog. If input is invalid, it will display an 
             error message and not close the window.
             """
-            if entry_url.get() != "" and entry_query_label.get() != "":
-                # Add this product to the json file
-                #os.system(f"python3 productAdder.py {entry_query_label.get()} {entry_url.get()}")
-                window_new_query.destroy()
+            if entry_url.get() == "": 
+                lbl_invalid_input["text"] = "URL is empty"
+            elif shortenURL(entry_url.get()) == "Other":
+                lbl_invalid_input["text"] = "URL is invalid or unsupported"
             else:
-                lbl_invalid_input["text"] = "One or more fields blank"
+                # Add this product to the json file
+                adder = itemBase.itemBase()
+                result = adder.addItem(entry_url.get(), "productList.json")
+                if result == 1:
+                    messageDialog("Successful addition!", "Success")
+                    ProductRow(frame_product_rows)
+                    updateScrollRegion()
+
+                    window_new_query.quit()
+                    window_new_query.destroy()
+                else:
+                    lbl_invalid_input["text"] = f"addItem error: {result}"
+
         
         def handle_return(event):
             """
@@ -152,7 +167,7 @@ def launchGUI():
             """
             handle_new_query_add()
 
-        button_add = tk.Button(text="Add", master=window_new_query, command=handle_new_query_add, padx=3, pady=3)
+        button_add = tk.Button(text="Add", master=frame_fields, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
         window_new_query.bind("<Return>", handle_return)
         
@@ -328,21 +343,22 @@ def shortenURL(url):
     was invalid (e.g. missing the https).
     """
     
-    result = ""
+    result = "Other"
     if re.search("www.bestbuy.com/", url):
         result = "Best Buy"
     elif re.search("www.newegg.com/", url):
         result = "Newegg"
     elif re.search("www.bhphotovideo.com/", url):
         result = "B&H"
-    else:
-        findings = re.search("http(?:s)?\:\/\/(.*\.(?:com|org|gov|net|edu))", url)
-        if findings:
-            result = findings.group(1)
-        else:
-            result = url
     return result
 
+def messageDialog(message, title="Message"):
+    message_window = tk.Tk()
+    message_window.title(title)
+    message_window.resizable(width=False, height=False)
+    
+    lbl = tk.Label(text=message, master=message_window)
+    lbl.pack()
 
 if __name__ == "__main__":
     launchGUI()
