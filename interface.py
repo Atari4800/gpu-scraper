@@ -50,12 +50,12 @@ def launchGUI():
             :param index: The index of this row in the table. The first row has
             index 0, the second is index 1, and so on.
             """
-            self.rows = ProductRow.rows
+            self.row = ProductRow.rows
 
             with open("productList.json", "r") as dataFile:
                 data = json.load(dataFile)
             
-            product = data["Product"][self.rows]
+            product = data["Product"][self.row]
 
             self.name = tk.Label(text=product["productType"], master=myMaster, width=15, anchor="w")
             self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
@@ -66,12 +66,13 @@ def launchGUI():
 
             self.link.bind("<Button-1>", lambda event: webbrowser.open(product["productLink"]))
 
-            self.name.grid(row=self.rows + 1, column=0, sticky="w")
-            self.price.grid(row=self.rows + 1, column=1, sticky="e")
-            self.link.grid(row=self.rows + 1, column=2, sticky="w")
+            self.name.grid(row=self.row + 1, column=0, sticky="w")
+            self.price.grid(row=self.row + 1, column=1, sticky="e")
+            self.link.grid(row=self.row + 1, column=2, sticky="w")
             
             ProductRow.rows += 1
-
+    
+    # Creates the necessary structure of containers for the scrolling region
     frame_wrapper = tk.Frame(master=window)
     frame_wrapper.pack()
 
@@ -140,6 +141,9 @@ def launchGUI():
             will close the dialog. If input is invalid, it will display an 
             error message and not close the window.
             """
+
+            lbl_invalid_input["text"]="Processing request..."
+            
             if entry_url.get() == "": 
                 lbl_invalid_input["text"] = "URL is empty"
             elif shortenURL(entry_url.get()) == "Other":
@@ -158,18 +162,9 @@ def launchGUI():
                 else:
                     lbl_invalid_input["text"] = f"addItem error: {result}"
 
-        
-        def handle_return(event):
-            """
-            This method is called when the user has the window open for a new
-            query and presses the enter or return key. It will attempt to submit
-            the input to the handle_new_query_add function.
-            """
-            handle_new_query_add()
-
         button_add = tk.Button(text="Add", master=frame_fields, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
-        window_new_query.bind("<Return>", handle_return)
+        window_new_query.bind("<Return>", lambda event: handle_new_query_add())
         
         window_new_query.mainloop()
 
@@ -177,10 +172,6 @@ def launchGUI():
     button_add_query = tk.Button(text="Add new query", master=window, padx=3, pady=3, borderwidth=3)
     button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
     button_add_query.bind("<Button-1>", handle_new_query_button)
-
-    #button_notification = tk.Button(text="Simulate notification", master=window, 
-    #        command=lambda: notification("RTX 3080", "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400", "$849.99 USD", "No"))
-    #button_notification.pack(side=tk.TOP, pady=10, padx=10)
 
     window.mainloop()
 
@@ -246,6 +237,7 @@ def notification(product, source, price, belowMSRP):
     window_notification.geometry(f"+{x}+{y}")
 
     #window_notification.after(2000, close)
+    
     def close():
         """
         This method is called when the user closes the notification window.
@@ -258,13 +250,12 @@ def notification(product, source, price, belowMSRP):
         window_notification.destroy()
     
     window_notification.protocol("WM_DELETE_WINDOW", close)
-    
     window_notification.mainloop()
 
 def confirmationDialog(message, command, title="Please confirm"):
     """
     Creates a confirmation dialog. This is a simple dialog which displays a 
-    single line of text, a cancel button, and an okay button. It is used when
+    single line of text, a yes button, and a no button. It is used when
     it is useful to make sure the user wants to perform some critical action
     before actually executing that action. For example, if there was a button
     on the GUI to delete a query, it would be appropriate to use a confirmation
@@ -296,7 +287,7 @@ def confirmationDialog(message, command, title="Please confirm"):
         confirmation.destroy()
 
     def success():
-        """The code to be run when the user presses okay"""
+        """The code to be run when the user presses yes"""
         command()
         close()
     
@@ -316,7 +307,7 @@ def confirmationDialog(message, command, title="Please confirm"):
 
 def shortenURL(url):
     """
-    This standalone function will attempt to return a shorter version of the 
+    This standalone function will attempt to return a shorter version of th 
     given url. This is useful for displaying the source of a query to the user
     for a situation like a GUI or notification where the full url might require
     too much space.
@@ -325,22 +316,14 @@ def shortenURL(url):
     :param url: The url to attempt to shorten
 
     :return: 
-    If the url is for one of the websites we are focusing on, it returns the 
+    If the url is for one of the websites we are focusing on, it returns the
     name of that business.
 
     A best buy url would return 'Best Buy'
     A Newegg url would return 'Newegg'
     A B&H url would return 'B&H'
-
-    If the url is not one of the three main sites, it attempts to identify the 
-    main components (subdomain, domain, and domain extension) of the url and 
-    return it. For example, if the input url were
-    'https://www.tutorialspoint.com/pytest/index.htm', the output would be
-    'www.tutorialspoint.com'.
-
-    If it fails to identify the main part of the url for any reason, it will
-    just return the full url it was input. This would happen if the input url
-    was invalid (e.g. missing the https).
+    
+    Otherwise, would return 'Other'
     """
     
     result = "Other"
@@ -353,12 +336,22 @@ def shortenURL(url):
     return result
 
 def messageDialog(message, title="Message"):
+    """
+    Creates a dialog to display a brief textual message to the user. Useful
+    for communicating error messages or success messages to the user.
+
+    :type message: string
+    :param message: The textual message to be displayed inside the window
+
+    :type title: string
+    :param title: The optional title of the dialog window
+    """
     message_window = tk.Tk()
     message_window.title(title)
     message_window.resizable(width=False, height=False)
     
     lbl = tk.Label(text=message, master=message_window)
-    lbl.pack()
+    lbl.pack(padx=10, pady=10)
 
 if __name__ == "__main__":
     launchGUI()
