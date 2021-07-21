@@ -35,7 +35,7 @@ class itemBase:
         :return:  1 if the item was added successfully.
         """
         pinger = initiator.initiator
-        if not pinger.pollSite(baseURL=URL) :
+        if not pinger.poll_site(base_url=URL) :
             return -3
         try:
             with open(json_file, "r") as dataFile:
@@ -221,7 +221,8 @@ if __name__ == '__main__':
         yep = itemBase
         if type == '1':
             print("Adding Item")
-            itemBase().addItem(URL, jsonfile)
+
+            itemBase().addItem(URLz, jsonfile)
         elif type == '2':
             itemBase().delItem(URL=URLz, json_file=jsonfile)
     else :
