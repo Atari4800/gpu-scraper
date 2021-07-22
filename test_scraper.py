@@ -16,40 +16,40 @@ invalid_url = 'blah'
 
 
 def test_init_valid():
-    test_obj = sc.scraper(url=good_stock_urlBB, url_type="BB")
-    assert test_obj.URL == good_stock_urlBB
+    test_obj = sc.Scraper(url=good_stock_urlBB, url_type="BB")
+    assert test_obj.url == good_stock_urlBB
 
 
 def test_init_invalid():
-    test_obj = sc.scraper(url=good_stock_urlBB, url_type=None)
-    assert test_obj.uType is None
+    test_obj = sc.Scraper(url=good_stock_urlBB, url_type=None)
+    assert test_obj.store_label is None
 
 
 def test_get_bb_good():
-    test_obj = sc.scraper(url=good_stock_urlBB, url_type="BB")
+    test_obj = sc.Scraper(url=good_stock_urlBB, url_type="BB")
     assert test_obj.get_bb() == 1
 
 
 def test_get_bb_bad():
-    test_obj = sc.scraper(url=bad_stock_urlBB, url_type="BB")
+    test_obj = sc.Scraper(url=bad_stock_urlBB, url_type="BB")
     assert test_obj.get_bb() == 0
 
 
 def test_get_bh_good():
-    test_obj = sc.scraper(url=good_stock_BH, url_type="BH")
+    test_obj = sc.Scraper(url=good_stock_BH, url_type="BH")
     assert test_obj.get_bh() == 1
 
 
 def test_get_bh_bad():
-    test_obj = sc.scraper(url=bad_stock_BH, url_type="BH")
+    test_obj = sc.Scraper(url=bad_stock_BH, url_type="BH")
     assert test_obj.get_bh() == 0
 
 
 def test_get_ne_good():
-    test_obj = sc.scraper(url=good_stock_NE, url_type="NE")
+    test_obj = sc.Scraper(url=good_stock_NE, url_type="NE")
     assert test_obj.get_ne() == 1
 
 
 def test_get_ne_bad():
-    test_obj = sc.scraper(url=bad_stock_NE, url_type="NE")
+    test_obj = sc.Scraper(url=bad_stock_NE, url_type="NE")
     assert test_obj.get_ne() == 0

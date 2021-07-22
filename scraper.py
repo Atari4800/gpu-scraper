@@ -2,7 +2,6 @@
 This script runs a web scraper and searches for specific parameters within a webpage.
 """
 # import os
-
 # import requests
 import sys
 # import webbrowser
@@ -10,11 +9,9 @@ import sys
 from selenium import webdriver
 # from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options as FFOpt
-
-
 # from bs4 import BeautifulSoup
 
-class scraper:
+class Scraper:
     """
     This class handles web scraping operations.
     """
@@ -22,22 +19,22 @@ class scraper:
     def __init__(self, url, url_type):
         """
         Instantiates a web scraper and pulls initial page source information.
-        :param url: The URL of a link that will be scraped to find product information
-        :param url_type: The type of link that a URL is
+        :param url: The url of a link that will be scraped to find product information
+        :param url_type: The type of link that a url is
                         BB - Bestbuy
                         NE - Newegg
                         BH - B&H
         """
-        self.URL = None
+        self.url = None
         self.soup = None
-        self.uType = None
+        self.store_label = None
         self.soup = None
         if url_type is not None and url is not None:
-            self.theDriver = './drivers/geckodriver'
+            self.the_driver = './drivers/geckodriver'
             self.option = FFOpt()
             self.option.headless = True
             try:
-                self.browser = webdriver.Firefox(options=self.option, executable_path=self.theDriver)
+                self.browser = webdriver.Firefox(options=self.option, executable_path=self.the_driver)
             except Exception:
                 print(
                     "Could not find the driver. Ensure that the \'geckodriver\' is in the directory: "
@@ -51,26 +48,16 @@ class scraper:
 
             self.strip_meta_characters(str(self.browser.page_source))
             self.browser.close()
-            self.URL = url
-            self.uType = url_type
+            self.url = url
+            self.store_label = url_type
 
     def strip_meta_characters(self, results):
         if results is not None:
-            results = results.replace(".", " ")
-            results = results.replace("^", " ")
-            results = results.replace("$", " ")
-            results = results.replace("+", " ")
-            results = results.replace("?", " ")
-            results = results.replace("{", " ")
-            results = results.replace("}", " ")
-            results = results.replace("[", " ")
-            results = results.replace("]", " ")
-            results = results.replace("\\", " ")
-            results = results.replace("|", " ")
-            results = results.replace("(", " ")
-            results = results.replace(")", " ")
-            results = results.replace("\t", " ")
-            results = results.replace("\n", " ")
+            meta_char_list = [".","^","$","+","?","{","}","[","]","\\","|","(",")","\t","\n"]
+
+            for i in meta_char_list:
+                results = results.replace(i, " ")
+
             self.soup = results
         else:
             print("WARNING NONE RESULTS")
@@ -84,8 +71,6 @@ class scraper:
         """
 
         print(len(self.soup))
-        # self.soup = self.soup
-        # print(len(self.soup))
 
         if self.soup is None:
             return 0
@@ -93,7 +78,6 @@ class scraper:
         result = self.soup.find("Add to Cart")
         if result != -1:
             print("len(self.soup")
-            # webbrowser.open_new(self.URL)
             print(result)
             return 1
         print(result)
@@ -113,7 +97,7 @@ class scraper:
         result = self.soup.find("Add to Cart")
         if result != -1 and self.soup:
             print("len(self.soup")
-            # webbrowser.open_new(self.URL)
+            # webbrowser.open_new(self.url)
             print(result)
             return 1
         print(result)
@@ -140,12 +124,12 @@ class scraper:
 
 
 if __name__ == '__main__':
-    URL = sys.argv[1]
-    uType = sys.argv[2]
-    sc = scraper(URL, uType)
-    if uType == 'BB' or uType == 'BH':
+    url = sys.argv[1]
+    store_label = sys.argv[2]
+    sc = scraper(url, store_label)
+    if store_label == 'BB' or store_label == 'BH':
         exit(sc.get_bb())
-    elif uType == 'NE':
+    elif store_label == 'NE':
         exit(sc.get_ne())
     else:
         print("Invalid type")

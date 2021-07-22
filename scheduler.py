@@ -11,6 +11,23 @@ from crontab import CronTab
 import subprocess
 
 
+def make_cron_job(minutes):
+    
+    minute = minutes
+    cron = CronTab(user=True)
+    basic_iter = cron.find_comment('Search for GPU task')
+    num = 0
+    for item in basic_iter:
+        num += 1
+        cron.remove(item)
+    currdir=str(os.getcwd())
+    com = f'export DISPLAY=:0 && cd {currdir} && python3 initiator.py'
+    job = cron.new(command = com)
+    job.set_comment('Search for GPU task')
+    print(f'CRON-JOB INITIATED FOR {minutes} MINUTES')
+    job.minute.every(minute)
+    cron.write()
+
 class Scheduler:
     """
     Creates a cronjob to run initiator.py regularly, which would check all query sites for availability.
@@ -20,49 +37,17 @@ class Scheduler:
         """
         Creates a Scheduler object and creates the cron job.
         """
-        #        if(cron.find_command() > 0)
+        make_cron_job(minutes)
 
-        self.minute = minutes
-        self.cron = CronTab(user=True)
-
-        basic_iter = self.cron.find_comment('Search for GPU task')
-        num = 0
-        for item in basic_iter:
-            num = num + 1
-
-            self.cron.remove(item)
-        curr_dir = str(os.getcwd())
-        com = 'export DISPLAY=:0 && cd ' + curr_dir + ' && python3 initiator.py'
-        self.job = self.cron.new(command=com)
-        self.job.set_comment('Search for GPU task')
-        print('CRON-JOB INITIATED FOR ' + str(minutes) + ' MINUTES')
-        self.job.minute.every(self.minute)
-        self.cron.write()
-
-
-    def ChangeMinutes(self, minutes):
+    def change_minutes(self, minutes):
         """
         Changes the value of minutes by killing the current cronjob and creating a new one with the desired minutes.
 
         :type min: integer
-        :param min: The number of minutes the cron job will wait before calling scraper.py again.
+        :param minutes: The number of minutes the cron job will wait before calling scraper.py again.
         """
         subprocess.run(["crontab", "-r"])
-
-        self.minute=minutes
-        self.cron = CronTab(user=True)
-        basicIter = self.cron.find_comment('Search for GPU task')
-        num=0
-        for item in basicIter:
-            num += 1
-            self.cron.remove(item)
-        currdir=str(os.getcwd())
-        com = 'export DISPLAY=:0 && cd ' + currdir + ' && python3 initiator.py'
-        self.job = self.cron.new(command = com)
-        self.job.set_comment('Search for GPU task')
-        print('CRON-JOB INITIATED FOR '+str(minutes)+ ' MINUTES')
-        self.job.minute.every(self.minute)
-        self.cron.write()
+        make_cron_job(minutes)
 
 
 
