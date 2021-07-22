@@ -34,7 +34,7 @@ class item_base:
         :return:  0 if the item could not be added to the json_file.
         :return:  1 if the item was added successfully.
         """
-        pinger = initiator.initiator
+        pinger = initiator.Initiator
         if not pinger.poll_site(base_url = url) :
             return -3
         try:
