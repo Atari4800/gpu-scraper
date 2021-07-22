@@ -6,11 +6,11 @@ gpu-scraper
 
    initiator
    interface
-   itemBase
+   item_base
    scheduler
    scraper
    test_initiator
    test_interface
-   test_itemBase
+   test_item_base
    test_scheduler
    test_scraper
