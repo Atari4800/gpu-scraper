@@ -37,6 +37,7 @@ class Scheduler:
         """
         Creates a Scheduler object and creates the cron job.
         """
+        self.minutes = minutes
         make_cron_job(minutes)
 
     def change_minutes(self, minutes):
