@@ -53,3 +53,17 @@ def test_get_ne_good():
 def test_get_ne_bad():
     test_obj = sc.Scraper(url=bad_stock_NE, url_type="NE")
     assert test_obj.get_ne() == 0
+
+def test_strip_meta_characters_newlines():
+    original = "first line\nsecond line\nthird line"
+    expected = "first line second line third line"
+    assert sc.strip_meta_characters(original) == expected
+
+    original = "this\nexample\nis a bit\n\nmore\n complicated"
+    expected = "this example is a bit more complicated"
+    assert sc.strip_meta_characters(original) == expected
+
+def test_strip_meta_characters_dollars():
+    original = r"text \$ hi there \nmore text"
+    expected = "text   hi there  more text"
+    assert sc.strip_meta_characters(original) == expected

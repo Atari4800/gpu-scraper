@@ -48,30 +48,10 @@ class Scraper:
                 print("Could not obtain browser information. Are you sure that is a Newegg, Bestbuy, or B&H link?")
                 exit(-1)
 
-            self.strip_meta_characters(str(self.browser.page_source))
+            self.soup = strip_meta_characters(str(self.browser.page_source))
             self.browser.close()
             self.url = url
             self.store_label = url_type
-
-    def strip_meta_characters(self, results):
-        """
-        Replaces all the metacharacters in the input string with a ' ' character.
-        
-        :type results: string
-        :param results: The string to remove metacharacters from
-
-        :return: The same as the input string with all metacharacters replaced by a space character.
-        """
-        if results is not None:
-            meta_char_list = [".","^","$","+","?","{","}","[","]","\\","|","(",")","\t","\n"]
-
-            for i in meta_char_list:
-                results = results.replace(i, " ")
-
-            self.soup = results
-        else:
-            print("WARNING NONE RESULTS")
-        return results
 
     def get_bb(self):
         """
@@ -137,6 +117,24 @@ class Scraper:
             return 1
 
         return 0
+
+def strip_meta_characters(results):
+    """
+    Replaces all the metacharacters in the input string with a ' ' character.
+    
+    :type results: string
+    :param results: The string to remove metacharacters from
+
+    :return: The same as the input string with all metacharacters replaced by a space character.
+    """
+    if results is not None:
+        meta_char_list = [".","^","$","+","?","{","}","[","]","\\","|","(",")","\t","\n"]
+
+        for i in meta_char_list:
+            results = results.replace(i, " ")
+    else:
+        print("WARNING NONE RESULTS")
+    return results
 
 
 if __name__ == '__main__':
