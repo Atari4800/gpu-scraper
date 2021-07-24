@@ -60,10 +60,10 @@ def test_strip_meta_characters_newlines():
     assert sc.strip_meta_characters(original) == expected
 
     original = "this\nexample\nis a bit\n\nmore\n complicated"
-    expected = "this example is a bit more complicated"
+    expected = "this example is a bit  more  complicated"
     assert sc.strip_meta_characters(original) == expected
 
 def test_strip_meta_characters_dollars():
-    original = r"text \$ hi there \nmore text"
-    expected = "text   hi there  more text"
+    original = "text \$ hi there \nmore text"
+    expected = "text    hi there  more text"
     assert sc.strip_meta_characters(original) == expected
