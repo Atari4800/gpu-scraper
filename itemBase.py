@@ -127,7 +127,7 @@ class itemBase:
 
 
     @staticmethod
-    def addJSON( title, URL, price, json_file):
+    def addJSON(title, URL, price, json_file):
         """
         Adds JSON to a designated JSON file
         
@@ -157,7 +157,7 @@ class itemBase:
             dataFile = open('productList.json', 'w+')
             dataFile.seek(0)
 
-            json.dump(data, dataFile)
+            json.dump(data, dataFile, indent=4)
             dataFile.truncate()
             dataFile.close()
             with open(json_file, "r") as dataFile:
@@ -171,7 +171,8 @@ class itemBase:
             print("An Error occurred while opening/writing to JSON")
             return 0
 
-    def delItem(self, URL, json_file):
+    @staticmethod
+    def delItem(URL, json_file):
         """
         Deletes a specified JSON entry from a specified json_file by URL
 
@@ -186,31 +187,24 @@ class itemBase:
         :return: 0 if an error occurred when trying to delete the entry.
         :return: 1 if the item was deleted successfully.
         """
-        try:
-            with open(json_file, 'r') as json_file:
-                data = json.load(json_file)
+        with open(json_file, 'r') as temp_file:
+            data = json.load(temp_file)
 
-            index = 0
-            found = None
-            for url_str in data['Product']:
-                print(url_str['productLink'])
-                if URL == data['Product']['productLink']:
-                    found=data['Product'].pop(index)
-                index += 1
+        index = 0
+        found = None
+        for url_str in data['Product']:
+            if URL == url_str['productLink']:
+                found=data['Product'].pop(index)
+            index += 1
 
-            if found is None:
-                return 0
-            #item = data['Product'].pop(index)
-            dataFile = open(json_file, 'w+')
-            dataFile.seek(0)
-            json.dump(data, dataFile)
-            dataFile.truncate()
-            dataFile.close()
-
-            return 1
-        except:
-            print("An error has occured when attempting to delete from the JSON file.")
+        if found is None:
             return 0
+        
+        with open(json_file, 'w') as dataFile:
+            dataFile.seek(0)
+            json.dump(data, dataFile, indent=4)
+
+        return 1
 
 if __name__ == '__main__':
     if len(sys.argv) == 3 :

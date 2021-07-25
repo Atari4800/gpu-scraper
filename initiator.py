@@ -6,7 +6,7 @@ import subprocess
 import re
 import json
 import platform
-#import interface
+import interface
 
 
 class initiator:
@@ -112,7 +112,7 @@ class initiator:
                             numCrawled = numCrawled + 1
                         elif p.poll() == 1:
                             theProcesses.pop(count)
-                            #interface.notification(theData[count][0],theData[count][1],theData[count][2],theData[count][3])
+                            interface.notification(theData[count][0],theData[count][1],theData[count][2],theData[count][3])
                             theData.pop(count)
                             print('Interface call!!!!!')
                             numCrawled = numCrawled + 1
