@@ -22,7 +22,7 @@ def test_init_valid():
 
 def test_init_invalid():
     test_obj = sc.Scraper(url=good_stock_urlBB, url_type=None)
-    assert test_obj.store_label is None
+    assert test_obj.store_type is None
 
 
 def test_get_bb_good():
