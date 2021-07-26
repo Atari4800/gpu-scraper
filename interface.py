@@ -70,7 +70,8 @@ class ProductRow:
                 lambda event: webbrowser.open(product["productLink"]))
         
         def delete_me(event):
-            itemBase.itemBase.delItem(URL=self.url, 
+            base = itemBase.itemBase()
+            base.delItem(URL=self.url, 
                     json_file="productList.json")
             self.self_destruct()
         
@@ -169,16 +170,19 @@ def launchGUI():
         window_new_query = tk.Tk()
         window_new_query.title("Create new Query")
         
-        frame_fields = tk.Frame(master=window_new_query)
-        frame_fields.pack(padx=10, pady=10)
+        frame_content = tk.Frame(master=window_new_query)
+        frame_content.pack(padx=10, pady=10)
         
+        frame_fields = tk.Frame(master=frame_content)
+        frame_fields.pack()
+
         lbl_enter_url = tk.Label(text="Product link:", master=frame_fields)
-        lbl_enter_url.pack(anchor="w")
+        lbl_enter_url.grid(column=0, row=0)
         
         entry_url = tk.Entry(width=40, master=frame_fields)
-        entry_url.pack()
+        entry_url.grid(column=1, row=0)
         
-        lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_fields)
+        lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_content)
         lbl_invalid_input.pack()
         
         def handle_new_query_add():
@@ -210,7 +214,7 @@ def launchGUI():
                 else:
                     lbl_invalid_input["text"] = f"addItem error: {result}"
 
-        button_add = tk.Button(text="Add", master=frame_fields, command=handle_new_query_add, padx=3)
+        button_add = tk.Button(text="Add", master=frame_content, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
         window_new_query.bind("<Return>", lambda event: handle_new_query_add())
         
