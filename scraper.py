@@ -11,133 +11,183 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options as FFOpt
 from bs4 import BeautifulSoup
 
-def get_source(url):
-    """
 
-    """
-    the_driver = './drivers/geckodriver'
-    option = FFOpt()
-    option.headless = True
-    try:
-        browser = webdriver.Firefox(options=option, executable_path=the_driver)
-
-    except Exception:
-        print(
-            "Could not find the driver. Ensure that the \'geckodriver\' is in the directory: "
-            "./drivers/geckodriver")
-        return -1
-
-    #try:
-    if not re.search("https",url) or not re.search("http", url):
-        url = "https://"+url
-    browser.get(url)
-    """
-    except Exception:
-        print(
-            "Could not find the driver. Ensure that the \'geckodriver\' is in the directory: "
-            "./drivers/geckodriver")
-        return -1
-    """
-    soup = BeautifulSoup(browser.page_source,features="lxml")
-    browser.close()
-    return soup
-
-def get_fields_bb(url,title,price):
-    page_source = get_source(url)
-    if page_source is not None and not isinstance(page_source,int):
-        if title is None:
-            title = get_title_bb(page_source)
-        if price is None:
-            price = get_price_bb(page_source)
-        return [title, price]
-def get_fields_ne(url,title,price):
-    page_source = get_source(url)
-    if page_source is not None and not isinstance(page_source,int):
-        if title is None:
-            title = get_title_ne(page_source)
-        if price is None:
-            price = get_price_ne(page_source)
-        return [title, price]
-
-def get_fields_bh(url,title,price):
-    page_source = get_source(url)
-    if page_source is not None and not isinstance(page_source,int):
-        if title is None:
-            title = get_title_bh(page_source)
-        if price is None:
-            price = get_price_bh(page_source)
-        return [title, price]
-
-def get_title_bh(soup):
-    results = soup.find(class_='title_1S1JLm7P93Ohi6H_hq7wWh')
-    if results is None:
-        print("ERROR title not found. Cannot add product.")
-        print(
-            'B&H bot detection may have picked you up. Please increase product checking interval in the scheduler. Then go to B&H\'s website to do their recaptcha and try again.')
-        return None
-    title = results.get_text().split('BH')[0]
-    return title
-def get_price_bh(soup):
-    results = soup.find(class_='price_1DPoToKrLP8uWvruGqgtaY')
-    if results == None:
-        print("ERROR price not found. Cannot add product.")
-        return None
-    price_str = results.get_text()
-    price = float(price_str.split('$')[1].replace(',', ''))
-    return price
-
-def get_title_ne(soup):
-    results = soup.find(class_='product-title')
-    if results == None:
-        print("ERROR title not found. Cannot add product.")
-        return None
-    title = str(results)[len('<h1 class=\"product-title\">'):-len('</h1>')]
-    return title
-
-def get_price_ne(soup):
-    results = soup.find(class_='product-price')
-    if results == None:
-        print("ERROR price not found. Cannot add product.")
-        return None
-    price_str = results.get_text()
-    if re.search('Sale', price_str):
-        price = re.findall(r"\d+\.\d+", price_str)
-        # price = re.findall("d+.d+", price_str)
-        if price == None:
-            print("ERROR price not found. Cannot add product.")
-            return None
-        price = float(price[0])
-    else:
-        price = float(price_str.split('$')[1].replace(',', ''))
-        return price
-
-def get_title_bb(soup):
-    results = soup.find(class_='sku-title')
-    if results == None:
-        print("ERROR title not found. Cannot add product.")
-        return None
-    results = results.find(class_='heading-5 v-fw-regular')
-    if results == None:
-        print("ERROR title not found. Cannot add product.")
-        return None
-    title = str(results)[len('h1 class = \"heading-5 v-fw-regular\"'):-len('</h1>')]
-    return title
-
-
-def get_price_bb(soup):
-    results = soup.find(class_='priceView-hero-price priceView-customer-price')
-    if results == None:
-        print("ERROR price not found. Cannot add product.")
-        return None
-    price_str = str(results)
-    price = float(price_str[price_str.index('aria-hidden="true">') + len('aria-hidden="true">') + 1:price_str.index(
-        '</span><span class')].replace(',', ''))
-    return price
 
 class Scraper:
     """
     This class handles web scraping operations.
     """
+
+    def __get_source(url):
+        """
+        Retrieves a webpage's source code and creates a bs4 object from it
+
+        :type url: string
+        :param url: A valid URL
+
+        :return: a bs4 object containing page source code.
+        """
+        the_driver = './drivers/geckodriver'
+        option = FFOpt()
+        option.headless = True
+        try:
+            browser = webdriver.Firefox(options=option, executable_path=the_driver)
+
+        except Exception:
+            print(
+                "Could not find the driver. Ensure that the \'geckodriver\' is in the directory: "
+                "./drivers/geckodriver")
+            return -1
+
+        # try:
+        if not re.search("https", url) or not re.search("http", url):
+            url = "https://" + url
+        browser.get(url)
+        """
+        except Exception:
+            print(
+                "Could not find the driver. Ensure that the \'geckodriver\' is in the directory: "
+                "./drivers/geckodriver")
+            return -1
+        """
+        soup = BeautifulSoup(browser.page_source, features="lxml")
+        browser.close()
+        return soup
+    @staticmethod
+    def get_fields_bb(url, title, price):
+        """
+        Retrieves the name of a product, and a product's price from a bestbuy link.
+
+        :type url: string
+        :type url: the bestbuy url of a product
+
+        :type title: string
+        :param title: The name of a product to be added.
+
+        :type price: double
+        :param price: The price of a product to be added.
+        """
+        if not re.search("www.bestbuy.com/", url):
+            return [None, None]
+        page_source = Scraper.__get_source(url)
+        if page_source is not None and not isinstance(page_source, int):
+            if title is None:
+                title = Scraper.__get_title_bb(page_source)
+            if price is None:
+                price = Scraper.__get_price_bb(page_source)
+            return [title, price]
+    @staticmethod
+    def get_fields_ne(url, title, price):
+        """
+        Retrieves the name of a product, and a product's price from a newegg link.
+
+        :type url: string
+        :type url: the newegg url of a product
+
+        :type title: string
+        :param title: The name of a product to be added.
+
+        :type price: double
+        :param price: The price of a product to be added.
+        """
+        if not re.search("www.newegg.com/", url):
+            return [None, None]
+        page_source = Scraper.__get_source(url)
+        if page_source is not None and not isinstance(page_source, int):
+            if title is None:
+                title = Scraper.__get_title_ne(page_source)
+            if price is None:
+                price = Scraper.__get_price_ne(page_source)
+            return [title, price]
+    @staticmethod
+    def get_fields_bh(url, title, price):
+        """
+        Retrieves the name of a product, and a product's price from a b&h link.
+
+        :type url: string
+        :type url: the b&h url of a product
+
+        :type title: string
+        :param title: The name of a product to be added.
+
+        :type price: double
+        :param price: The price of a product to be added.
+        """
+        if not re.search("www.bhphotovideo.com/", url):
+            return [None, None]
+        page_source = Scraper.__get_source(url)
+        if page_source is not None and not isinstance(page_source, int):
+            if title is None:
+                title = Scraper.__get_title_bh(page_source)
+            if price is None:
+                price = Scraper.__get_price_bh(page_source)
+            return [title, price]
+
+    def __get_title_bh(soup):
+        results = soup.find(class_='title_1S1JLm7P93Ohi6H_hq7wWh')
+        if results is None:
+            print("ERROR title not found. Cannot add product.")
+            print(
+                'B&H bot detection may have picked you up. Please increase product checking interval in the scheduler. Then go to B&H\'s website to do their recaptcha and try again.')
+            return None
+        title = results.get_text().split('BH')[0]
+        return title
+
+    def __get_price_bh(soup):
+        results = soup.find(class_='price_1DPoToKrLP8uWvruGqgtaY')
+        if results == None:
+            print("ERROR price not found. Cannot add product.")
+            return None
+        price_str = results.get_text()
+        price = float(price_str.split('$')[1].replace(',', ''))
+        return price
+
+    def __get_title_ne(soup):
+        results = soup.find(class_='product-title')
+        if results == None:
+            print("ERROR title not found. Cannot add product.")
+            return None
+        title = str(results)[len('<h1 class=\"product-title\">'):-len('</h1>')]
+        return title
+
+    def __get_price_ne(soup):
+        results = soup.find(class_='product-price')
+        if results == None:
+            print("ERROR price not found. Cannot add product.")
+            return None
+        price_str = results.get_text()
+        if re.search('Sale', price_str):
+            price = re.findall(r"\d+\.\d+", price_str)
+            # price = re.findall("d+.d+", price_str)
+            if price == None:
+                print("ERROR price not found. Cannot add product.")
+                return None
+            price = float(price[0])
+        else:
+            price = float(price_str.split('$')[1].replace(',', ''))
+            return price
+
+    def __get_title_bb(soup):
+        results = soup.find(class_='sku-title')
+        if results == None:
+            print("ERROR title not found. Cannot add product.")
+            return None
+        results = results.find(class_='heading-5 v-fw-regular')
+        if results == None:
+            print("ERROR title not found. Cannot add product.")
+            return None
+        title = str(results)[len('h1 class = \"heading-5 v-fw-regular\"'):-len('</h1>')]
+        return title
+
+    def __get_price_bb(soup):
+        results = soup.find(class_='priceView-hero-price priceView-customer-price')
+        if results == None:
+            print("ERROR price not found. Cannot add product.")
+            return None
+        price_str = str(results)
+        price = float(price_str[price_str.index('aria-hidden="true">') + len('aria-hidden="true">') + 1:price_str.index(
+            '</span><span class')].replace(',', ''))
+        return price
 
     def __init__(self, url, url_type):
         """

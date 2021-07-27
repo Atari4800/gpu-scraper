@@ -6,7 +6,7 @@ import re
 import json
 import platform
 import interface
-
+from datetime import datetime
 
 class Initiator:
     """
@@ -67,7 +67,8 @@ class Initiator:
         """
         Begins the backend portion of the program, loads the JSON file and reads for the urls therein. If the url
         contains one of the supported link websites, then it calls the appropriate subprocess to attempt to find
-        product in the url
+        product in the url. If a product is found/not found isAvailable is updated accordingly. If a product is
+        found then lastAvailable is updated with the current date/time.
         
         :return: The number of websites that were crawled.
         """
@@ -110,16 +111,27 @@ class Initiator:
                     count = 0
                     for p in the_processes:
                         if p.poll() == 0:
+                            for prod in self.data['Product']:
+                                if re.search(prod['productLink'], the_data[count][1]):
+                                    prod['isAvailable'] = False
                             the_data.pop(count)
                             the_processes.pop(count)
                             num_crawled += 1
+
                         elif p.poll() == 1:
                             the_processes.pop(count)
+                            for prod in self.data['Product']:
+                                if re.search(prod['productLink'], the_data[count][1]):
+                                    prod['isAvailable'] = True
+                                    now = datetime.now()
+                                    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+                                    prod['lastAvailable'] = dt_string
                             interface.notification(the_data[count][0],the_data[count][1],the_data[count][2],the_data[count][3])
                             the_data.pop(count)
                             print('Interface call!!!!!')
                             num_crawled += 1
                         count += 1
+            item_base.save_state(self.data, self.prod_link)
         return num_crawled
 
 

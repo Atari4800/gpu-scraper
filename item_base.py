@@ -26,7 +26,13 @@ class item_base:
         
         :type url: string
         :param url: The url of the item that needs to be monitored (B&H, Newegg, and Bestbuy links only)
-        
+
+        :type title: string
+        :param title: The name of a product to be added.
+
+        :type price: double
+        :param price: The price of a product to be added.
+
         :type json_file: string
         :param json_file: The productList that the url's JSON entry will be placed in.
         :return: -5 if there is a duplicate link found within the JSON file.
@@ -64,11 +70,11 @@ class item_base:
         print("Attemping to add url and its information...")
         if title is None or price is None:
             if re.search("www.bestbuy.com/", url):
-                fields = scraper.get_fields_bb(url,title,price)
+                fields = scraper.Scraper.get_fields_bb(url,title,price)
             elif re.search("www.newegg.com/"):
-                fields = scraper.get_fields_ne(url,title,price)
+                fields = scraper.Scraper.get_fields_ne(url,title,price)
             elif re.search("www.bhphotovideo.com", url) :
-                fields = scraper.get_fields_bh(url,title,price)
+                fields = scraper.Scraper.get_fields_bh(url,title,price)
             else:
                 print("The text which was input is not supported")
                 return -4
@@ -80,11 +86,24 @@ class item_base:
         if title is None or price is None:
             return -1
         data_file.close()
-        return self.add_json(title, url, price, json_file)
-
+        return self.__add_json(title, url, price, json_file)
 
     @staticmethod
-    def add_json(title, url, price, json_file):
+    def save_state(data, json_file):
+        """
+
+        """
+        try:
+            data_file = open('productList.json', 'w+')
+            data_file.seek(0)
+            json.dump(data, data_file)
+            data_file.truncate()
+            data_file.close()
+        except Exception:
+            print("THE STATE COULD NOT BE SAVED")
+            return 0
+        return 1
+    def __add_json(title, url, price, json_file):
         """
         Adds JSON to a designated JSON file
         
@@ -108,10 +127,10 @@ class item_base:
                 data = json.load(data_file)
             with open(json_file, "r") as data_file:
                 dupData = json.load(data_file)
-            json_obj = {'productType':title,'productLink':url,'productPrice':price}
+            json_obj = {'productType':title,'productLink':url,'productPrice':price, 'isAvailable': False, 'lastAvailable':""}
             data['Product'].append(json_obj)
-
-            data_file = open('productList.json', 'w+')
+            data_file.close()
+            data_file = open('json_file', 'w+')
             data_file.seek(0)
 
             json.dump(data, data_file)
@@ -120,10 +139,11 @@ class item_base:
             with open(json_file, "r") as data_file:
                 data2 = json.load(data_file)
             if dupData == data2:
+
+                return 1
+            else:
                 print("An Error occurred while writing to JSON")
                 return 0
-            else:
-                return 1
         except:
             print("An Error occurred while opening/writing to JSON")
             return 0
