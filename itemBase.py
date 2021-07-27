@@ -171,8 +171,7 @@ class itemBase:
             print("An Error occurred while opening/writing to JSON")
             return 0
 
-    @staticmethod
-    def delItem(URL, json_file):
+    def delItem(self, URL, json_file):
         """
         Deletes a specified JSON entry from a specified json_file by URL
 
