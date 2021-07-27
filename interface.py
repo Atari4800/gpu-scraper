@@ -1,73 +1,129 @@
 """
-This file handles the GUI component of our application. It is responsible for 
-creating the main GUI and related components like popup windows or 
-notifications.
+This file handles the GUI component of our application. It is 
+responsible for creating the main GUI and related components like popup
+windows or notifications.
 """
 
 import tkinter as tk
 import webbrowser
 import re
 import json
-import os
+import sys
+import subprocess
 import tkinter.font as tkFont
+
+import itemBase
+
+class ProductRow:
+    """
+    This class handles everything related to a single row in the current
+    queries table on the main page of the GUI. An instance of this 
+    object displays the specified information about a single product,
+    makes, and handles any related buttons.
+    """
+    
+    rows = 0
+    """
+    Static class variable to count how many instances of ProductRow have
+    been made.
+    """
+    
+    refresh = lambda:print("Meaningless refresh")
+    """
+    refresh is a function that it calls after deleting an item to properly
+    call the updateScrollRegion method and shrink the scrolling region.
+    """
+
+    def __init__(self, myMaster):
+        """
+        Creates a new ProductRow, handling a whole row in the current
+        queries table.
+
+        :type myMaster: string
+        :param myMaster: The name of this component's master component
+
+        :type index: int
+        :param index: The index of this row in the table. The first row
+        has index 0, the second is index 1, and so on.
+        """
+        self.row = ProductRow.rows
+
+        with open("productList.json", "r") as dataFile:
+            data = json.load(dataFile)
+        
+        product = data["Product"][self.row]
+        
+        self.label = product["productType"]
+        self.url = product["productLink"]
+
+        self.name = tk.Label(text=self.label, master=myMaster,
+                width=15, anchor="w")
+        self.price = tk.Label(text="   ${:.2f}   ".format(
+            product["productPrice"]), master=myMaster)
+        self.link = tk.Label(text=shortenURL(self.url), 
+                master=myMaster)
+        f = tkFont.Font(self.link, self.link.cget("font"))
+        f.configure(underline = True)
+        self.link.configure(font=f)
+
+        self.link.bind("<Button-1>", 
+                lambda event: webbrowser.open(product["productLink"]))
+        
+        def delete_me(event):
+            base = itemBase.itemBase()
+            base.delItem(URL=self.url, 
+                    json_file="productList.json")
+            self.self_destruct()
+        
+
+        self.delete = tk.Button(text="Delete", master=myMaster)
+        self.delete.bind("<Button-1>", delete_me) 
+                
+        self.name.grid(row=self.row + 1, column=0, sticky="w")
+        self.price.grid(row=self.row + 1, column=1, sticky="e")
+        self.link.grid(row=self.row + 1, column=2, sticky="w")
+        self.delete.grid(row=self.row + 1, column=3, sticky="e")
+
+        myMaster.grid_columnconfigure(index=3, minsize=85)
+    
+        ProductRow.rows += 1
+
+    def self_destruct(self):
+        self.name.destroy()
+        self.price.destroy()
+        self.link.destroy()
+        self.delete.destroy()
+        ProductRow.refresh()
 
 def launchGUI():
     """
-    Launches the main GUI window for our application. It displays information
-    about current queries and allows the user to create a new query (but does
-    not yet actually add the query, it just shows the GUI component is ready)
+    Launches the main GUI window for our application. It displays 
+    information about current queries and allows the user to create a 
+    new query (but does not yet actually add the query, it just shows
+    the GUI component is ready)
 
     :return: returns nothing
     """
 
+    # Main window root and giving it a title and some text
     window = tk.Tk()
-    window.title("GPU-Scraper")
-    
-    with open("productList.json", "r") as dataFile:
-        data = json.load(dataFile)
+    window.title("GPU Hunter")
+    window.resizable(width=False, height=False)
 
-    lbl_queries_title = tk.Label(text="Current Queries", master=window)
+    lbl_queries_title = tk.Label(text="Current Product Searches", master=window)
     lbl_queries_title.pack()
-
-    class ProductRow:
-        """
-        This class handles everything related to a single row in the current
-        queries table on the main page of the GUI. An instance of this object
-        displays the specified information about a single product and makes
-        and handles any related buttons.
-        """
-        def __init__(self, myMaster, index):
-            """
-            Creates a new ProductRow, handling a whole row in the current
-            queries table.
-
-            :type myMaster: string
-            :param myMaster: The name of this component's master component
-
-            :type index: int
-            :param index: The index of this row in the table. The first row has
-            index 0, the second is index 1, and so on.
-            """
-            self.index = index
-            product = data["Product"][index]
-
-            self.name = tk.Label(text=product["productType"], master=myMaster)
-            self.price = tk.Label(text="   ${:.2f}   ".format(product["productPrice"]), master=myMaster)
-            self.link = tk.Label(text=shortenURL(product["productLink"]), master=myMaster)
-            f = tkFont.Font(self.link, self.link.cget("font"))
-            f.configure(underline = True)
-            self.link.configure(font=f)
-
-            self.link.bind("<Button-1>", lambda event: webbrowser.open(product["productLink"]))
-
-            self.name.grid(row=self.index + 1, column=0, sticky="w")
-            self.price.grid(row=self.index + 1, column=1, sticky="e")
-            self.link.grid(row=self.index + 1, column=2, sticky="w")
-
+    
+    # Creates the necessary structure of containers for the scrolling
+    # The container structure is as follows:
+    # window (Tk)
+    # └── frame_wrapper (Frame)
+    #     ├── canvas_queries (Canvas)
+    #     │   └── frame_product_rows (Frame)
+    #     └── scrollbar (Scrollbar)
     frame_wrapper = tk.Frame(master=window)
     frame_wrapper.pack()
 
-    canvas_queries = tk.Canvas(master=frame_wrapper, height=100)
+    canvas_queries = tk.Canvas(master=frame_wrapper, height=200)
     frame_product_rows = tk.Frame(master=canvas_queries)
     scrollbar = tk.Scrollbar(master=frame_wrapper)
 
@@ -93,9 +149,13 @@ def launchGUI():
     lbl_col1.grid(row=0, column=0)
     lbl_col2.grid(row=0, column=1)
     lbl_col3.grid(row=0, column=2)
-    
+   
+    ProductRow.refresh = updateScrollRegion
+
+    with open("productList.json", "r") as dataFile:
+        data = json.load(dataFile)
     for i in range(len(data["Product"])):
-        row = ProductRow(frame_product_rows, i)
+        row = ProductRow(frame_product_rows)
 
     updateScrollRegion() 
 
@@ -110,25 +170,21 @@ def launchGUI():
         window_new_query = tk.Tk()
         window_new_query.title("Create new Query")
         
-        frame_fields = tk.Frame(master=window_new_query)
-        frame_fields.pack()
+        frame_content = tk.Frame(master=window_new_query)
+        frame_content.pack(padx=10, pady=10)
         
+        frame_fields = tk.Frame(master=frame_content)
+        frame_fields.pack()
+
         lbl_enter_url = tk.Label(text="Product link:", master=frame_fields)
-        lbl_enter_url.grid(row=0, column=0)
+        lbl_enter_url.grid(column=0, row=0)
         
         entry_url = tk.Entry(width=40, master=frame_fields)
-        entry_url.grid(row=0, column=1)
+        entry_url.grid(column=1, row=0)
         
-        lbl_query_label = tk.Label(text="Query label:", master=frame_fields)
-        lbl_query_label.grid(row=1, column=0)
-        
-        entry_query_label = tk.Entry(width=40, master=frame_fields)
-        entry_query_label.grid(row=1, column=1)
-        
-        lbl_invalid_input = tk.Label(text="", foreground="red", master=window_new_query)
+        lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_content)
         lbl_invalid_input.pack()
         
-        # This method is called when the adding query window add button is clicked.
         def handle_new_query_add():
             """
             When the add button is pressed in the window to get input for a new
@@ -137,24 +193,30 @@ def launchGUI():
             will close the dialog. If input is invalid, it will display an 
             error message and not close the window.
             """
-            if entry_url.get() != "" and entry_query_label.get() != "":
-                # Add this product to the json file
-                #os.system(f"python3 productAdder.py {entry_query_label.get()} {entry_url.get()}")
-                window_new_query.destroy()
-            else:
-                lbl_invalid_input["text"] = "One or more fields blank"
-        
-        def handle_return(event):
-            """
-            This method is called when the user has the window open for a new
-            query and presses the enter or return key. It will attempt to submit
-            the input to the handle_new_query_add function.
-            """
-            handle_new_query_add()
 
-        button_add = tk.Button(text="Add", master=window_new_query, command=handle_new_query_add, padx=3, pady=3)
+            lbl_invalid_input["text"]="Processing request..."
+            
+            if entry_url.get() == "": 
+                lbl_invalid_input["text"] = "URL is empty"
+            elif shortenURL(entry_url.get()) == "Other":
+                lbl_invalid_input["text"] = "URL is invalid or unsupported"
+            else:
+                # Add this product to the json file
+                adder = itemBase.itemBase()
+                result = adder.addItem(entry_url.get(), "productList.json")
+                if result == 1:
+                    messageDialog("Successful addition!", "Success")
+                    ProductRow(frame_product_rows)
+                    updateScrollRegion()
+
+                    window_new_query.quit()
+                    window_new_query.destroy()
+                else:
+                    lbl_invalid_input["text"] = f"addItem error: {result}"
+
+        button_add = tk.Button(text="Add", master=frame_content, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
-        window_new_query.bind("<Return>", handle_return)
+        window_new_query.bind("<Return>", lambda event: handle_new_query_add())
         
         window_new_query.mainloop()
 
@@ -163,9 +225,9 @@ def launchGUI():
     button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
     button_add_query.bind("<Button-1>", handle_new_query_button)
 
-    #button_notification = tk.Button(text="Simulate notification", master=window, 
-    #        command=lambda: notification("RTX 3080", "https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400", "$849.99 USD", "No"))
-    #button_notification.pack(side=tk.TOP, pady=10, padx=10)
+    button_go_now = tk.Button(text="Search now!", master=window, borderwidth=3, padx=3, pady=3)
+    button_go_now.pack(side=tk.RIGHT)
+    button_go_now.bind("<Button-1>", lambda event: subprocess.run([sys.executable, "initiator.py"]))
 
     window.mainloop()
 
@@ -221,7 +283,7 @@ def notification(product, source, price, belowMSRP):
 
     frame.grid_columnconfigure(0, minsize=100)
     frame.pack(padx=10, pady=10)
-
+    
     screen_width = window_notification.winfo_screenwidth()
     screen_height = window_notification.winfo_screenheight()
     
@@ -231,6 +293,7 @@ def notification(product, source, price, belowMSRP):
     window_notification.geometry(f"+{x}+{y}")
 
     #window_notification.after(2000, close)
+    
     def close():
         """
         This method is called when the user closes the notification window.
@@ -243,13 +306,12 @@ def notification(product, source, price, belowMSRP):
         window_notification.destroy()
     
     window_notification.protocol("WM_DELETE_WINDOW", close)
-    
     window_notification.mainloop()
 
 def confirmationDialog(message, command, title="Please confirm"):
     """
     Creates a confirmation dialog. This is a simple dialog which displays a 
-    single line of text, a cancel button, and an okay button. It is used when
+    single line of text, a yes button, and a no button. It is used when
     it is useful to make sure the user wants to perform some critical action
     before actually executing that action. For example, if there was a button
     on the GUI to delete a query, it would be appropriate to use a confirmation
@@ -270,7 +332,7 @@ def confirmationDialog(message, command, title="Please confirm"):
     confirmation = tk.Tk()
     confirmation.title(title)
     confirmation.resizable(width=False, height=False)
-
+    
     components = tk.Frame(master=confirmation) 
     lbl_message = tk.Label(text=message, master=components)
     lbl_message.pack(pady=5)
@@ -281,7 +343,7 @@ def confirmationDialog(message, command, title="Please confirm"):
         confirmation.destroy()
 
     def success():
-        """The code to be run when the user presses okay"""
+        """The code to be run when the user presses yes"""
         command()
         close()
     
@@ -301,7 +363,7 @@ def confirmationDialog(message, command, title="Please confirm"):
 
 def shortenURL(url):
     """
-    This standalone function will attempt to return a shorter version of the 
+    This standalone function will attempt to return a shorter version of th 
     given url. This is useful for displaying the source of a query to the user
     for a situation like a GUI or notification where the full url might require
     too much space.
@@ -310,39 +372,42 @@ def shortenURL(url):
     :param url: The url to attempt to shorten
 
     :return: 
-    If the url is for one of the websites we are focusing on, it returns the 
+    If the url is for one of the websites we are focusing on, it returns the
     name of that business.
 
     A best buy url would return 'Best Buy'
     A Newegg url would return 'Newegg'
     A B&H url would return 'B&H'
-
-    If the url is not one of the three main sites, it attempts to identify the 
-    main components (subdomain, domain, and domain extension) of the url and 
-    return it. For example, if the input url were
-    'https://www.tutorialspoint.com/pytest/index.htm', the output would be
-    'www.tutorialspoint.com'.
-
-    If it fails to identify the main part of the url for any reason, it will
-    just return the full url it was input. This would happen if the input url
-    was invalid (e.g. missing the https).
+    
+    Otherwise, would return 'Other'
     """
     
-    result = ""
+    result = "Other"
     if re.search("www.bestbuy.com/", url):
         result = "Best Buy"
     elif re.search("www.newegg.com/", url):
         result = "Newegg"
     elif re.search("www.bhphotovideo.com/", url):
         result = "B&H"
-    else:
-        findings = re.search("http(?:s)?\:\/\/(.*\.(?:com|org|gov|net|edu))", url)
-        if findings:
-            result = findings.group(1)
-        else:
-            result = url
     return result
 
+def messageDialog(message, title="Message"):
+    """
+    Creates a dialog to display a brief textual message to the user. Useful
+    for communicating error messages or success messages to the user.
+
+    :type message: string
+    :param message: The textual message to be displayed inside the window
+
+    :type title: string
+    :param title: The optional title of the dialog window
+    """
+    message_window = tk.Tk()
+    message_window.title(title)
+    message_window.resizable(width=False, height=False)
+    
+    lbl = tk.Label(text=message, master=message_window)
+    lbl.pack(padx=10, pady=10)
 
 if __name__ == "__main__":
     launchGUI()

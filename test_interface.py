@@ -10,20 +10,9 @@ def test_shortenURL_common_input():
     assert shortenURL("https://www.bhphotovideo.com/c/product/1614301-REG/asus_rog_strix_rtx3080_o10g_white_rog_strix_geforce_rtx.html") == "B&H"
     assert shortenURL("https://www.bhphotovideo.com/c/product/1566879-REG/arri_l2_0034025_orbiter_manual_yoke_with.html") == "B&H"
 
-def test_shortenURL_valid_URL():
-    assert shortenURL("https://realpython.com/pytest-python-testing/") == "realpython.com"
-    assert shortenURL("https://www.youtube.com/watch?v=wqaFYeZ6D3o") == "www.youtube.com"
-    assert shortenURL("https://www.tutorialspoint.com/pytest/index.htm") == "www.tutorialspoint.com"
-    assert shortenURL("https://pypi.org/project/pytest/") == "pypi.org"
-    assert shortenURL("https://www.unr.edu/cse/undergraduates/prospective-students/what-is-software-engineering") == "www.unr.edu"
-
-def test_shortenURL_invalid_URL():
-    assert shortenURL("") == ""
-    assert shortenURL("  ") == "  "
-    assert shortenURL("htp://www.youtube.com/asdf") == "htp://www.youtube.com/asdf"
-    assert shortenURL("https//www.youtube.com/asdf") == "https//www.youtube.com/asdf"
-    assert shortenURL("asdf://www.youtube.com/asdf") == "asdf://www.youtube.com/asdf"
-    assert shortenURL("https:/www.youtube.com/asdf") == "https:/www.youtube.com/asdf"
-    assert shortenURL("asdfasdf") == "asdfasdf"
-    assert shortenURL("https://www.youtube/asdf") == "https://www.youtube/asdf"
-    assert shortenURL("https://www.youtube.moc/asdf") == "https://www.youtube.moc/asdf"
+def test_shortenURL_other():
+    assert shortenURL("https://realpython.com/pytest-python-testing/") == "Other"
+    assert shortenURL("https://www.unr.edu/cse/undergraduates/prospective-students/what-is-software-engineering") == "Other"
+    assert shortenURL("") == "Other"
+    assert shortenURL("  ") == "Other"
+    assert shortenURL("asdf") == "Other"
