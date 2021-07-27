@@ -8,6 +8,9 @@ import platform
 import interface
 from datetime import datetime
 
+from item_base import item_base as item_base
+
+
 class Initiator:
     """
     This class handles the instantiation of a productList and has the ability to test sites and products
@@ -114,6 +117,7 @@ class Initiator:
                             for prod in self.data['Product']:
                                 if re.search(prod['productLink'], the_data[count][1]):
                                     prod['isAvailable'] = False
+                                    prod['lastAvailable'] = prod['lastAvailable']
                             the_data.pop(count)
                             the_processes.pop(count)
                             num_crawled += 1

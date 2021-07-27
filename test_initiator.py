@@ -1,3 +1,5 @@
+import json
+
 import initiator as it
 import pytest
 
@@ -43,7 +45,9 @@ def test_initiateEmptyJSON():
     assert test_obj.initiate() == 0
 def test_initiateProductsExist():
     test_obj = it.Initiator(the_products="control_productList.json")
-    assert test_obj.initiate() == 8
+    with open("control_productList.json", "r") as data_file:
+        data = json.load(data_file)
+    assert test_obj.initiate() == len(data['Product'])
 
 
 

@@ -3,11 +3,8 @@ This file handles the adding, and deleting of items from the productList.JSON fi
 """
 
 import json, sys, re
-import initiator
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.options import Options as FFOpt
-from bs4 import BeautifulSoup
+import platform
+import subprocess
 
 import scraper
 
@@ -17,7 +14,29 @@ class item_base:
     This class handles the modification of items inside of a designated productList.
     """
 
+    def __poll_site(base_url):
+        """
+        This is the same method from initiator, it has been added to prevent circular dependencies.
+            Pings a website to see if the website is 'up'
 
+        :type base_url: string
+        :param base_url: The website to be pinged
+
+        :return: The number of successful pings to the target website
+        """
+        host = re.search(r'//(.*?)/', base_url)
+        if host is not None:
+            host = host.group(1)
+        else:
+            host = base_url
+        print("Checking if the Host is up! ")
+        # Option for the number of packets as a function of
+        p_type = '-n' if platform.system().lower() == 'windows' else '-c'
+        w_type = '-t' if platform.system().lower() == 'windows' else '-w'
+
+        # Building the command. Ex: "ping -c 1 google.com"
+        command = ['ping', p_type, '1', w_type, '1', host]
+        return subprocess.call(command) == 0
     def add_item(self, url, title, price, json_file):
 
         """
@@ -40,17 +59,11 @@ class item_base:
         :return: -3 if the url's domain cannot be reached.
         :return: -2 if there is a problem opening the JSON file or Reading from it.
         :return: -1 if the item cannot be found.
-        :return:  0 if the item could not be added to the json_file.
+        :return:  0 if the item could not be added to the file.
         :return:  1 if the item was added successfully.
         """
 
-
-
-
-
-
-        pinger = initiator.Initiator
-        if not pinger.poll_site(base_url=url):
+        if not item_base.__poll_site(base_url=url):
             return -3
         supported_urls = ['www.bestbuy.com/', 'www.newegg.com/', 'www.bestbuy.com/']
         if not any(x in url for x in supported_urls):
@@ -64,6 +77,7 @@ class item_base:
         if 'Product' in data:
             for url_str in data['Product']:
                 if str(url_str['productLink']) == url:
+                    print(str(url_str['productLink']))
                     print("Duplicate url, cannot add.")
                     return -5
 
@@ -94,15 +108,17 @@ class item_base:
 
         """
         try:
-            data_file = open('productList.json', 'w+')
+            data_file = open(json_file, 'w+')
             data_file.seek(0)
-            json.dump(data, data_file)
+            data_file.write(json.dumps(data, sort_keys= True, indent = 4, separators=(',',':')))
             data_file.truncate()
+
             data_file.close()
         except Exception:
             print("THE STATE COULD NOT BE SAVED")
             return 0
         return 1
+    @staticmethod
     def __add_json(title, url, price, json_file):
         """
         Adds JSON to a designated JSON file
@@ -130,64 +146,47 @@ class item_base:
             json_obj = {'productType':title,'productLink':url,'productPrice':price, 'isAvailable': False, 'lastAvailable':""}
             data['Product'].append(json_obj)
             data_file.close()
-            data_file = open('json_file', 'w+')
-            data_file.seek(0)
+            return item_base.save_state(data, json_file)
 
-            json.dump(data, data_file)
-            data_file.truncate()
-            data_file.close()
-            with open(json_file, "r") as data_file:
-                data2 = json.load(data_file)
-            if dupData == data2:
-
-                return 1
-            else:
-                print("An Error occurred while writing to JSON")
-                return 0
         except:
             print("An Error occurred while opening/writing to JSON")
             return 0
 
-    def del_item(self, url, json_file):
+    @staticmethod
+    def del_item(url, json_file):
         """
         Deletes a specified JSON entry from a specified json_file by url
 
-        
         :type url: string
         :param url: The url of the item to be deleted.
-        
-        :type json_file: string
 
+        :type json_file: string
         :param json_file: The file to delete the JSON entry from.
-        
+
         :return: 0 if an error occurred when trying to delete the entry.
         :return: 1 if the item was deleted successfully.
         """
-        try:
-            with open(json_file, 'r') as json_file:
-                data = json.load(json_file)
 
-            index = 0
-            found = None
-            for url_str in data['Product']:
-                print(url_str['productLink'])
-                if url == data['Product']['productLink']:
-                    found = data['Product'].pop(index)
-                index += 1
+        with open(json_file, 'r') as the_file:
+            data = json.load(the_file)
+            the_file.close
+        index = 0
+        for i in data['Product']:
+            if str(i['productLink']) == url:
+                print(str(i))
+                print("\n\n" + str(data['Product'][index]))
+                data['Product'].pop(index)
+                found = True
+                break
+            index += 1
 
-            if found is None:
-                return 0
-            #item = data['Product'].pop(index)
-            data_file = open(json_file, 'w+')
-            data_file.seek(0)
-            json.dump(data, data_file)
-            data_file.truncate()
-            data_file.close()
-
-            return 1
-        except:
-            print("An error has occured when attempting to delete from the JSON file.")
+        if not found:
             return 0
+                # item = data['Product'].pop(index)
+        return item_base.save_state(data, json_file)
+        # except Exception:
+        print("An error has occured when attempting to delete from the JSON file.")
+        return 0
 
 if __name__ == '__main__':
     if len(sys.argv) == 3 :

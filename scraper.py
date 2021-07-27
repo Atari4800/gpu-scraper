@@ -76,6 +76,7 @@ class Scraper:
             if price is None:
                 price = Scraper.__get_price_bb(page_source)
             return [title, price]
+        return [None, None]
     @staticmethod
     def get_fields_ne(url, title, price):
         """
@@ -99,6 +100,7 @@ class Scraper:
             if price is None:
                 price = Scraper.__get_price_ne(page_source)
             return [title, price]
+        return [None, None]
     @staticmethod
     def get_fields_bh(url, title, price):
         """
@@ -113,7 +115,7 @@ class Scraper:
         :type price: double
         :param price: The price of a product to be added.
         """
-        if not re.search("www.bhphotovideo.com/", url):
+        if not re.search("/www.bhphotovideo.com/", url):
             return [None, None]
         page_source = Scraper.__get_source(url)
         if page_source is not None and not isinstance(page_source, int):
@@ -122,6 +124,7 @@ class Scraper:
             if price is None:
                 price = Scraper.__get_price_bh(page_source)
             return [title, price]
+        return [None, None]
 
     def __get_title_bh(soup):
         results = soup.find(class_='title_1S1JLm7P93Ohi6H_hq7wWh')
@@ -158,11 +161,13 @@ class Scraper:
         price_str = results.get_text()
         if re.search('Sale', price_str):
             price = re.findall(r"\d+\.\d+", price_str)
+            return float(price[0])
             # price = re.findall("d+.d+", price_str)
             if price == None:
                 print("ERROR price not found. Cannot add product.")
                 return None
             price = float(price[0])
+
         else:
             price = float(price_str.split('$')[1].replace(',', ''))
             return price
@@ -299,7 +304,7 @@ class Scraper:
 if __name__ == '__main__':
     url = sys.argv[1]
     store_label = sys.argv[2]
-    sc = scraper(url, store_label)
+    sc = Scraper(url, store_label)
     if store_label == 'BB' or store_label == 'BH':
         exit(sc.get_bb())
     elif store_label == 'NE':

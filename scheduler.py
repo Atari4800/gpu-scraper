@@ -12,14 +12,12 @@ import subprocess
 
 
 def make_cron_job(minutes):
-    
+    """
+    Creates a Scheduler object and creates the cron job for the gpu-hunter application.
+    """
     minute = minutes
     cron = CronTab(user=True)
-    basic_iter = cron.find_comment('Search for GPU task')
-    num = 0
-    for item in basic_iter:
-        num += 1
-        cron.remove(item)
+    halt_cron()
     currdir=str(os.getcwd())
     com = f'export DISPLAY=:0 && cd {currdir} && python3 initiator.py'
     job = cron.new(command = com)
@@ -27,6 +25,22 @@ def make_cron_job(minutes):
     print(f'CRON-JOB INITIATED FOR {minutes} MINUTES')
     job.minute.every(minute)
     cron.write()
+
+def halt_cron():
+    """
+    Halts all gpu-hunter cron jobs.
+
+    :return: 1 if a cron-job was found
+    :return: 0 if a cron-job was not found.
+    """
+    cron = CronTab(user=True)
+    success = 0
+    for job in cron:
+        if job.comment == 'Search for GPU task':
+            cron.remove(job)
+            cron.write()
+            success = 1
+    return success
 
 class Scheduler:
     """
