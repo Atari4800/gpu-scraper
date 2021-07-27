@@ -12,54 +12,54 @@ from bs4 import BeautifulSoup
 
 
 
-class item_base:
+class itemBase:
     """
     This class handles the modification of items inside of a designated productList.
     """
-    def add_item(self, url, json_file):
+    def addItem(self, URL, json_file):
         """
-        Adds an item to the designated product list as a JSON entry. First it checks a url for product information, then
-        it adds corresponding price, and url information to the productList.
+        Adds an item to the designated product list as a JSON entry. First it checks a URL for product information, then
+        it adds corresponding price, and URL information to the productList.
         
-        :type url: string
-        :param url: The url of the item that needs to be monitored (B&H, Newegg, and Bestbuy links only)
+        :type URL: string
+        :param URL: The URL of the item that needs to be monitored (B&H, Newegg, and Bestbuy links only)
         
         :type json_file: string
-        :param json_file: The productList that the url's JSON entry will be placed in.
+        :param json_file: The productList that the URL's JSON entry will be placed in.
         :return: -5 if there is a duplicate link found within the JSON file.
-        :return: -4 if the url entered is not supported.
-        :return: -3 if the url's domain cannot be reached.
+        :return: -4 if the URL entered is not supported.
+        :return: -3 if the URL's domain cannot be reached.
         :return: -2 if there is a problem opening the JSON file or Reading from it.
         :return: -1 if the item cannot be found.
         :return:  0 if the item could not be added to the json_file.
         :return:  1 if the item was added successfully.
         """
-        pinger = initiator.Initiator
-        if not pinger.poll_site(base_url = url) :
+        pinger = initiator.initiator
+        if not pinger.pollSite(baseURL=URL) :
             return -3
         try:
-            with open(json_file, "r") as data_file:
-                data = json.load(data_file)
+            with open(json_file, "r") as dataFile:
+                data = json.load(dataFile)
         except:
             print("Something went wrong with loading the JSON file.")
             return -2
         if 'Product' in data :
-            for url_str in data['Product']:
-                if str(url_str['productLink']) == url :
-                    print("Duplicate url, cannot add.")
+            for URLStr in data['Product']:
+                if str(URLStr['productLink']) == URL :
+                    print("Duplicate URL, cannot add.")
                     return -5
-        print("Adding url...")
+        print("Adding URL...")
 
-        the_driver = './drivers/geckodriver'
+        theDriver = './drivers/geckodriver'
         option = FFOpt()
         option.headless = True
-        browser = webdriver.Firefox(options=option, executable_path=the_driver)
-        browser.get(url)
+        browser = webdriver.Firefox(options=option, executable_path=theDriver)
+        browser.get(URL)
         title = ' '
         price = ' '
         soup = BeautifulSoup(browser.page_source,'html.parser')
         browser.close()
-        if re.search("www.bestbuy.com/", url) :
+        if re.search("www.bestbuy.com/", URL) :
             results = soup.find(class_ = 'sku-title')
             if results == None:
                 print ("ERROR title not found. Cannot add product.")
@@ -68,17 +68,17 @@ class item_base:
             if results == None:
                 print ("ERROR title not found. Cannot add product.")
                 return -1
-            title = str(results)[len('h1 class = \"heading-5 v-fw-regular\"'):-len('</h1>')]
-            print('Item is called ' + title)
+            title=str(results)[len('h1 class = \"heading-5 v-fw-regular\"'):-len('</h1>')]
+            print('Item is called ' +title)
             results = soup.find(class_ = 'priceView-hero-price priceView-customer-price')
             if results == None:
                 print ("ERROR price not found. Cannot add product.")
                 return -1
-            price_str = str(results)
-            price = float(price_str[price_str.index('aria-hidden="true">') + len('aria-hidden="true">') +1:price_str.index('</span><span class')].replace(',',''))
+            priceStr=str(results)
+            price=float(priceStr[priceStr.index('aria-hidden="true">') + len('aria-hidden="true">') +1:priceStr.index('</span><span class')].replace(',',''))
             print('The price is ' + str(price))
 
-        elif re.search("www.newegg.com/",url) :
+        elif re.search("www.newegg.com/",URL) :
             results = soup.find(class_ = 'product-title')
             if results == None:
                 print ("ERROR title not found. Cannot add product.")
@@ -89,53 +89,53 @@ class item_base:
             if results == None:
                 print ("ERROR price not found. Cannot add product.")
                 return -1
-            price_str = results.get_text()
-            if re.search('Sale',price_str) :
-                price = re.findall(r"\d+\.\d+", price_str)
-                #price = re.findall("d+.d+", price_str)
+            priceStr=results.get_text()
+            if re.search('Sale',priceStr) :
+                price = re.findall(r"\d+\.\d+",priceStr)
+                #price = re.findall("d+.d+", priceStr)
                 if price == None:
                     print("ERROR price not found. Cannot add product.")
                     return -1
                 price = float(price[0])
                 print(str(price))
             else:
-                price = float(price_str.split('$')[1].replace(',',''))
+                price=float(priceStr.split('$')[1].replace(',',''))
 
-        elif re.search("www.bhphotovideo.com", url) :
+        elif re.search("www.bhphotovideo.com",URL) :
             results = soup.find(class_ = 'title_1S1JLm7P93Ohi6H_hq7wWh')
             if results is None:
                 print ("ERROR title not found. Cannot add product.")
                 print('B&H bot detection may have picked you up. Please increase product checking interval in the scheduler. Then go to B&H\'s website to do their recaptcha and try again.')
                 return -1
-            title = results.get_text().split('BH')[0]
+            title=results.get_text().split('BH')[0]
             print("The title is "+title)
             results = soup.find(class_ = 'price_1DPoToKrLP8uWvruGqgtaY')
             if results == None:
                 print ("ERROR price not found. Cannot add product.")
                 return -1
-            price_str = results.get_text()
-            price = float(price_str.split('$')[1].replace(',',''))
+            priceStr=results.get_text()
+            price = float(priceStr.split('$')[1].replace(',',''))
             print(price)
         else:
             print("The text which was input is not supported")
             return -4
-        print(url)
+        print(URL)
         print(title)
         print(price)
-        data_file.close()
-        return self.add_json(title, url, price, json_file)
+        dataFile.close()
+        return self.addJSON(title, URL, price, json_file)
 
 
     @staticmethod
-    def add_json(title, url, price, json_file):
+    def addJSON(title, URL, price, json_file):
         """
         Adds JSON to a designated JSON file
         
         :type title: string
         :param title: The title of the item to be added to the JSON
         
-        :type url: string
-        :param url: The url of the item to be added to the JSON
+        :type URL: string
+        :param URL: The URL of the item to be added to the JSON
         
         :type price: string
         :param price: The price of the item to be added to the JSON
@@ -147,21 +147,21 @@ class item_base:
         :return: 1 if the JSON was added successfully.
         """
         try:
-            with open(json_file, "r") as data_file:
-                data = json.load(data_file)
-            with open(json_file, "r") as data_file:
-                dupData = json.load(data_file)
-            json_obj = {'productType':title,'productLink':url,'productPrice':price}
-            data['Product'].append(json_obj)
+            with open(json_file, "r") as dataFile:
+                data = json.load(dataFile)
+            with open(json_file, "r") as dataFile:
+                dupData = json.load(dataFile)
+            jsonObj = {'productType':title,'productLink':URL,'productPrice':price}
+            data['Product'].append(jsonObj)
 
-            data_file = open('productList.json', 'w+')
-            data_file.seek(0)
+            dataFile = open('productList.json', 'w+')
+            dataFile.seek(0)
 
-            json.dump(data, data_file)
-            data_file.truncate()
-            data_file.close()
-            with open(json_file, "r") as data_file:
-                data2 = json.load(data_file)
+            json.dump(data, dataFile, indent=4)
+            dataFile.truncate()
+            dataFile.close()
+            with open(json_file, "r") as dataFile:
+                data2 = json.load(dataFile)
             if dupData == data2:
                 print("An Error occurred while writing to JSON")
                 return 0
@@ -171,13 +171,13 @@ class item_base:
             print("An Error occurred while opening/writing to JSON")
             return 0
 
-    def del_item(self, url, json_file):
+    def delItem(self, URL, json_file):
         """
-        Deletes a specified JSON entry from a specified json_file by url
+        Deletes a specified JSON entry from a specified json_file by URL
 
         
         :type url: string
-        :param url: The url of the item to be deleted.
+        :param url: The URL of the item to be deleted.
         
         :type json_file: string
 
@@ -186,42 +186,36 @@ class item_base:
         :return: 0 if an error occurred when trying to delete the entry.
         :return: 1 if the item was deleted successfully.
         """
-        try:
-            with open(json_file, 'r') as json_file:
-                data = json.load(json_file)
+        with open(json_file, 'r') as temp_file:
+            data = json.load(temp_file)
 
-            index = 0
-            found = None
-            for url_str in data['Product']:
-                print(url_str['productLink'])
-                if url == data['Product']['productLink']:
-                    found = data['Product'].pop(index)
-                index += 1
+        index = 0
+        found = None
+        for url_str in data['Product']:
+            if URL == url_str['productLink']:
+                found=data['Product'].pop(index)
+            index += 1
 
-            if found is None:
-                return 0
-            #item = data['Product'].pop(index)
-            data_file = open(json_file, 'w+')
-            data_file.seek(0)
-            json.dump(data, data_file)
-            data_file.truncate()
-            data_file.close()
-
-            return 1
-        except:
-            print("An error has occured when attempting to delete from the JSON file.")
+        if found is None:
             return 0
+        
+        with open(json_file, 'w') as dataFile:
+            dataFile.seek(0)
+            json.dump(data, dataFile, indent=4)
+
+        return 1
 
 if __name__ == '__main__':
     if len(sys.argv) == 3 :
         type = sys.argv[1]
-        urlz = sys.argv[2]
+        URLz = sys.argv[2]
         #json_file = sys.argv[3]
         jsonfile = 'productList.json'
+        yep = itemBase
         if type == '1':
             print("Adding Item")
-            item_base().add_item(urlz, jsonfile)
+            itemBase().addItem(URL, jsonfile)
         elif type == '2':
-            item_base().del_item(url=urlz, json_file=jsonfile)
+            itemBase().delItem(URL=URLz, json_file=jsonfile)
     else :
-        print("Syntax is incorrect, please run again with this format:\npython3 item_base.py <1/2> <url> <JSON FILE NAME>\n 1 - for additions\n 2 - for deletions")
+        print("Syntax is incorrect, please run again with this format:\npython3 itemBase.py <1/2> <URL> <JSON FILE NAME>\n 1 - for additions\n 2 - for deletions")
