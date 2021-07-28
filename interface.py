@@ -71,6 +71,7 @@ class ProductRow:
                        lambda event: webbrowser.open(product["productLink"]))
 
         def delete_me(event):
+            ProductRow.rows -= 1
             base = item_base.item_base()
             base.del_item(url=self.url,
                          json_file="productList.json")
