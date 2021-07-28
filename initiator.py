@@ -46,20 +46,20 @@ class Initiator:
 
 
     @staticmethod
-    def poll_site(baseURL):
+    def poll_site(base_url):
         """
         Pings a website to see if the website is 'up'
         
-        :type baseURL: string
-        :param baseURL: The website to be pinged
+        :type base_url: string
+        :param base_url: The website to be pinged
         
         :return: The number of successful pings to the target website
         """
-        host = re.search(r'//(.*?)/',baseURL)
+        host = re.search(r'//(.*?)/', base_url)
         if host != None:
             host = host.group(1)
         else:
-            host = baseURL
+            host = base_url
         print("Checking if the Host is up! ")
         # Option for the number of packets as a function of
         p_type = '-n' if platform.system().lower() == 'windows' else '-c'
@@ -145,6 +145,6 @@ class Initiator:
 
 
 if __name__ == '__main__':
-    gotime = Initiator(theProducts="productList.json")
+    gotime = Initiator(the_products="productList.json")
     print(gotime.initiate())
     exit(33)

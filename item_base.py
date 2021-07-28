@@ -38,8 +38,8 @@ class item_base:
         # Building the command. Ex: "ping -c 1 google.com"
         command = ['ping', p_type, '1', w_type, '1', host]
         return subprocess.call(command) == 0
-      
-    def add_item(self, url, title, price, json_file):
+    @staticmethod
+    def add_item(url, title, price, json_file):
         """
         Adds an item to the designated product list as a JSON entry. First it checks a URL for product information, then
         it adds corresponding price, and URL information to the productList.
@@ -105,7 +105,7 @@ class item_base:
         if title is None or price is None:
             return -1
         data_file.close()
-        return self.__add_json(title, url, price, json_file)
+        return item_base.__add_json(title, url, price, json_file)
 
     @staticmethod
     def save_state(data, json_file):

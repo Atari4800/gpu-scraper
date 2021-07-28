@@ -10,9 +10,10 @@ import re
 import json
 import sys
 import subprocess
-import tkinter.font as tkFont
+import tkinter.font as tk_font
 
 import item_base
+
 
 class ProductRow:
     """
@@ -21,14 +22,14 @@ class ProductRow:
     object displays the specified information about a single product,
     makes, and handles any related buttons.
     """
-    
+
     rows = 0
     """
     Static class variable to count how many instances of ProductRow have
     been made.
     """
-    
-    refresh = lambda:print("Meaningless refresh")
+
+    refresh = lambda: print("Meaningless refresh")
     """
     refresh is a function that it calls after deleting an item to properly
     call the updateScrollRegion method and shrink the scrolling region.
@@ -50,42 +51,41 @@ class ProductRow:
 
         with open("productList.json", "r") as dataFile:
             data = json.load(dataFile)
-        
+
         product = data["Product"][self.row]
-        
+
         self.label = product["productType"]
         self.url = product["productLink"]
 
         self.name = tk.Label(text=self.label, master=myMaster,
-                width=15, anchor="w")
+                             width=15, anchor="w")
         self.price = tk.Label(text="   ${:.2f}   ".format(
             product["productPrice"]), master=myMaster)
-        self.link = tk.Label(text=shortenURL(self.url), 
-                master=myMaster)
-        f = tkFont.Font(self.link, self.link.cget("font"))
-        f.configure(underline = True)
+        self.link = tk.Label(text=shortenURL(self.url),
+                             master=myMaster)
+        f = tk_font.Font(self.link, self.link.cget("font"))
+        f.configure(underline=True)
         self.link.configure(font=f)
 
-        self.link.bind("<Button-1>", 
-                lambda event: webbrowser.open(product["productLink"]))
-        
+        self.link.bind("<Button-1>",
+                       lambda event: webbrowser.open(product["productLink"]))
+
         def delete_me(event):
-            base = itemBase.itemBase()
-            base.delItem(URL=self.url, 
-                    json_file="productList.json")
+            base = item_base.item_base()
+            base.del_item(url=self.url,
+                         json_file="productList.json")
             self.self_destruct()
-        
 
         self.delete = tk.Button(text="Delete", master=myMaster)
-        self.delete.bind("<Button-1>", delete_me) 
-                
+        self.delete.bind("<Button-1>", delete_me)
+
         self.name.grid(row=self.row + 1, column=0, sticky="w")
         self.price.grid(row=self.row + 1, column=1, sticky="e")
         self.link.grid(row=self.row + 1, column=2, sticky="w")
         self.delete.grid(row=self.row + 1, column=3, sticky="e")
 
         myMaster.grid_columnconfigure(index=3, minsize=85)
-    
+
         ProductRow.rows += 1
 
     def self_destruct(self):
@@ -94,6 +94,7 @@ class ProductRow:
         self.link.destroy()
         self.delete.destroy()
         ProductRow.refresh()
+
 
 def launchGUI():
     """
@@ -112,7 +113,7 @@ def launchGUI():
 
     lbl_queries_title = tk.Label(text="Current Product Searches", master=window)
     lbl_queries_title.pack()
-    
+
     # Creates the necessary structure of containers for the scrolling
     # The container structure is as follows:
     # window (Tk)
@@ -145,11 +146,11 @@ def launchGUI():
 
     lbl_col1 = tk.Label(text="Product", master=frame_product_rows)
     lbl_col2 = tk.Label(text="Price", master=frame_product_rows)
-    lbl_col3 = tk.Label(text="Source", master=frame_product_rows) 
+    lbl_col3 = tk.Label(text="Source", master=frame_product_rows)
     lbl_col1.grid(row=0, column=0)
     lbl_col2.grid(row=0, column=1)
     lbl_col3.grid(row=0, column=2)
-   
+
     ProductRow.refresh = updateScrollRegion
 
     with open("productList.json", "r") as dataFile:
@@ -157,9 +158,9 @@ def launchGUI():
     for i in range(len(data["Product"])):
         row = ProductRow(frame_product_rows)
 
-    updateScrollRegion() 
+    updateScrollRegion()
 
-    def handle_new_query_button(event):        
+    def handle_new_query_button(event):
         """
         Creates a separate window to get user input for a new query. It will
         ask for a url and a product name. If the user presses add and the 
@@ -169,22 +170,22 @@ def launchGUI():
         """
         window_new_query = tk.Tk()
         window_new_query.title("Create new Query")
-        
+
         frame_content = tk.Frame(master=window_new_query)
         frame_content.pack(padx=10, pady=10)
-        
+
         frame_fields = tk.Frame(master=frame_content)
         frame_fields.pack()
 
         lbl_enter_url = tk.Label(text="Product link:", master=frame_fields)
         lbl_enter_url.grid(column=0, row=0)
-        
+
         entry_url = tk.Entry(width=40, master=frame_fields)
         entry_url.grid(column=1, row=0)
-        
+
         lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_content)
         lbl_invalid_input.pack()
-        
+
         def handle_new_query_add():
             """
             When the add button is pressed in the window to get input for a new
@@ -194,16 +195,16 @@ def launchGUI():
             error message and not close the window.
             """
 
-            lbl_invalid_input["text"]="Processing request..."
-            
-            if entry_url.get() == "": 
+            lbl_invalid_input["text"] = "Processing request..."
+
+            if entry_url.get() == "":
                 lbl_invalid_input["text"] = "URL is empty"
             elif shortenURL(entry_url.get()) == "Other":
                 lbl_invalid_input["text"] = "URL is invalid or unsupported"
             else:
                 # Add this product to the json file
-                adder = itemBase.itemBase()
-                result = adder.addItem(entry_url.get(), "productList.json")
+                adder = item_base.item_base
+                result = adder.add_item(url=entry_url.get(), title=None, price=None, json_file="productList.json")
                 if result == 1:
                     messageDialog("Successful addition!", "Success")
                     ProductRow(frame_product_rows)
@@ -217,9 +218,8 @@ def launchGUI():
         button_add = tk.Button(text="Add", master=frame_content, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
         window_new_query.bind("<Return>", lambda event: handle_new_query_add())
-        
-        window_new_query.mainloop()
 
+        window_new_query.mainloop()
 
     button_add_query = tk.Button(text="Add new query", master=window, padx=3, pady=3, borderwidth=3)
     button_add_query.pack(side=tk.RIGHT, padx=10, pady=10)
@@ -230,6 +230,7 @@ def launchGUI():
     button_go_now.bind("<Button-1>", lambda event: subprocess.run([sys.executable, "initiator.py"]))
 
     window.mainloop()
+
 
 def notification(product, source, price, belowMSRP):
     """
@@ -253,18 +254,18 @@ def notification(product, source, price, belowMSRP):
     """
     # Makes the beep for a notification, but also prints a newline...
     print("\a")
-    
+
     # Makes the window for the notification
     window_notification = tk.Tk()
     window_notification.title("Alert")
-    
+
     frame = tk.Frame(master=window_notification)
 
     lbl_available = tk.Label(text="Available:", master=frame)
     lbl_name = tk.Label(text=product, master=frame)
     lbl_available.grid(row=0, column=0, sticky=tk.W)
     lbl_name.grid(row=0, column=1, sticky=tk.W)
-    
+
     lbl_from = tk.Label(text="From:", master=frame)
     lbl_source = tk.Label(text=shortenURL(source) + " (click here)", master=frame)
     lbl_from.grid(row=1, column=0, sticky=tk.W)
@@ -283,17 +284,17 @@ def notification(product, source, price, belowMSRP):
 
     frame.grid_columnconfigure(0, minsize=100)
     frame.pack(padx=10, pady=10)
-    
+
     screen_width = window_notification.winfo_screenwidth()
     screen_height = window_notification.winfo_screenheight()
-    
+
     x = screen_width - 300
-    y = screen_height - 200 
+    y = screen_height - 200
 
     window_notification.geometry(f"+{x}+{y}")
 
-    #window_notification.after(2000, close)
-    
+    # window_notification.after(2000, close)
+
     def close():
         """
         This method is called when the user closes the notification window.
@@ -304,9 +305,10 @@ def notification(product, source, price, belowMSRP):
         """
         window_notification.quit()
         window_notification.destroy()
-    
+
     window_notification.protocol("WM_DELETE_WINDOW", close)
     window_notification.mainloop()
+
 
 def confirmationDialog(message, command, title="Please confirm"):
     """
@@ -332,8 +334,8 @@ def confirmationDialog(message, command, title="Please confirm"):
     confirmation = tk.Tk()
     confirmation.title(title)
     confirmation.resizable(width=False, height=False)
-    
-    components = tk.Frame(master=confirmation) 
+
+    components = tk.Frame(master=confirmation)
     lbl_message = tk.Label(text=message, master=components)
     lbl_message.pack(pady=5)
 
@@ -346,7 +348,7 @@ def confirmationDialog(message, command, title="Please confirm"):
         """The code to be run when the user presses yes"""
         command()
         close()
-    
+
     frame_buttons = tk.Frame(master=components)
     button_yes = tk.Button(text="Yes", master=frame_buttons, command=success)
     button_no = tk.Button(text="No", master=frame_buttons, command=close)
@@ -381,7 +383,7 @@ def shortenURL(url):
     
     Otherwise, would return 'Other'
     """
-    
+
     result = "Other"
     if re.search("www.bestbuy.com/", url):
         result = "Best Buy"
@@ -390,6 +392,7 @@ def shortenURL(url):
     elif re.search("www.bhphotovideo.com/", url):
         result = "B&H"
     return result
+
 
 def messageDialog(message, title="Message"):
     """
@@ -405,9 +408,10 @@ def messageDialog(message, title="Message"):
     message_window = tk.Tk()
     message_window.title(title)
     message_window.resizable(width=False, height=False)
-    
+
     lbl = tk.Label(text=message, master=message_window)
     lbl.pack(padx=10, pady=10)
+
 
 if __name__ == "__main__":
     launchGUI()
