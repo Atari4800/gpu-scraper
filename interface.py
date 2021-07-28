@@ -14,88 +14,77 @@ import tkinter.font as tk_font
 
 import item_base
 
+class ProductGrid(tk.Frame):
+    refresh = lambda: print("filler refresh")
 
-class ProductRow:
-    """
-    This class handles everything related to a single row in the current
-    queries table on the main page of the GUI. An instance of this 
-    object displays the specified information about a single product,
-    makes, and handles any related buttons.
-    """
+    def __init__(self, master):
+        super().__init__(master)
+        self.pack()
 
-    rows = 0
-    """
-    Static class variable to count how many instances of ProductRow have
-    been made.
-    """
+        self.rows = []
+        self.num_rows = 0
+        self.load_json()
+        self.gaps = []
 
-    refresh = lambda: print("Meaningless refresh")
-    """
-    refresh is a function that it calls after deleting an item to properly
-    call the updateScrollRegion method and shrink the scrolling region.
-    """
+        for r in range(self.num_products):
+            self.add_row()
 
-    def __init__(self, myMaster):
-        """
-        Creates a new ProductRow, handling a whole row in the current
-        queries table.
-
-        :type myMaster: string
-        :param myMaster: The name of this component's master component
-
-        :type index: int
-        :param index: The index of this row in the table. The first row
-        has index 0, the second is index 1, and so on.
-        """
-        self.row = ProductRow.rows
-
+    def load_json(self):
         with open("productList.json", "r") as dataFile:
-            data = json.load(dataFile)
+            self.data = json.load(dataFile)
+        self.num_products = len(self.data["Product"])
 
-        product = data["Product"][self.row]
+    def add_row(self):
+        row_num = 0
+        if len(self.gaps) > 0:
+            row_num = self.gaps.pop(0)
+        else:
+            row_num = self.num_rows
+        
+        if row_num >= self.num_products:
+            raise Exception("There is already a row for every product!")
+        row = []
+        product_data = self.data["Product"][self.num_rows]
+        row.append(product_data["productLink"])
+        row.append(row_num)
+        
+        name = tk.Label(self, text=product_data["productType"], width=15, anchor="w")
+        name.grid(row=row_num, column=0)
+        row.append(name)
+        
+        price = tk.Label(text="   ${:.2f}   ".format(
+            product_data["productPrice"]), master=self)
+        price.grid(row=row_num, column=1, sticky="e")
+        row.append(price)
 
-        self.label = product["productType"]
-        self.url = product["productLink"]
-
-        self.name = tk.Label(text=self.label, master=myMaster,
-                             width=15, anchor="w")
-        self.price = tk.Label(text="   ${:.2f}   ".format(
-            product["productPrice"]), master=myMaster)
-        self.link = tk.Label(text=shortenURL(self.url),
-                             master=myMaster)
-        f = tk_font.Font(self.link, self.link.cget("font"))
+        link = tk.Label(text=shortenURL(url=row[0]), master=self)
+        f = tk_font.Font(link, link.cget("font"))
         f.configure(underline=True)
-        self.link.configure(font=f)
+        link.configure(font=f)
+        link.bind("<Button-1>", lambda event: webbrowser.open(row[0]))
+        link.grid(row=row_num, column=2, sticky="w")
+        row.append(link)
 
-        self.link.bind("<Button-1>",
-                       lambda event: webbrowser.open(product["productLink"]))
+        delete = tk.Button(self, text="Delete", command=lambda r=row: self.delete_row(r))
+        delete.grid(row=row_num, column=3, sticky="e")
+        self.columnconfigure(3, minsize=85)
+        
+        row.append(delete)
 
-        def delete_me(event):
-            ProductRow.rows -= 1
-            base = item_base.item_base()
-            base.del_item(url=self.url,
-                         json_file="productList.json")
-            self.self_destruct()
+        self.rows.append(row)
+        self.num_rows += 1
 
-        self.delete = tk.Button(text="Delete", master=myMaster)
-        self.delete.bind("<Button-1>", delete_me)
-
-        self.name.grid(row=self.row + 1, column=0, sticky="w")
-        self.price.grid(row=self.row + 1, column=1, sticky="e")
-        self.link.grid(row=self.row + 1, column=2, sticky="w")
-        self.delete.grid(row=self.row + 1, column=3, sticky="e")
-
-        myMaster.grid_columnconfigure(index=3, minsize=85)
-
-        ProductRow.rows += 1
-
-    def self_destruct(self):
-        self.name.destroy()
-        self.price.destroy()
-        self.link.destroy()
-        self.delete.destroy()
-        ProductRow.refresh()
-
+    def delete_row(self, row):
+        item_base.item_base.del_item(url=row[0], json_file="productList.json")
+        self.load_json()
+        self.gaps.append(row[1])
+        
+        for i in range(len(row)):
+            if i > 1:
+                row[i].destroy()
+        self.rows.remove(row)
+        self.num_rows -= 1
+        ProductGrid.refresh()
 
 def launchGUI():
     """
@@ -120,13 +109,13 @@ def launchGUI():
     # window (Tk)
     # └── frame_wrapper (Frame)
     #     ├── canvas_queries (Canvas)
-    #     │   └── frame_product_rows (Frame)
+    #     │   └── frame_product_rows (ProductGrid)
     #     └── scrollbar (Scrollbar)
     frame_wrapper = tk.Frame(master=window)
     frame_wrapper.pack()
 
     canvas_queries = tk.Canvas(master=frame_wrapper, height=200)
-    frame_product_rows = tk.Frame(master=canvas_queries)
+    frame_product_rows = ProductGrid(master=canvas_queries)
     scrollbar = tk.Scrollbar(master=frame_wrapper)
 
     canvas_queries.config(yscrollcommand=scrollbar.set, highlightthickness=0)
@@ -145,20 +134,7 @@ def launchGUI():
         canvas_queries.update_idletasks()
         canvas_queries.config(scrollregion=frame_product_rows.bbox())
 
-    lbl_col1 = tk.Label(text="Product", master=frame_product_rows)
-    lbl_col2 = tk.Label(text="Price", master=frame_product_rows)
-    lbl_col3 = tk.Label(text="Source", master=frame_product_rows)
-    lbl_col1.grid(row=0, column=0)
-    lbl_col2.grid(row=0, column=1)
-    lbl_col3.grid(row=0, column=2)
-
-    ProductRow.refresh = updateScrollRegion
-
-    with open("productList.json", "r") as dataFile:
-        data = json.load(dataFile)
-    for i in range(len(data["Product"])):
-        row = ProductRow(frame_product_rows)
-
+    ProductGrid.refresh = updateScrollRegion
     updateScrollRegion()
 
     def handle_new_query_button(event):
@@ -204,11 +180,11 @@ def launchGUI():
                 lbl_invalid_input["text"] = "URL is invalid or unsupported"
             else:
                 # Add this product to the json file
-                adder = item_base.item_base
-                result = adder.add_item(url=entry_url.get(), title=None, price=None, json_file="productList.json")
+                result = item_base.item_base.add_item(url=entry_url.get(), title=None, price=None, json_file="productList.json")
                 if result == 1:
                     messageDialog("Successful addition!", "Success")
-                    ProductRow(frame_product_rows)
+                    frame_product_rows.load_json()
+                    frame_product_rows.add_row()
                     updateScrollRegion()
 
                     window_new_query.quit()
