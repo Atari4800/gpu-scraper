@@ -9,7 +9,7 @@ import subprocess
 import scraper
 
 
-class itemBase:
+class item_base:
     """
     This class handles the modification of items inside of a designated productList.
     """
@@ -73,8 +73,8 @@ class itemBase:
         if not any(x in url for x in supported_urls):
             return -4
         try:
-            with open(json_file, "r") as dataFile:
-                data = json.load(dataFile)
+            with open(json_file, "r") as data_file:
+                data = json.load(data_file)
         except:
             print("Something went wrong with loading the JSON file.")
             return -2
@@ -123,8 +123,8 @@ class itemBase:
             print("THE STATE COULD NOT BE SAVED")
             return 0
         return 1
-    @staticmethod
 
+    @staticmethod
     def __add_json(title, url, price, json_file):
 
         """
@@ -149,14 +149,10 @@ class itemBase:
 
             with open(json_file, "r") as data_file:
                 data = json.load(data_file)
-            with open(json_file, "r") as data_file:
-                dupData = json.load(data_file)
             json_obj = {'productType':title,'productLink':url,'productPrice':price, 'isAvailable': False, 'lastAvailable':""}
             data['Product'].append(json_obj)
             data_file.close()
             return item_base.save_state(data, json_file)
-
-
         except:
             print("An Error occurred while opening/writing to JSON")
             return 0
@@ -186,7 +182,7 @@ class itemBase:
         index = 0
         found = None
         for url_str in data['Product']:
-            if URL == url_str['productLink']:
+            if url == url_str['productLink']:
                 found=data['Product'].pop(index)
             index += 1
 

@@ -12,7 +12,7 @@ import sys
 import subprocess
 import tkinter.font as tkFont
 
-import itemBase
+import item_base
 
 class ProductRow:
     """
