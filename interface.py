@@ -22,9 +22,9 @@ class ProductGrid(tk.Frame):
         self.pack()
 
         self.rows = []
+        self.num_rows_created = 0
         self.num_rows = 0
         self.load_json()
-        self.gaps = []
 
         for r in range(self.num_products):
             self.add_row()
@@ -35,14 +35,7 @@ class ProductGrid(tk.Frame):
         self.num_products = len(self.data["Product"])
 
     def add_row(self):
-        row_num = 0
-        if len(self.gaps) > 0:
-            row_num = self.gaps.pop(0)
-        else:
-            row_num = self.num_rows
-        
-        if row_num >= self.num_products:
-            raise Exception("There is already a row for every product!")
+        row_num = self.num_rows_created 
         row = []
         product_data = self.data["Product"][self.num_rows]
         row.append(product_data["productLink"])
@@ -72,19 +65,21 @@ class ProductGrid(tk.Frame):
         row.append(delete)
 
         self.rows.append(row)
+        self.num_rows_created += 1
         self.num_rows += 1
 
     def delete_row(self, row):
         item_base.item_base.del_item(url=row[0], json_file="productList.json")
         self.load_json()
-        self.gaps.append(row[1])
         
         for i in range(len(row)):
             if i > 1:
                 row[i].destroy()
         self.rows.remove(row)
         self.num_rows -= 1
+
         ProductGrid.refresh()
+        
 
 def launchGUI():
     """
