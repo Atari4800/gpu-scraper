@@ -104,13 +104,13 @@ class Initiator:
             if re.search("www.bestbuy.com/", URLstr) and self.poll_site("www.bestbuy.com"):
 
                 the_processes.append(subprocess.Popen(["python3", "scraper.py", URL['productLink'], 'BB', self.default_browser]))
-                the_data.append([URL['productType'],URLstr,URL['productPrice'],False])
+                the_data.append([URL['productType'],URLstr,URL['productPrice'],'False'])
             if re.search("www.newegg.com/", URLstr) and self.poll_site("www.newegg.com"):
                 the_processes.append(subprocess.Popen(["python3", "scraper.py", URL['productLink'], 'NE', self.default_browser]))
-                the_data.append([URL['productType'], URLstr, URL['productPrice'], False])
+                the_data.append([URL['productType'], URLstr, URL['productPrice'], 'False'])
             if re.search("www.bhphotovideo.com/", URLstr) and self.poll_site("www.newegg.com"):
                 the_processes.append(subprocess.Popen(["python3", "scraper.py", URL['productLink'], 'BH', self.default_browser]))
-                the_data.append([URL['productType'], URLstr, URL['productPrice'], False])
+                the_data.append([URL['productType'], URLstr, URL['productPrice'], 'False'])
             prod_cnt = prod_cnt + 1
             if len(the_processes) > self.maxProcesses or prod_cnt >= data_size-self.maxProcesses:
                 while len(the_processes) != 0:
