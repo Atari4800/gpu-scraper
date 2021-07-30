@@ -23,7 +23,7 @@ def test_get_fields_ne():
     assert sc.Scraper.get_fields_ne(good_stock_NE, None, None) == test_fields
 
 def test_get_fields_bh():
-    test_fields = ['Godox AD600Pro Witstro All-in-One Outdoor Flash', 899.0]
+    test_fields = ['Godox AD600Pro Witstro All-in-One Outdoor Flash', 699.0]
     assert sc.Scraper.get_fields_bh(good_stock_BH, None, None) == test_fields
 
 def test_get_fields_bb_bad_url():
