@@ -69,7 +69,7 @@ class item_base:
 
         if not item_base.__poll_site(base_url=url):
             return -3
-        supported_urls = ['www.bestbuy.com/', 'www.newegg.com/', 'www.bestbuy.com/']
+        supported_urls = ['www.bestbuy.com/', 'www.newegg.com/', 'www.bhphotovideo.com/']
         if not any(x in url for x in supported_urls):
             return -4
         try:
@@ -90,7 +90,7 @@ class item_base:
         if title is None or price is None:
             if re.search("www.bestbuy.com/", url):
                 fields = scraper.Scraper.get_fields_bb(url,title,price)
-            elif re.search("www.newegg.com/"):
+            elif re.search("www.newegg.com/", url):
                 fields = scraper.Scraper.get_fields_ne(url,title,price)
             elif re.search("www.bhphotovideo.com", url) :
                 fields = scraper.Scraper.get_fields_bh(url,title,price)
