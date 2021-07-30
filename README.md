@@ -105,7 +105,7 @@ Goals completed from Milestone 3 are:
 - Code is refactored and commented adequately
 
 *Currently in Progress*
-- Polishingcode for consistant results
+- Polishing code for consistant results
 
 *To Do*
 - Generate final documentation
