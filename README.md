@@ -110,7 +110,7 @@ Goals completed from Milestone 3 are:
 *To Do*
 - Generate final documentation
 
-**Code Miltstone 3 Completion**  
+**Code Milestone 3 Completion**  
 We have achieved all of our goals set out for this milestone and are now in the process of polishing up the final deliverable.
 
 Our goals for Milestone 3 were:
