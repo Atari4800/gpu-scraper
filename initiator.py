@@ -104,7 +104,7 @@ class Initiator:
             if re.search("www.bestbuy.com/", URLstr) and self.poll_site("www.bestbuy.com"):
 
                 the_processes.append(subprocess.Popen(["python3", "scraper.py", URL['productLink'], 'BB', self.default_browser]))
-                the_data.append([URL['productType'],URLstr,URL['productPrice'],'False'])
+                the_data.append([URL['productType'],URLstr,URL['productPrice'], 'False'])
             if re.search("www.newegg.com/", URLstr) and self.poll_site("www.newegg.com"):
                 the_processes.append(subprocess.Popen(["python3", "scraper.py", URL['productLink'], 'NE', self.default_browser]))
                 the_data.append([URL['productType'], URLstr, URL['productPrice'], 'False'])
