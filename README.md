@@ -95,7 +95,7 @@ Goals completed from Milestone 3 are:
  - Have everyone create a sketch of GUI
 
 
-**Release Notes 3**
+## Release Notes 3
 
 *Currently Completed*
 - All goals from Milestone 1 and Milestone 2
@@ -110,7 +110,7 @@ Goals completed from Milestone 3 are:
 *To Do*
 - Generate final documentation
 
-**Code Miltstone 3 Completion**
+**Code Miltstone 3 Completion**  
 We have achieved all of our goals set out for this milestone and are now in the process of polishing up the final deliverable.
 
 Our goals for Milestone 3 were:
