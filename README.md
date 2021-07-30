@@ -83,7 +83,7 @@ Our goals for Milestone 1 were:
 **Code Milestone 2 Completion:**  
 We have achieved all our goals for this milestone and have made great headway into Milestone 3.
 
-Our goals for Milestone 2 were:
+Our goals for Milestone 2 were:  
 - Identify which Python modules are best suited to aid in task
 - Identify keywords, and web-code sections that contain product status information
 - Determine if cookies need to be stored and used, or JavaScript information needs to be dynamically interpreted to retrieve product status information
