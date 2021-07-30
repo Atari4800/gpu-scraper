@@ -95,3 +95,28 @@ Goals completed from Milestone 3 are:
  - Have everyone create a sketch of GUI
 
 
+**Release Notes 3**
+
+*Currently Completed*
+- All goals from Milestone 1 and Milestone 2
+- GUI is fully connected to backend
+- Test suite tests all major functionality
+- Speed is improved with Regex
+- Code is refactored and commented adequately
+
+*Currently in Progress*
+- Polishingcode for consistant results
+
+*To Do*
+- Generate final documentation
+
+**Code Miltstone 3 Completion**
+We have achieved all of our goals set out for this milestone and are now in the process of polishing up the final deliverable.
+
+Our goals for Milestone 3 were:
+- Brainstorm items user may want control over
+- Brainstorm useful GUI components (text input fields, buttons, etc.)
+- Have everyone create a sketch of GUI
+- Create best hybrid GUI among the three variations
+- Tie GUI into web scraper and parser components
+- Test GUI among 3 non-developer users and get feedback
