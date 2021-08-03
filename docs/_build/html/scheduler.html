@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scraper module" href="scraper.html" />
-    <link rel="prev" title="itemBase module" href="itemBase.html" />
+    <link rel="prev" title="item_base module" href="item_base.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,28 +33,35 @@
             
   <div class="section" id="module-scheduler">
 <span id="scheduler-module"></span><h1>scheduler module<a class="headerlink" href="#module-scheduler" title="Permalink to this headline">¶</a></h1>
-<p>This module priarily contains the Scheduler class, responsible for creating cronjobs. If it is run as a script, then it will create a cronjob to run scraper.py regularly. The script would need an integer command line argument to indicate how frequently scraper.py should be run.</p>
+<p>This module priarily contains the Scheduler class, responsible for creating cronjobs. If it is run as a script,
+then it will create a cronjob to run initiator.py regularly. The script would need an integer command line argument
+to indicate how frequently initiator.py should be run.</p>
 <dl class="class">
 <dt id="scheduler.Scheduler">
 <em class="property">class </em><code class="descclassname">scheduler.</code><code class="descname">Scheduler</code><span class="sig-paren">(</span><em>minutes</em><span class="sig-paren">)</span><a class="headerlink" href="#scheduler.Scheduler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Creates a cronjob to run scheduler.py regularly, which would check all query sites for availability.</p>
+<p>Creates a cronjob to run initiator.py regularly, which would check all query sites for availability.</p>
 <p>Creates a Scheduler object and creates the cron job.</p>
 <dl class="method">
-<dt id="scheduler.Scheduler.ChangeMinutes">
-<code class="descname">ChangeMinutes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scheduler.Scheduler.ChangeMinutes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Changes the value of minutes. The thought is that it could change the frequency that scraper.py is run, but calling this method does not currently change the frequency of the existing cron job.</p>
+<dt id="scheduler.Scheduler.change_minutes">
+<code class="descname">change_minutes</code><span class="sig-paren">(</span><em>minutes</em><span class="sig-paren">)</span><a class="headerlink" href="#scheduler.Scheduler.change_minutes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the value of minutes by killing the current cronjob and creating a new one with the desired minutes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>min</strong> (<em>integer</em>) – The number of minutes the cron job will wait before calling scraper.py again.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>minutes</strong> – The number of minutes the cron job will wait before calling scraper.py again.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="scheduler.make_cron_job">
+<code class="descclassname">scheduler.</code><code class="descname">make_cron_job</code><span class="sig-paren">(</span><em>minutes</em><span class="sig-paren">)</span><a class="headerlink" href="#scheduler.make_cron_job" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 
@@ -79,12 +86,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">gpu-scraper</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="initiator.html">initiator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interface.html">interface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="itemBase.html">itemBase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="item_base.html">item_base module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">scheduler module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scraper.html">scraper module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="test_initiator.html">test_initiator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="test_interface.html">test_interface module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="test_itemBase.html">test_itemBase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_item_base.html">test_item_base module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="test_scheduler.html">test_scheduler module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="test_scraper.html">test_scraper module</a></li>
 </ul>
@@ -96,7 +103,7 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="modules.html">gpu-scraper</a><ul>
-      <li>Previous: <a href="itemBase.html" title="previous chapter">itemBase module</a></li>
+      <li>Previous: <a href="item_base.html" title="previous chapter">item_base module</a></li>
       <li>Next: <a href="scraper.html" title="next chapter">scraper module</a></li>
   </ul></li>
   </ul></li>
