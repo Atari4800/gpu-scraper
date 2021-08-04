@@ -150,10 +150,19 @@ def launchGUI():
         frame_fields.pack()
 
         lbl_enter_url = tk.Label(text="Product link:", master=frame_fields)
-        lbl_enter_url.grid(column=0, row=0)
-
+        lbl_enter_url.grid(column=0, row=0, sticky='W')
         entry_url = tk.Entry(width=40, master=frame_fields)
         entry_url.grid(column=1, row=0)
+
+        lbl_enter_name = tk.Label(text="Product name:", master=frame_fields)
+        lbl_enter_name.grid(column=0, row=1, sticky='W')
+        entry_name = tk.Entry(width=40, master=frame_fields)
+        entry_name.grid(column=1, row=1)
+
+        lbl_enter_price = tk.Label(text="Product MSRP:", master=frame_fields)
+        lbl_enter_price.grid(column=0, row=2, sticky='W')
+        entry_price = tk.Entry(width=40, master=frame_fields)
+        entry_price.grid(column=1, row=2)
 
         lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_content)
         lbl_invalid_input.pack()
@@ -170,12 +179,21 @@ def launchGUI():
             lbl_invalid_input["text"] = "Processing request..."
 
             if entry_url.get() == "":
-                lbl_invalid_input["text"] = "URL is empty"
+                lbl_invalid_input["text"] = "Product link is a required field."
             elif shortenURL(entry_url.get()) == "Other":
-                lbl_invalid_input["text"] = "URL is invalid or unsupported"
+                lbl_invalid_input["text"] = "URL is invalid or unsupported."
             else:
                 # Add this product to the json file
-                result = item_base.item_base.add_item(url=entry_url.get(), title=None, price=None, json_file="productList.json")
+                title = None
+                msrp = None
+                if entry_name.get() != "":
+                    title = entry_name.get()
+
+                if entry_price.get() != "":
+                    msrp = float(entry_price.get())
+
+                result = item_base.item_base.add_item(url=entry_url.get(), 
+                        title=title, price=msrp, json_file="productList.json")
                 if result == 1:
                     messageDialog("Successful addition!", "Success")
                     frame_product_rows.load_json()
