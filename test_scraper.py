@@ -19,7 +19,7 @@ def test_get_fields_bb():
     assert sc.Scraper.get_fields_bb(good_stock_urlBB, None, None) == test_fields
 
 def test_get_fields_ne():
-    test_fields = ['Acer C740-C4PE 11.6" Chromebook Intel Celeron 3205u X2 1.5GHz 4GB memory, 16GB SSD, Intel HD Graphics, Chrome OS - NX.EF2AA.002 - C-Grade', 59.99]
+    test_fields = ['Acer C740-C4PE 11.6" Chromebook Intel Celeron 3205u X2 1.5GHz 4GB memory, 16GB SSD, Intel HD Graphics, Chrome OS - NX.EF2AA.002 - C-Grade', 62.99]
     assert sc.Scraper.get_fields_ne(good_stock_NE, None, None) == test_fields
 
 def test_get_fields_bh():
