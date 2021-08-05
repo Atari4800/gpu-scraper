@@ -13,6 +13,7 @@ import subprocess
 import tkinter.font as tk_font
 
 import item_base
+import scheduler
 
 class ProductGrid(tk.Frame):
     refresh = lambda: print("filler refresh")
@@ -218,6 +219,48 @@ def launchGUI():
     button_go_now = tk.Button(text="Search now!", master=window, borderwidth=3, padx=3, pady=3)
     button_go_now.pack(side=tk.RIGHT)
     button_go_now.bind("<Button-1>", lambda event: subprocess.run([sys.executable, "initiator.py"]))
+
+    button_scheduler = tk.Button(text="Set up Scheduler", master=window, padx=3, pady=3, borderwidth=3)
+    button_scheduler.pack(side=tk.RIGHT, padx=10)
+
+    def add_scheduler_window():
+        scheduler_root = tk.Tk()
+        input_frame = tk.Frame(master=scheduler_root)
+        input_frame.pack(padx=10, pady=10)
+        lbl = tk.Label(master=input_frame, text="Scheduler minutes: ")
+        lbl.pack(anchor='w')
+        entry = tk.Entry(master=input_frame, width=20)
+        entry.pack()
+        error_message = tk.Label(master=input_frame, text="", foreground="red")
+        error_message.pack()
+        bttn = tk.Button(master=input_frame, text="Enter")
+        bttn.pack(anchor='e')
+        
+        def enter_bttn():
+            if entry.get() == "":
+                error_message["text"] = "Scheduler minutes is a required field."
+            else:
+                success = True
+                minutes = 0
+                try:
+                    minutes = int(entry.get())
+                except:
+                    success = False
+                if success and minutes <= 0:
+                    error_message["text"] = "Scheduler minutes must be positive."
+                elif success:
+                    scheduler.Scheduler(minutes)
+                    scheduler_root.quit()
+                    scheduler_root.destroy()
+                else:
+                    error_message["text"] = "Scheduler minutes is not an integer."
+                 
+        bttn.bind("<Button-1>", lambda event: enter_bttn())
+        scheduler_root.bind("<Return>", lambda event: enter_bttn())
+
+        scheduler_root.mainloop()
+    
+    button_scheduler.bind("<Button-1>", lambda event: add_scheduler_window())
 
     window.mainloop()
 
