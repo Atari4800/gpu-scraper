@@ -143,6 +143,7 @@ def launchGUI():
         """
         window_new_query = tk.Tk()
         window_new_query.title("Create new Query")
+        window_new_query.resizable(width=False, height=False)
 
         frame_content = tk.Frame(master=window_new_query)
         frame_content.pack(padx=10, pady=10)
@@ -187,24 +188,43 @@ def launchGUI():
                 # Add this product to the json file
                 title = None
                 msrp = None
+                success = True
                 if entry_name.get() != "":
                     title = entry_name.get()
 
                 if entry_price.get() != "":
-                    msrp = float(entry_price.get())
+                    msrp = 0.0
+                    try:
+                        msrp = float(entry_price.get())
+                    except:
+                        lbl_invalid_input["text"] = "Entered price is not a double."
+                        success = False
+                if success:
+                    result = item_base.item_base.add_item(url=entry_url.get(), 
+                            title=title, price=msrp, json_file="productList.json")
+                    if result == 1:
+                        messageDialog("Successful addition!", "Success")
+                        frame_product_rows.load_json()
+                        frame_product_rows.add_row()
+                        updateScrollRegion()
 
-                result = item_base.item_base.add_item(url=entry_url.get(), 
-                        title=title, price=msrp, json_file="productList.json")
-                if result == 1:
-                    messageDialog("Successful addition!", "Success")
-                    frame_product_rows.load_json()
-                    frame_product_rows.add_row()
-                    updateScrollRegion()
-
-                    window_new_query.quit()
-                    window_new_query.destroy()
-                else:
-                    lbl_invalid_input["text"] = f"addItem error: {result}"
+                        window_new_query.quit()
+                        window_new_query.destroy()
+                    else:
+                        message = ""
+                        if result == -5:
+                            message = "There is a duplicate link in the JSON file."
+                        elif result == -4:
+                            message = "The URL is not supported."
+                        elif result == -3:
+                            message = "The domain cannot be reached."
+                        elif result == -2:
+                            message = "There is a problem opening the JSON file."
+                        elif result == -1:
+                            message = "The item cannot be found."
+                        elif result == 0:
+                            messate = "The item cannot be added to the JSON file."
+                        lbl_invalid_input["text"] = message
 
         button_add = tk.Button(text="Add", master=frame_content, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
@@ -225,6 +245,9 @@ def launchGUI():
 
     def add_scheduler_window():
         scheduler_root = tk.Tk()
+        scheduler_root.resizable(width=False, height=False)
+        scheduler_root.title("Make cronjob")
+
         input_frame = tk.Frame(master=scheduler_root)
         input_frame.pack(padx=10, pady=10)
         lbl = tk.Label(master=input_frame, text="Scheduler minutes: ")
@@ -248,6 +271,8 @@ def launchGUI():
                     success = False
                 if success and minutes <= 0:
                     error_message["text"] = "Scheduler minutes must be positive."
+                elif success and minutes >= 60:
+                    error_message["text"] = "Scheduler minutes cannot be greater than 59."
                 elif success:
                     scheduler.Scheduler(minutes)
                     scheduler_root.quit()
