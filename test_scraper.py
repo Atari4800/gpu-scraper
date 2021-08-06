@@ -19,11 +19,11 @@ def test_get_fields_bb():
     assert sc.Scraper.get_fields_bb(good_stock_urlBB, None, None) == test_fields
 
 def test_get_fields_ne():
-    test_fields = ['Acer C740-C4PE 11.6" Chromebook Intel Celeron 3205u X2 1.5GHz 4GB memory, 16GB SSD, Intel HD Graphics, Chrome OS - NX.EF2AA.002 - C-Grade', 59.99]
+    test_fields = ['Acer C740-C4PE 11.6" Chromebook Intel Celeron 3205u X2 1.5GHz 4GB memory, 16GB SSD, Intel HD Graphics, Chrome OS - NX.EF2AA.002 - C-Grade', 62.99]
     assert sc.Scraper.get_fields_ne(good_stock_NE, None, None) == test_fields
 
 def test_get_fields_bh():
-    test_fields = ['Godox AD600Pro Witstro All-in-One Outdoor Flash', 699.0]
+    test_fields = ['Godox AD600Pro Witstro All-in-One Outdoor Flash', 899.0]
     assert sc.Scraper.get_fields_bh(good_stock_BH, None, None) == test_fields
 
 def test_get_fields_bb_bad_url():

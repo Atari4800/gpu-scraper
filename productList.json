@@ -55,6 +55,20 @@
             "productLink":"https://www.bestbuy.com/site/hyper-hyperdrive-duo-7-port-usb-c-hub-usb-c-docking-station-for-apple-macbook-pro-and-air-gray/6402923.p?skuId=6402923",
             "productPrice":79.99,
             "productType":"Hyper - HyperDrive DUO 7-Port USB-C Hub - USB-C Docking Station for Apple MacBook Pro and Air - Gray"
+        },
+        {
+            "isAvailable":false,
+            "lastAvailable":"",
+            "productLink":"https://www.newegg.com/asus-geforce-rtx-3080-ti-tuf-rtx3080ti-12g-gaming/p/N82E16814126510?Item=N82E16814126510",
+            "productPrice":3.5,
+            "productType":"ASUS TUF Gaming NVIDIA GeForce RTX 3080 Ti Graphics Card (PCIe 4.0, 12GB GDDR6X, HDMI 2.1, DisplayPort 1.4a, Dual Ball Fan Bearings, Military-grade Certification, GPU Tweak II), TUF-RTX3080TI-12G-GAMING"
+        },
+        {
+            "isAvailable":false,
+            "lastAvailable":"",
+            "productLink":"https://www.bestbuy.com/site/microsoft-xbox-series-s-512-gb-all-digital-console-disc-free-gaming-white/6430277.p?skuId=6430277",
+            "productPrice":299.99,
+            "productType":"Microsoft - Xbox Series S 512 GB All-Digital Console (Disc-free Gaming) - White"
         }
     ]
 }
