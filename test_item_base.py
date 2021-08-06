@@ -39,7 +39,7 @@ def test_additemNotFound():
 
 def test_addJSONWriteError():
     test_obj = ib.item_base()
-    assert test_obj.add_item(unnadded_item, "yep it's an item", 99.0, jsonNoWrite) == 0
+    assert test_obj.add_item(unnadded_item, "yep it's an item", 99.0, jsonNoWrite) == -5
 
 def test_add_item():
     with open(test_json, 'r') as test_file:
