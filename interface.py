@@ -16,9 +16,21 @@ import item_base
 import scheduler
 
 class ProductGrid(tk.Frame):
+    """
+    One instance of this class handles all data and visual components for the 
+    query table in the main interface screen. It creates a grid of information,
+    where each row has the information and buttons for a single product.
+    """
+
     refresh = lambda: print("filler refresh")
 
     def __init__(self, master):
+        """
+        Creates a grid in the main interface page.
+        
+        :type master: string
+        :param master: The tkinter container which is a master of this grid.
+        """
         super().__init__(master)
         self.pack()
 
@@ -31,11 +43,22 @@ class ProductGrid(tk.Frame):
             self.add_row()
 
     def load_json(self):
+        """
+        Updates this instance's data from the file productList.json
+        
+        :return: returns nothing
+        """
         with open("productList.json", "r") as dataFile:
             self.data = json.load(dataFile)
         self.num_products = len(self.data["Product"])
 
     def add_row(self):
+        """
+        Adds a row to the table. The object has data to keep track of which 
+        product should be displayed in the next row.
+
+        :return: returns nothing
+        """
         row_num = self.num_rows_created 
         row = []
         product_data = self.data["Product"][self.num_rows]
@@ -70,6 +93,14 @@ class ProductGrid(tk.Frame):
         self.num_rows += 1
 
     def delete_row(self, row):
+        """
+        Deletes the given row from the table.
+        
+        :param row: An entire row in the table. It should be a List with all
+        of the components in that row.
+
+        :return: returns nothing
+        """
         item_base.item_base.del_item(url=row[0], json_file="productList.json")
         self.load_json()
         
@@ -212,7 +243,9 @@ def launchGUI():
                         window_new_query.destroy()
                     else:
                         message = ""
-                        if result == -5:
+                        if result == -6:
+                            message = "Scraper cannot find price. You must manually enter the MSRP."
+                        elif result == -5:
                             message = "There is a duplicate link in the JSON file."
                         elif result == -4:
                             message = "The URL is not supported."
@@ -244,6 +277,12 @@ def launchGUI():
     button_scheduler.pack(side=tk.RIGHT, padx=10)
 
     def add_scheduler_window():
+        """
+        Makes a window to minutes input from user and call Scheduler with the
+        input minutes.
+        
+        :return: returns nothing
+        """
         scheduler_root = tk.Tk()
         scheduler_root.resizable(width=False, height=False)
         scheduler_root.title("Make cronjob")
@@ -260,6 +299,14 @@ def launchGUI():
         bttn.pack(anchor='e')
         
         def enter_bttn():
+            """
+            Updates the window based on the input value. Validates the input 
+            string. If input is valid, it calls Scheduler and closes the 
+            window. If input is invalid, it displays an appropriate error 
+            message in the same window.
+
+            :return: returns nothing
+            """
             if entry.get() == "":
                 error_message["text"] = "Scheduler minutes is a required field."
             else:
@@ -351,8 +398,6 @@ def notification(product, source, price, belowMSRP):
 
     window_notification.geometry(f"+{x}+{y}")
 
-    # window_notification.after(2000, close)
-
     def close():
         """
         This method is called when the user closes the notification window.
@@ -366,60 +411,6 @@ def notification(product, source, price, belowMSRP):
 
     window_notification.protocol("WM_DELETE_WINDOW", close)
     window_notification.mainloop()
-
-
-def confirmationDialog(message, command, title="Please confirm"):
-    """
-    Creates a confirmation dialog. This is a simple dialog which displays a 
-    single line of text, a yes button, and a no button. It is used when
-    it is useful to make sure the user wants to perform some critical action
-    before actually executing that action. For example, if there was a button
-    on the GUI to delete a query, it would be appropriate to use a confirmation
-    dialog to make sure they really want to delete the query before deleting it.
-
-    :type message: string
-    :param message: The text message displayed to the user
-    
-    :type command: function
-    :param command: This function is called if the user presses the okay button
-    
-    :type title: string
-    :param title: The title of the window
-
-    :return: returns nothing
-    """
-
-    confirmation = tk.Tk()
-    confirmation.title(title)
-    confirmation.resizable(width=False, height=False)
-
-    components = tk.Frame(master=confirmation)
-    lbl_message = tk.Label(text=message, master=components)
-    lbl_message.pack(pady=5)
-
-    def close():
-        """The code to be run when the window is closed"""
-        confirmation.quit()
-        confirmation.destroy()
-
-    def success():
-        """The code to be run when the user presses yes"""
-        command()
-        close()
-
-    frame_buttons = tk.Frame(master=components)
-    button_yes = tk.Button(text="Yes", master=frame_buttons, command=success)
-    button_no = tk.Button(text="No", master=frame_buttons, command=close)
-    button_yes.grid(row=0, column=0)
-    button_no.grid(row=0, column=1)
-    for i in range(2):
-        frame_buttons.columnconfigure(i, minsize=75)
-    frame_buttons.pack(pady=5)
-
-    components.pack(padx=10, pady=5)
-
-    confirmation.mainloop()
-
 
 def shortenURL(url):
     """
@@ -469,7 +460,6 @@ def messageDialog(message, title="Message"):
 
     lbl = tk.Label(text=message, master=message_window)
     lbl.pack(padx=10, pady=10)
-
 
 if __name__ == "__main__":
     launchGUI()
