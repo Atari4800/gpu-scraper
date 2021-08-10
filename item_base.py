@@ -59,6 +59,7 @@ class item_base:
 
         :type json_file: string
         :param json_file: The productList that the URL's JSON entry will be placed in.
+        :return: -6 if the price cannot be found.
         :return: -5 if there is a duplicate link found within the JSON file.
         :return: -4 if the URL entered is not supported.
         :return: -3 if the URL's domain cannot be reached.
@@ -103,7 +104,7 @@ class item_base:
         if title is None:
             return -1
         if price is None:
-            price = 3.50
+            return -6
         print(url)
         print(title)
         print(price)
