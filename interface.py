@@ -13,11 +13,24 @@ import subprocess
 import tkinter.font as tk_font
 
 import item_base
+import scheduler
 
 class ProductGrid(tk.Frame):
+    """
+    One instance of this class handles all data and visual components for the 
+    query table in the main interface screen. It creates a grid of information,
+    where each row has the information and buttons for a single product.
+    """
+
     refresh = lambda: print("filler refresh")
 
     def __init__(self, master):
+        """
+        Creates a grid in the main interface page.
+        
+        :type master: string
+        :param master: The tkinter container which is a master of this grid.
+        """
         super().__init__(master)
         self.pack()
 
@@ -30,11 +43,22 @@ class ProductGrid(tk.Frame):
             self.add_row()
 
     def load_json(self):
+        """
+        Updates this instance's data from the file productList.json
+        
+        :return: returns nothing
+        """
         with open("productList.json", "r") as dataFile:
             self.data = json.load(dataFile)
         self.num_products = len(self.data["Product"])
 
     def add_row(self):
+        """
+        Adds a row to the table. The object has data to keep track of which 
+        product should be displayed in the next row.
+
+        :return: returns nothing
+        """
         row_num = self.num_rows_created 
         row = []
         product_data = self.data["Product"][self.num_rows]
@@ -69,6 +93,14 @@ class ProductGrid(tk.Frame):
         self.num_rows += 1
 
     def delete_row(self, row):
+        """
+        Deletes the given row from the table.
+        
+        :param row: An entire row in the table. It should be a List with all
+        of the components in that row.
+
+        :return: returns nothing
+        """
         item_base.item_base.del_item(url=row[0], json_file="productList.json")
         self.load_json()
         
@@ -142,6 +174,7 @@ def launchGUI():
         """
         window_new_query = tk.Tk()
         window_new_query.title("Create new Query")
+        window_new_query.resizable(width=False, height=False)
 
         frame_content = tk.Frame(master=window_new_query)
         frame_content.pack(padx=10, pady=10)
@@ -150,10 +183,19 @@ def launchGUI():
         frame_fields.pack()
 
         lbl_enter_url = tk.Label(text="Product link:", master=frame_fields)
-        lbl_enter_url.grid(column=0, row=0)
-
+        lbl_enter_url.grid(column=0, row=0, sticky='W')
         entry_url = tk.Entry(width=40, master=frame_fields)
         entry_url.grid(column=1, row=0)
+
+        lbl_enter_name = tk.Label(text="Product name:", master=frame_fields)
+        lbl_enter_name.grid(column=0, row=1, sticky='W')
+        entry_name = tk.Entry(width=40, master=frame_fields)
+        entry_name.grid(column=1, row=1)
+
+        lbl_enter_price = tk.Label(text="Product MSRP:", master=frame_fields)
+        lbl_enter_price.grid(column=0, row=2, sticky='W')
+        entry_price = tk.Entry(width=40, master=frame_fields)
+        entry_price.grid(column=1, row=2)
 
         lbl_invalid_input = tk.Label(text="", foreground="red", master=frame_content)
         lbl_invalid_input.pack()
@@ -170,22 +212,52 @@ def launchGUI():
             lbl_invalid_input["text"] = "Processing request..."
 
             if entry_url.get() == "":
-                lbl_invalid_input["text"] = "URL is empty"
+                lbl_invalid_input["text"] = "Product link is a required field."
             elif shortenURL(entry_url.get()) == "Other":
-                lbl_invalid_input["text"] = "URL is invalid or unsupported"
+                lbl_invalid_input["text"] = "URL is invalid or unsupported."
             else:
                 # Add this product to the json file
-                result = item_base.item_base.add_item(url=entry_url.get(), title=None, price=None, json_file="productList.json")
-                if result == 1:
-                    messageDialog("Successful addition!", "Success")
-                    frame_product_rows.load_json()
-                    frame_product_rows.add_row()
-                    updateScrollRegion()
+                title = None
+                msrp = None
+                success = True
+                if entry_name.get() != "":
+                    title = entry_name.get()
 
-                    window_new_query.quit()
-                    window_new_query.destroy()
-                else:
-                    lbl_invalid_input["text"] = f"addItem error: {result}"
+                if entry_price.get() != "":
+                    msrp = 0.0
+                    try:
+                        msrp = float(entry_price.get())
+                    except:
+                        lbl_invalid_input["text"] = "Entered price is not a double."
+                        success = False
+                if success:
+                    result = item_base.item_base.add_item(url=entry_url.get(), 
+                            title=title, price=msrp, json_file="productList.json")
+                    if result == 1:
+                        messageDialog("Successful addition!", "Success")
+                        frame_product_rows.load_json()
+                        frame_product_rows.add_row()
+                        updateScrollRegion()
+
+                        window_new_query.quit()
+                        window_new_query.destroy()
+                    else:
+                        message = ""
+                        if result == -6:
+                            message = "Scraper cannot find price. You must manually enter the MSRP."
+                        elif result == -5:
+                            message = "There is a duplicate link in the JSON file."
+                        elif result == -4:
+                            message = "The URL is not supported."
+                        elif result == -3:
+                            message = "The domain cannot be reached."
+                        elif result == -2:
+                            message = "There is a problem opening the JSON file."
+                        elif result == -1:
+                            message = "The item cannot be found."
+                        elif result == 0:
+                            messate = "The item cannot be added to the JSON file."
+                        lbl_invalid_input["text"] = message
 
         button_add = tk.Button(text="Add", master=frame_content, command=handle_new_query_add, padx=3)
         button_add.pack(side=tk.RIGHT)
@@ -200,6 +272,67 @@ def launchGUI():
     button_go_now = tk.Button(text="Search now!", master=window, borderwidth=3, padx=3, pady=3)
     button_go_now.pack(side=tk.RIGHT)
     button_go_now.bind("<Button-1>", lambda event: subprocess.run([sys.executable, "initiator.py"]))
+
+    button_scheduler = tk.Button(text="Set up Scheduler", master=window, padx=3, pady=3, borderwidth=3)
+    button_scheduler.pack(side=tk.RIGHT, padx=10)
+
+    def add_scheduler_window():
+        """
+        Makes a window to minutes input from user and call Scheduler with the
+        input minutes.
+        
+        :return: returns nothing
+        """
+        scheduler_root = tk.Tk()
+        scheduler_root.resizable(width=False, height=False)
+        scheduler_root.title("Make cronjob")
+
+        input_frame = tk.Frame(master=scheduler_root)
+        input_frame.pack(padx=10, pady=10)
+        lbl = tk.Label(master=input_frame, text="Scheduler minutes: ")
+        lbl.pack(anchor='w')
+        entry = tk.Entry(master=input_frame, width=20)
+        entry.pack()
+        error_message = tk.Label(master=input_frame, text="", foreground="red")
+        error_message.pack()
+        bttn = tk.Button(master=input_frame, text="Enter")
+        bttn.pack(anchor='e')
+        
+        def enter_bttn():
+            """
+            Updates the window based on the input value. Validates the input 
+            string. If input is valid, it calls Scheduler and closes the 
+            window. If input is invalid, it displays an appropriate error 
+            message in the same window.
+
+            :return: returns nothing
+            """
+            if entry.get() == "":
+                error_message["text"] = "Scheduler minutes is a required field."
+            else:
+                success = True
+                minutes = 0
+                try:
+                    minutes = int(entry.get())
+                except:
+                    success = False
+                if success and minutes <= 0:
+                    error_message["text"] = "Scheduler minutes must be positive."
+                elif success and minutes >= 60:
+                    error_message["text"] = "Scheduler minutes cannot be greater than 59."
+                elif success:
+                    scheduler.Scheduler(minutes)
+                    scheduler_root.quit()
+                    scheduler_root.destroy()
+                else:
+                    error_message["text"] = "Scheduler minutes is not an integer."
+                 
+        bttn.bind("<Button-1>", lambda event: enter_bttn())
+        scheduler_root.bind("<Return>", lambda event: enter_bttn())
+
+        scheduler_root.mainloop()
+    
+    button_scheduler.bind("<Button-1>", lambda event: add_scheduler_window())
 
     window.mainloop()
 
@@ -265,8 +398,6 @@ def notification(product, source, price, belowMSRP):
 
     window_notification.geometry(f"+{x}+{y}")
 
-    # window_notification.after(2000, close)
-
     def close():
         """
         This method is called when the user closes the notification window.
@@ -280,60 +411,6 @@ def notification(product, source, price, belowMSRP):
 
     window_notification.protocol("WM_DELETE_WINDOW", close)
     window_notification.mainloop()
-
-
-def confirmationDialog(message, command, title="Please confirm"):
-    """
-    Creates a confirmation dialog. This is a simple dialog which displays a 
-    single line of text, a yes button, and a no button. It is used when
-    it is useful to make sure the user wants to perform some critical action
-    before actually executing that action. For example, if there was a button
-    on the GUI to delete a query, it would be appropriate to use a confirmation
-    dialog to make sure they really want to delete the query before deleting it.
-
-    :type message: string
-    :param message: The text message displayed to the user
-    
-    :type command: function
-    :param command: This function is called if the user presses the okay button
-    
-    :type title: string
-    :param title: The title of the window
-
-    :return: returns nothing
-    """
-
-    confirmation = tk.Tk()
-    confirmation.title(title)
-    confirmation.resizable(width=False, height=False)
-
-    components = tk.Frame(master=confirmation)
-    lbl_message = tk.Label(text=message, master=components)
-    lbl_message.pack(pady=5)
-
-    def close():
-        """The code to be run when the window is closed"""
-        confirmation.quit()
-        confirmation.destroy()
-
-    def success():
-        """The code to be run when the user presses yes"""
-        command()
-        close()
-
-    frame_buttons = tk.Frame(master=components)
-    button_yes = tk.Button(text="Yes", master=frame_buttons, command=success)
-    button_no = tk.Button(text="No", master=frame_buttons, command=close)
-    button_yes.grid(row=0, column=0)
-    button_no.grid(row=0, column=1)
-    for i in range(2):
-        frame_buttons.columnconfigure(i, minsize=75)
-    frame_buttons.pack(pady=5)
-
-    components.pack(padx=10, pady=5)
-
-    confirmation.mainloop()
-
 
 def shortenURL(url):
     """
@@ -383,7 +460,6 @@ def messageDialog(message, title="Message"):
 
     lbl = tk.Label(text=message, master=message_window)
     lbl.pack(padx=10, pady=10)
-
 
 if __name__ == "__main__":
     launchGUI()

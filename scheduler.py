@@ -16,8 +16,8 @@ def make_cron_job(minutes):
     Creates a Scheduler object and creates the cron job for the gpu-hunter application.
     """
     minute = minutes
+    result = halt_cron()
     cron = CronTab(user=True)
-    halt_cron()
     currdir=str(os.getcwd())
     com = f'export DISPLAY=:0 && cd {currdir} && python3 initiator.py'
     job = cron.new(command = com)
