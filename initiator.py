@@ -39,10 +39,10 @@ class Initiator:
         :return: The first line in the file that is opened (which is the default browser)
         """
         try:
-            with open('defaultBrowser.txt') as fp:
+            with open('default_browser.txt') as fp:
                 self.default_browser = fp.readline().strip('\n')
         except:
-            print("The 'defaultBrowser.txt' file could not be found")
+            print("The 'default_browser.txt' file could not be found")
 
 
     @staticmethod

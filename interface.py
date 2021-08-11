@@ -74,7 +74,7 @@ class ProductGrid(tk.Frame):
         price.grid(row=row_num, column=1, sticky="e")
         row.append(price)
 
-        link = tk.Label(text=shortenURL(url=row[0]), master=self)
+        link = tk.Label(text=shorten_url(url=row[0]), master=self)
         f = tk_font.Font(link, link.cget("font"))
         f.configure(underline=True)
         link.configure(font=f)
@@ -113,7 +113,7 @@ class ProductGrid(tk.Frame):
         ProductGrid.refresh()
         
 
-def launchGUI():
+def launch_gui():
     """
     Launches the main GUI window for our application. It displays 
     information about current queries and allows the user to create a 
@@ -128,7 +128,7 @@ def launchGUI():
     window.title("GPU Hunter")
     window.resizable(width=False, height=False)
 
-    lbl_queries_title = tk.Label(text="Current Product Searches", master=window)
+    lbl_queries_title = tk.Label(text="Current Product Queries", master=window)
     lbl_queries_title.pack()
 
     # Creates the necessary structure of containers for the scrolling
@@ -151,7 +151,7 @@ def launchGUI():
     canvas_queries.pack(fill=tk.BOTH, side=tk.LEFT, expand=tk.TRUE)
     canvas_queries.create_window(0, 0, window=frame_product_rows, anchor=tk.NW)
 
-    def updateScrollRegion():
+    def update_scroll_region():
         """
         Updates the scrolling region so it includes the current components. If
         any components were added to the scrolling region (from an add new query
@@ -161,8 +161,8 @@ def launchGUI():
         canvas_queries.update_idletasks()
         canvas_queries.config(scrollregion=frame_product_rows.bbox())
 
-    ProductGrid.refresh = updateScrollRegion
-    updateScrollRegion()
+    ProductGrid.refresh = update_scroll_region
+    update_scroll_region()
 
     def handle_new_query_button(event):
         """
@@ -213,7 +213,7 @@ def launchGUI():
 
             if entry_url.get() == "":
                 lbl_invalid_input["text"] = "Product link is a required field."
-            elif shortenURL(entry_url.get()) == "Other":
+            elif shorten_url(entry_url.get()) == "Other":
                 lbl_invalid_input["text"] = "URL is invalid or unsupported."
             else:
                 # Add this product to the json file
@@ -234,10 +234,10 @@ def launchGUI():
                     result = item_base.item_base.add_item(url=entry_url.get(), 
                             title=title, price=msrp, json_file="productList.json")
                     if result == 1:
-                        messageDialog("Successful addition!", "Success")
+                        message_dialog("Successful addition!", "Success")
                         frame_product_rows.load_json()
                         frame_product_rows.add_row()
-                        updateScrollRegion()
+                        update_scroll_region()
 
                         window_new_query.quit()
                         window_new_query.destroy()
@@ -372,7 +372,7 @@ def notification(product, source, price, belowMSRP):
     lbl_name.grid(row=0, column=1, sticky=tk.W)
 
     lbl_from = tk.Label(text="From:", master=frame)
-    lbl_source = tk.Label(text=shortenURL(source) + " (click here)", master=frame)
+    lbl_source = tk.Label(text=shorten_url(source) + " (click here)", master=frame)
     lbl_from.grid(row=1, column=0, sticky=tk.W)
     lbl_source.grid(row=1, column=1, sticky=tk.W)
     lbl_source.bind("<Button-1>", lambda event: webbrowser.open(source))
@@ -412,9 +412,9 @@ def notification(product, source, price, belowMSRP):
     window_notification.protocol("WM_DELETE_WINDOW", close)
     window_notification.mainloop()
 
-def shortenURL(url):
+def shorten_url(url):
     """
-    This standalone function will attempt to return a shorter version of th 
+    This standalone function will attempt to return a shorter version of the 
     given url. This is useful for displaying the source of a query to the user
     for a situation like a GUI or notification where the full url might require
     too much space.
@@ -443,7 +443,7 @@ def shortenURL(url):
     return result
 
 
-def messageDialog(message, title="Message"):
+def message_dialog(message, title="Message"):
     """
     Creates a dialog to display a brief textual message to the user. Useful
     for communicating error messages or success messages to the user.
@@ -462,4 +462,4 @@ def messageDialog(message, title="Message"):
     lbl.pack(padx=10, pady=10)
 
 if __name__ == "__main__":
-    launchGUI()
+    launch_gui()
