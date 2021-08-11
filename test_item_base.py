@@ -250,12 +250,11 @@ def test_add_item_NE_2():
     # -The add_item returned 1 for successful addition,
     # -The test_productList.json file now has 9 products
     # -The test_productList.json contains the links it had before and the new one, all in the proper order
-    assert result == 1
+    assert result == -6
     new_data = get_json_data()
-    assert len(new_data['Product']) == 9
+    assert len(new_data['Product']) == 8
     expected_links = get_expected_links()
-    expected_links.append(new_url)
-    for i in range(9):
+    for i in range(8):
         assert new_data['Product'][i]['productLink'] == expected_links[i]
     
     # Restore the state of the json file to its original state
