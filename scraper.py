@@ -264,7 +264,11 @@ class Scraper:
     def __init__(self, url, url_type):
         """
         Instantiates a web scraper and pulls initial page source information.
+        
+        :type url: string
         :param url: The url of a link that will be scraped to find product information
+        
+        :type url_type: string
         :param url_type: The type of link that a url is
                         BB - Bestbuy
                         NE - Newegg
@@ -297,6 +301,15 @@ class Scraper:
             self.store_type = url_type
 
     def strip_meta_characters(self, results):
+        """
+        Finds and removes all metacharacters from the input string.
+
+        :type results: string
+        :param results: An input string that may or may not contain metacharacters
+
+        :return: A string the same as the input string except that each
+        metacharacter is replaced by a space
+        """
         if results is not None:
             meta_char_list = [".", "^", "$", "+", "?", "{", "}", "[", "]", "\\", "|", "(", ")", "\t", "\n"]
 
@@ -310,9 +323,10 @@ class Scraper:
 
     def get_bb(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase
-        with BestBuy :return: 0 if the product is not found available for purchase. :return: 1 if the product is
-        found and available for purchase.
+        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with BestBuy 
+
+        :return: 0 if the product is not found available for purchase. 
+        :return: 1 if the product is found and available for purchase.
         """
 
         print(len(self.soup))
@@ -330,9 +344,10 @@ class Scraper:
 
     def get_bh(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase
-        with B&H :return: 0 if the product is not found available for purchase. :return: 1 if the product is found
-        and available for purchase.
+        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with B&H 
+
+        :return: 0 if the product is not found available for purchase. 
+        :return: 1 if the product is found and available for purchase.
         """
         print(len(self.soup))
         if self.soup is None:
@@ -351,9 +366,10 @@ class Scraper:
 
     def get_ne(self):
         """
-        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase
-        with Newegg :return: 0 if the product is not found available for purchase. :return: 1 if the product is found
-        and available for purchase.
+        Searches for whether or not the HTML source grabbed by the scraper contains a product available for purchase with Newegg 
+
+        :return: 0 if the product is not found available for purchase. 
+        :return: 1 if the product is found and available for purchase.
         """
         print(len(self.soup))
         if self.soup is None:

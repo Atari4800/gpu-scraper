@@ -2,6 +2,6 @@ interface module
 ================
 
 .. automodule:: interface
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

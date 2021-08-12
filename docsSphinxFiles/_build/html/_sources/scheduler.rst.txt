@@ -2,6 +2,6 @@ scheduler module
 ================
 
 .. automodule:: scheduler
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
