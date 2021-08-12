@@ -23,6 +23,13 @@ class ProductGrid(tk.Frame):
     """
 
     refresh = lambda: print("filler refresh")
+    """
+    This is a function that is responsible for updating the content inside the 
+    Grid of information in the GUI. It has an initial filler function, but 
+    should be assigned a meaningful function later on after the meaningful one
+    is written. (It should be assigned to update_scroll_region after it is
+    defined)
+    """
 
     def __init__(self, master):
         """
@@ -95,9 +102,9 @@ class ProductGrid(tk.Frame):
     def delete_row(self, row):
         """
         Deletes the given row from the table.
-        
-        :param row: An entire row in the table. It should be a List with all
-        of the components in that row.
+
+        :type row: A List
+        :param row: An entire row in the table. It should be a List with all of the components in that row.
 
         :return: returns nothing
         """
@@ -115,10 +122,11 @@ class ProductGrid(tk.Frame):
 
 def launch_gui():
     """
-    Launches the main GUI window for our application. It displays 
-    information about current queries and allows the user to create a 
-    new query (but does not yet actually add the query, it just shows
-    the GUI component is ready)
+    Launches the main GUI window for the application. It displays 
+    information about current queries and allows the user to work with the 
+    queries (adding, deleting, searching for them instantly), and has a button 
+    to create the cronjob which would automatically search for product after 
+    regular intervals of time.
 
     :return: returns nothing
     """
@@ -453,6 +461,8 @@ def message_dialog(message, title="Message"):
 
     :type title: string
     :param title: The optional title of the dialog window
+    
+    :return: returns nothing
     """
     message_window = tk.Tk()
     message_window.title(title)

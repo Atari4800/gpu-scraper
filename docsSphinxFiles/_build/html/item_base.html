@@ -1,25 +1,25 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>item_base module &#8212; GPU Hunter  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scheduler module" href="scheduler.html" />
     <link rel="prev" title="interface module" href="interface.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -29,112 +29,100 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
-  <div class="section" id="module-item_base">
+  <section id="module-item_base">
 <span id="item-base-module"></span><h1>item_base module<a class="headerlink" href="#module-item_base" title="Permalink to this headline">¶</a></h1>
 <p>This file handles the adding, and deleting of items from the productList.JSON file.</p>
-<dl class="class">
-<dt id="item_base.item_base">
-<em class="property">class </em><code class="descclassname">item_base.</code><code class="descname">item_base</code><a class="headerlink" href="#item_base.item_base" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="item_base.item_base">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">item_base.</span></span><span class="sig-name descname"><span class="pre">item_base</span></span><a class="headerlink" href="#item_base.item_base" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class handles the modification of items inside of a designated productList.</p>
-<dl class="method">
-<dt id="item_base.item_base.add_item">
-<code class="descname">add_item</code><span class="sig-paren">(</span><em>url</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#item_base.item_base.add_item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds an item to the designated product list as a JSON entry. First it checks a url for product information, then
-it adds corresponding price, and url information to the productList.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>url</strong> (<em>string</em>) – The url of the item that needs to be monitored (B&amp;H, Newegg, and Bestbuy links only)</li>
-<li><strong>json_file</strong> (<em>string</em>) – The productList that the url’s JSON entry will be placed in.</li>
+<dl class="py method">
+<dt class="sig sig-object py" id="item_base.item_base.add_item">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">add_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#item_base.item_base.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an item to the designated product list as a JSON entry. First it checks a URL for product information, then
+it adds corresponding price, and URL information to the productList.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>string</em>) – The url of the item that needs to be monitored (B&amp;H, Newegg, and Bestbuy links only)</p></li>
+<li><p><strong>title</strong> (<em>string</em>) – The name of a product to be added.</p></li>
+<li><p><strong>price</strong> (<em>double</em>) – The price of a product to be added.</p></li>
+<li><p><strong>json_file</strong> (<em>string</em>) – The productList that the URL’s JSON entry will be placed in.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-5 if there is a duplicate link found within the JSON file.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-4 if the url entered is not supported.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-3 if the url’s domain cannot be reached.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-2 if there is a problem opening the JSON file or Reading from it.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">-1 if the item cannot be found.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if the item could not be added to the json_file.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the item was added successfully.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>-6 if the price cannot be found.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>-5 if there is a duplicate link found within the JSON file.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>-4 if the URL entered is not supported.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>-3 if the URL’s domain cannot be reached.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>-2 if there is a problem opening the JSON file or Reading from it.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>-1 if the item cannot be found.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>0 if the item could not be added to the file.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1 if the item was added successfully.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="staticmethod">
-<dt id="item_base.item_base.add_json">
-<em class="property">static </em><code class="descname">add_json</code><span class="sig-paren">(</span><em>title</em>, <em>url</em>, <em>price</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#item_base.item_base.add_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds JSON to a designated JSON file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>title</strong> (<em>string</em>) – The title of the item to be added to the JSON</li>
-<li><strong>url</strong> (<em>string</em>) – The url of the item to be added to the JSON</li>
-<li><strong>price</strong> (<em>string</em>) – The price of the item to be added to the JSON</li>
-<li><strong>json_file</strong> (<em>string</em>) – The JSON file to add the product to</li>
+<dl class="py method">
+<dt class="sig sig-object py" id="item_base.item_base.del_item">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">del_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#item_base.item_base.del_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a specified JSON entry from a specified json_file by URL</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>string</em>) – The url of the item to be deleted.</p></li>
+<li><p><strong>json_file</strong> (<em>string</em>) – The file to delete the JSON entry from.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if an error occurred when writing the JSON</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the JSON was added successfully.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>0 if an error occurred when trying to delete the entry.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1 if the item was deleted successfully.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="item_base.item_base.del_item">
-<code class="descname">del_item</code><span class="sig-paren">(</span><em>url</em>, <em>json_file</em><span class="sig-paren">)</span><a class="headerlink" href="#item_base.item_base.del_item" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes a specified JSON entry from a specified json_file by url</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>url</strong> (<em>string</em>) – The url of the item to be deleted.</li>
-<li><strong>json_file</strong> (<em>string</em>) – The file to delete the JSON entry from.</li>
+<dl class="py method">
+<dt class="sig sig-object py" id="item_base.item_base.save_state">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">save_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#item_base.item_base.save_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves json data to a particular datafile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>List/Dict</em>) – a list or dictionary containing JSON information that needs to be saved.</p></li>
+<li><p><strong>json_file</strong> (<em>string</em>) – The name of a json_file to save information to.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">0 if an error occurred when trying to delete the entry.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">1 if the item was deleted successfully.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -149,7 +137,7 @@ it adds corresponding price, and url information to the productList.</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">gpu-scraper</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="initiator.html">initiator module</a></li>
@@ -178,17 +166,23 @@ it adds corresponding price, and url information to the productList.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -197,8 +191,8 @@ it adds corresponding price, and url information to the productList.</p>
       &copy;2021, Harrison Koll, Joel McMaken, Edward Niemann.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/item_base.rst.txt"

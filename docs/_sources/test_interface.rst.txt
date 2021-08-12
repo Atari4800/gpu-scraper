@@ -2,6 +2,6 @@ test\_interface module
 ======================
 
 .. automodule:: test_interface
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,5 +1,4 @@
-
-"""This module priarily contains the Scheduler class, responsible for creating cronjobs. If it is run as a script,
+"""This module primarily contains the Scheduler class, responsible for creating cronjobs. If it is run as a script,
 then it will create a cronjob to run initiator.py regularly. The script would need an integer command line argument
 to indicate how frequently initiator.py should be run. """
 
@@ -13,7 +12,12 @@ import subprocess
 
 def make_cron_job(minutes):
     """
-    Creates a Scheduler object and creates the cron job for the gpu-hunter application.
+    Creates the cron job for the gpu-hunter application.
+    
+    :type minutes: integer
+    :param minutes: The number of minutes the cron job will wait before calling initiator.py again
+    
+    :return: returns nothing
     """
     minute = minutes
     result = halt_cron()
@@ -50,6 +54,9 @@ class Scheduler:
     def __init__(self, minutes):
         """
         Creates a Scheduler object and creates the cron job.
+         
+        :type minutes: integer
+        :param minutes: The number of minutes the cron job will wait before calling initiator.py again
         """
         self.minutes = minutes
         make_cron_job(minutes)
@@ -58,13 +65,13 @@ class Scheduler:
         """
         Changes the value of minutes by killing the current cronjob and creating a new one with the desired minutes.
 
-        :type min: integer
-        :param minutes: The number of minutes the cron job will wait before calling scraper.py again.
+        :type minutes: integer
+        :param minutes: The number of minutes the cron job will wait before calling initiator.py again
+        
+        :return: returns nothing
         """
         subprocess.run(["crontab", "-r"])
         make_cron_job(minutes)
-
-
 
 if __name__ == "__main__":
     sc = Scheduler(sys.argv[1])

@@ -2,6 +2,6 @@ initiator module
 ================
 
 .. automodule:: initiator
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:

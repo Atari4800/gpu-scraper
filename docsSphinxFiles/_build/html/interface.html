@@ -1,25 +1,25 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>interface module &#8212; GPU Hunter  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="item_base module" href="item_base.html" />
     <link rel="prev" title="initiator module" href="initiator.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -29,117 +29,159 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
-  <div class="section" id="module-interface">
+  <section id="module-interface">
 <span id="interface-module"></span><h1>interface module<a class="headerlink" href="#module-interface" title="Permalink to this headline">¶</a></h1>
-<p>This file handles the GUI component of our application. It is responsible for 
-creating the main GUI and related components like popup windows or 
-notifications.</p>
-<dl class="function">
-<dt id="interface.confirmationDialog">
-<code class="descclassname">interface.</code><code class="descname">confirmationDialog</code><span class="sig-paren">(</span><em>message</em>, <em>command</em>, <em>title='Please confirm'</em><span class="sig-paren">)</span><a class="headerlink" href="#interface.confirmationDialog" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a confirmation dialog. This is a simple dialog which displays a 
-single line of text, a cancel button, and an okay button. It is used when
-it is useful to make sure the user wants to perform some critical action
-before actually executing that action. For example, if there was a button
-on the GUI to delete a query, it would be appropriate to use a confirmation
-dialog to make sure they really want to delete the query before deleting it.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>message</strong> (<em>string</em>) – The text message displayed to the user</li>
-<li><strong>command</strong> (<em>function</em>) – This function is called if the user presses the okay button</li>
-<li><strong>title</strong> (<em>string</em>) – The title of the window</li>
+<p>This file handles the GUI component of our application. It is 
+responsible for creating the main GUI and related components like popup
+windows or notifications.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="interface.ProductGrid">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">interface.</span></span><span class="sig-name descname"><span class="pre">ProductGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">master</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interface.ProductGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tkinter.Frame</span></code></p>
+<p>One instance of this class handles all data and visual components for the 
+query table in the main interface screen. It creates a grid of information,
+where each row has the information and buttons for a single product.</p>
+<p>Creates a grid in the main interface page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>master</strong> (<em>string</em>) – The tkinter container which is a master of this grid.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="interface.ProductGrid.add_row">
+<span class="sig-name descname"><span class="pre">add_row</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#interface.ProductGrid.add_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a row to the table. The object has data to keep track of which 
+product should be displayed in the next row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns nothing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interface.ProductGrid.delete_row">
+<span class="sig-name descname"><span class="pre">delete_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interface.ProductGrid.delete_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the given row from the table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>row</strong> (<em>A List</em>) – An entire row in the table. It should be a List with all of the components in that row.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns nothing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interface.ProductGrid.load_json">
+<span class="sig-name descname"><span class="pre">load_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#interface.ProductGrid.load_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates this instance’s data from the file productList.json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns nothing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="interface.ProductGrid.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#interface.ProductGrid.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a function that is responsible for updating the content inside the 
+Grid of information in the GUI. It has an initial filler function, but 
+should be assigned a meaningful function later on after the meaningful one
+is written. (It should be assigned to update_scroll_region after it is
+defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interface.launch_gui">
+<span class="sig-prename descclassname"><span class="pre">interface.</span></span><span class="sig-name descname"><span class="pre">launch_gui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#interface.launch_gui" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launches the main GUI window for the application. It displays 
+information about current queries and allows the user to work with the 
+queries (adding, deleting, searching for them instantly), and has a button 
+to create the cronjob which would automatically search for product after 
+regular intervals of time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>returns nothing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="interface.message_dialog">
+<span class="sig-prename descclassname"><span class="pre">interface.</span></span><span class="sig-name descname"><span class="pre">message_dialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Message'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interface.message_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a dialog to display a brief textual message to the user. Useful
+for communicating error messages or success messages to the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>string</em>) – The textual message to be displayed inside the window</p></li>
+<li><p><strong>title</strong> (<em>string</em>) – The optional title of the dialog window</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">returns nothing</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns nothing</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="interface.launchGUI">
-<code class="descclassname">interface.</code><code class="descname">launchGUI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#interface.launchGUI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Launches the main GUI window for our application. It displays information
-about current queries and allows the user to create a new query (but does
-not yet actually add the query, it just shows the GUI component is ready)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">returns nothing</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="interface.notification">
-<code class="descclassname">interface.</code><code class="descname">notification</code><span class="sig-paren">(</span><em>product</em>, <em>source</em>, <em>price</em>, <em>belowMSRP</em><span class="sig-paren">)</span><a class="headerlink" href="#interface.notification" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="interface.notification">
+<span class="sig-prename descclassname"><span class="pre">interface.</span></span><span class="sig-name descname"><span class="pre">notification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">price</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">belowMSRP</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interface.notification" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a notification window in the bottom right hand side of the user’s
 screen. It will display the given information and does not close
 automatically.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>product</strong> (<em>string</em>) – The product available</li>
-<li><strong>source</strong> (<em>string</em>) – The url of the product</li>
-<li><strong>price</strong> (<em>string</em>) – The price of the product</li>
-<li><strong>belowMSRP</strong> (<em>string</em>) – Whether or not the product is below its MSRP</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product</strong> (<em>string</em>) – The product available</p></li>
+<li><p><strong>source</strong> (<em>string</em>) – The url of the product</p></li>
+<li><p><strong>price</strong> (<em>string</em>) – The price of the product</p></li>
+<li><p><strong>belowMSRP</strong> (<em>string</em>) – Whether or not the product is below its MSRP</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">returns nothing</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns nothing</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="interface.shortenURL">
-<code class="descclassname">interface.</code><code class="descname">shortenURL</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#interface.shortenURL" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="interface.shorten_url">
+<span class="sig-prename descclassname"><span class="pre">interface.</span></span><span class="sig-name descname"><span class="pre">shorten_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#interface.shorten_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>This standalone function will attempt to return a shorter version of the 
 given url. This is useful for displaying the source of a query to the user
 for a situation like a GUI or notification where the full url might require
 too much space.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>string</em>) – The url to attempt to shorten</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<p>If the url is for one of the websites we are focusing on, it returns the 
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>string</em>) – The url to attempt to shorten</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+<p>If the url is for one of the websites we are focusing on, it returns the
 name of that business.</p>
 <p>A best buy url would return ‘Best Buy’
 A Newegg url would return ‘Newegg’
 A B&amp;H url would return ‘B&amp;H’</p>
-<p>If the url is not one of the three main sites, it attempts to identify the 
-main components (subdomain, domain, and domain extension) of the url and 
-return it. For example, if the input url were
-‘<a class="reference external" href="https://www.tutorialspoint.com/pytest/index.htm">https://www.tutorialspoint.com/pytest/index.htm</a>’, the output would be
-‘www.tutorialspoint.com’.</p>
-<p>If it fails to identify the main part of the url for any reason, it will
-just return the full url it was input. This would happen if the input url
-was invalid (e.g. missing the https).</p>
+<p>Otherwise, would return ‘Other’</p>
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -154,7 +196,7 @@ was invalid (e.g. missing the https).</p>
 
 
 <h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">gpu-scraper</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="initiator.html">initiator module</a></li>
@@ -183,17 +225,23 @@ was invalid (e.g. missing the https).</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -202,8 +250,8 @@ was invalid (e.g. missing the https).</p>
       &copy;2021, Harrison Koll, Joel McMaken, Edward Niemann.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/interface.rst.txt"
