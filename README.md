@@ -1,23 +1,46 @@
 # GPU Hunter
 ## Overview
-GPU Hunter is a Linux app designed to help a user keep track of a store's stock of GPU products and will notify the user when the wanted item is in stock and available to purchase.
+GPU Hunter is a Linux app designed to help a user keep track of a store's stock of GPU products and will notify the user when the wanted item is in stock and available to purchase. Users can use the GUI to add a product to the list of items to seach for via its store link from BestBuy, Newegg, or B&H.
 
 -----
 
-## How to install
-*Linux*:  
+## How to install  
+*Linux*:  Note this project will **ONLY** operate on Linux.
 1. Clone this repo with `git clone https://github.com/Atari4800/gpu-scraper.git`  
-2. Make sure `build.sh` is executable: if not, run `chmod +x build.sh`   
-2. Run `sudo ./build.sh` (sudo is needed to install dependancies properly) 
+2. Set Firefox to default browser
+3. Make sure `build.sh` is executable: if not, run `chmod +x build.sh`   
+4. Run `sudo ./build.sh` (sudo is needed to install dependancies properly)
 
 -----------
 
-## How to use
-*Linux*:
+## How to use  
 After building:
-1. Run `python3 scheduler.py`to start an instance of GPU Hunter
+1. Run `python3 interface.py`to start an instance of GPU Hunter
 2. Use the command `crontab -l` to check if the cronjob is currently running.
 4. Use the command `crontab -r` to stop the cron job. 
+5. Use `python3 -m pytest -vv` to run test suite
+
+*To add item*
+- Open interface
+- click Add new query
+- paste link from BestBuy, Newegg, or B&H
+- OPTIONAL: add product name and MSRP
+- Click Add
+A confirmation window should appear if item was added successfully
+
+*To delete item*
+- Click Delete next to product
+
+*To search for all products once*
+- Click Search Now!
+
+*To set up background job*
+- Click Set up Schedule
+- Enter number of minutes to search by
+- Clock Ok
+
+*To exit* 
+- Click red X in the top right of interface
 
 ---------
 
