@@ -60,13 +60,15 @@ class Scraper:
         Retrieves the name of a product, and a product's price from a bestbuy link.
 
         :type my_url: string
-        :type my_url: the bestbuy url of a product
+        :param my_url: the bestbuy url of a product
 
         :type title: string
         :param title: The name of a product to be added.
 
         :type price: double
         :param price: The price of a product to be added.
+        
+        :return: An array containing the results of running get_title_bb & get_price_bb
         """
         if not re.search("www.bestbuy.com/", my_url):
             return [None, None]
@@ -85,13 +87,15 @@ class Scraper:
         Retrieves the name of a product, and a product's price from a newegg link.
 
         :type my_url: string
-        :type my_url: the newegg url of a product
+        :param my_url: the newegg url of a product
 
         :type title: string
         :param title: The name of a product to be added.
 
         :type price: double
         :param price: The price of a product to be added.
+        
+        :return: An array containing the results of running get_title_ne & get_price_ne
         """
         if not re.search("www.newegg.com/", my_url):
             return [None, None]
@@ -110,13 +114,15 @@ class Scraper:
         Retrieves the name of a product, and a product's price from a b&h link.
 
         :type my_url: string
-        :type my_url: the b&h url of a product
+        :param my_url: the b&h url of a product
 
         :type title: string
         :param title: The name of a product to be added.
 
         :type price: double
         :param price: The price of a product to be added.
+        
+        :return: An array containing the results of running get_title_bh & get_price_bh
         """
         if not re.search("/www.bhphotovideo.com/", my_url):
             return [None, None]
@@ -131,6 +137,14 @@ class Scraper:
 
     @staticmethod
     def __get_title_bh(soup):
+        """
+        Retrieves the title of a product from a BS4 object that was generated from a B&H URL.
+        
+        :type soup: bs4-object
+        :param soup: a bs4 object containing web-source code 
+        
+        :return: The title of a product or NONE if title is not found
+        """
         results = soup.find(class_='title_1S1JLm7P93Ohi6H_hq7wWh')
         if results is None:
             print("ERROR title not found. Cannot add product.")
@@ -143,6 +157,14 @@ class Scraper:
 
     @staticmethod
     def __get_price_bh(soup):
+        """
+        Retrieves the price of a product from a BS4 object that was generated from a B&H URL.
+        
+        :type soup: bs4-object
+        :param soup: a bs4 object containing web-source code 
+        
+        :return: The price of a product or NONE if the price is not found
+        """
         results = soup.find(class_='price_1DPoToKrLP8uWvruGqgtaY')
         if results is None:
             print("ERROR price not found. Cannot add product.")
@@ -153,6 +175,14 @@ class Scraper:
 
     @staticmethod
     def __get_title_ne(soup):
+        """
+        Retrieves the title of a product from a BS4 object that was generated from a Newegg URL.
+        
+        :type soup: bs4-object
+        :param soup: a bs4 object containing web-source code 
+        
+        :return: The title of a product or NONE if title is not found
+        """
         results = soup.find(class_='product-title')
         if results is None:
             print("ERROR title not found. Cannot add product.")
@@ -162,6 +192,14 @@ class Scraper:
 
     @staticmethod
     def __get_price_ne(soup):
+        """
+        Retrieves the price of a product from a BS4 object that was generated from a Newegg URL.
+        
+        :type soup: bs4-object
+        :param soup: a bs4 object containing web-source code 
+        
+        :return: The price of a product or NONE if price is not found
+        """
         results = soup.find(class_='product-price')
         if results is None:
             print("ERROR price not found. Cannot add product.")
@@ -185,6 +223,14 @@ class Scraper:
 
     @staticmethod
     def __get_title_bb(soup):
+        """
+        Retrieves the title of a product from a BS4 object that was generated from a Bestbuy URL.
+        
+        :type soup: bs4-object
+        :param soup: a bs4 object containing web-source code 
+        
+        :return: The title of a product or NONE if title is not found
+        """
         results = soup.find(class_='sku-title')
         if results is None:
             print("ERROR title not found. Cannot add product.")
@@ -198,6 +244,14 @@ class Scraper:
 
     @staticmethod
     def __get_price_bb(soup):
+        """
+        Retrieves the title of a product from a BS4 object that was generated from a Bestbuy URL.
+        
+        :type soup: bs4-object
+        :param soup: a bs4 object containing web-source code 
+        
+        :return: The price of a product or NONE if price is not found
+        """
         results = soup.find(class_='priceView-hero-price priceView-customer-price')
         if results is None:
             print("ERROR price not found. Cannot add product.")
