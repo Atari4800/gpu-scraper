@@ -120,3 +120,31 @@ Our goals for Milestone 3 were:
 - Create best hybrid GUI among the three variations
 - Tie GUI into web scraper and parser components
 - Test GUI among 3 non-developer users and get feedback
+
+## Release Notes 4
+
+*Currently Completed*  
+- All goals from Milestone 1, Milestone 2, and Milstone 3
+- GUI is fully connected to all backend functions
+- Code comments are up finalized
+- Final documentation generated
+- Website is live
+
+*Currently in Progress*  
+- None
+
+*To Do*  
+- None
+
+**Code Milestone 4 Completion**  
+We have achieved all of our goals set out for this milestone and were ahead of schedule on delivering this project. 
+
+Our goals for Milestone 4 were:
+- Written reports of additional functionality (ie, specific websites, GUI refinement, additional bot detection evasion)
+- Any additional bot detection evasion completed.
+- Add any remaining unimplemented GUI sections
+- Optimize code if possible
+- Milestone 4 video and final code commits. 
+- Any relevant documentation on the final code commits must be added, and previous documentation must be updated.
+
+
